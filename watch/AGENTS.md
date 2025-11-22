@@ -82,4 +82,6 @@ build() {
 - The Watch is the **Face** of the Agent.
 - It displays state determined by the Brain (Cloud) or Bridge (Phone).
 - **Do not** put heavy LLM logic here.
+
 </development_guidelines>
+

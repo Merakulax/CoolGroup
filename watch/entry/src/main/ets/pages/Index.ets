@@ -1,26 +1,72 @@
-/**
- * Main Watch Face - Tamagotchi Pet Display
- * Entry point for the wearable application
- */
 import { sensor } from '@kit.SensorServiceKit';
 import { BusinessError } from '@kit.BasicServicesKit';
 import PermissionsUtil from '../utils/PermissionsUtil';
+import { FaceView } from './FaceView';
+import { MessageView } from './MessageView';
+import { syncService } from '../services/SyncService';
+import { networkService } from '../utils/NetworkService';
+import { PetState, SensorData, Vector3, UserProfile } from '../models/types';
 
 @Entry
 @Component
 struct Index {
+  // Sensor data for display
   @State accelerometer: string = '';
   @State gyroscope: string = '';
-  @State light: string = '';
-  @State pressure: string = '';
-  @State humidity: string = '';
-  @State temperature: string = '';
-  @State orientation: string = '';
-  @State gravity: string = '';
-  @State heartData: number = 111;
-  @State pedometer: number = 111;
+  @State heartData: number = 0;
+  @State pedometer: number = 0;
+
+  // Raw sensor data for backend
+  @State accelData: Vector3 = { x: 0, y: 0, z: 0 };
+  @State gyroData: Vector3 = { x: 0, y: 0, z: 0 };
+
+  // App and User state
+  @State userId: string | null = null;
+  @State petMessage: string = 'Initializing...';
+  @State petImageUrl: string = '';
 
   aboutToAppear(): void {
+    this.subscribeToSensors();
+    this.initializeApp();
+  }
+
+  async initializeApp(): Promise<void> {
+    try {
+      this.petMessage = 'Creating user...';
+      // Instead of actually creating a User, use the user we created earlier
+      // const userProfile: UserProfile = { name: "Hacker", pet_name: "Gemini" };
+      // const newUser = await networkService.createUser(userProfile);
+      const user: UserProfile = { name: "Hacker", pet_name: "Gemini"};
+      this.userId = '7fe88792-63d1-4548-afc5-92c53e3436d3';
+
+      // 2. If user is created, start the sync service
+      if (this.userId) {
+        this.petMessage = `Welcome, ${user.name}!`;
+        syncService.start(
+          // UI Update Callback
+          (newState: PetState) => {
+            this.petMessage = newState.message || '';
+        this.petImageUrl = newState.image_url || ''; // Update the image URL
+          },
+          // Sensor Data Getter
+          (): SensorData => ({
+            timestamp: Date.now(),
+            vitals: { heartRate: this.heartData },
+            motion: { accelerometer: this.accelData, gyroscope: this.gyroData }
+          }),
+          // Real User ID
+          this.userId
+        );
+      } else {
+        this.petMessage = 'Error: Could not create user.';
+      }
+    } catch (e) {
+      console.error(`App initialization failed: ${JSON.stringify(e)}`);
+      this.petMessage = 'Error: Connection failed.';
+    }
+  }
+
+  private subscribeToSensors(): void {
     const INTERVAL = 100_000_000; // 100 ms in nanoseconds
 
     PermissionsUtil.requestPermissions([
@@ -32,114 +78,43 @@ struct Index {
 
     try {
       sensor.on(sensor.SensorId.ACCELEROMETER, (data) => {
+        this.accelData = { x: data.x, y: data.y, z: data.z };
         this.accelerometer = `x:${data.x.toFixed(2)}, y:${data.y.toFixed(2)}, z:${data.z.toFixed(2)}`;
       }, { interval: INTERVAL });
-    } catch (error) {
-      let e: BusinessError = error as BusinessError;
-      console.error(`Accelerometer error: ${e.message}`);
-    }
-
-    try {
       sensor.on(sensor.SensorId.PEDOMETER, (data: sensor.PedometerResponse) => {
         this.pedometer = data.steps;
-        console.info('Succeeded in invoking once. Step count: ' + data.steps);
       });
-    } catch (error) {
-      let e: BusinessError = error as BusinessError;
-      console.error(`Failed to invoke once. Code: ${e.code}, message: ${e.message}`);
-    }
-
-    try {
       sensor.on(sensor.SensorId.GYROSCOPE, (data) => {
+        this.gyroData = { x: data.x, y: data.y, z: data.z };
         this.gyroscope = `x:${data.x.toFixed(2)}, y:${data.y.toFixed(2)}, z:${data.z.toFixed(2)}`;
       }, { interval: INTERVAL });
-    } catch (error) {
-      console.error("Gyroscope failed.");
-    }
-
-    try {
-      sensor.on(sensor.SensorId.GRAVITY, (data: sensor.GravityResponse) => {
-        this.gravity = `x:${data.x.toFixed(2)}, y:${data.y.toFixed(2)}, z:${data.z.toFixed(2)}`;
-        console.info('Gravity: x=' + data.x + ', y=' + data.y + ', z=' + data.z);
-      }, { interval: INTERVAL });
-      setTimeout(() => {
-        sensor.off(sensor.SensorId.GRAVITY);
-      }, 500);
-    } catch (error) {
-      let e: BusinessError = error as BusinessError;
-      console.error(`Failed to invoke on. Code: ${e.code}, message: ${e.message}`);
-    }
-
-    try {
       sensor.on(sensor.SensorId.HEART_RATE, (data: sensor.HeartRateResponse) => {
         this.heartData = data.heartRate;
       }, { interval: INTERVAL });
-      setTimeout(() => {
-        sensor.off(sensor.SensorId.HEART_RATE);
-      }, 500);
     } catch (error) {
-      let e: BusinessError = error as BusinessError;
-      console.error(`Failed to invoke on. Code: ${e.code}, message: ${e.message}`);
-    }
-
-    try {
-      sensor.on(sensor.SensorId.AMBIENT_LIGHT, (data) => {
-        this.light = `Light: ${data.intensity.toFixed(2)} lx`;
-      }, { interval: INTERVAL });
-    } catch (error) {
-      console.error("Light sensor failed.");
-    }
-
-    try {
-      sensor.on(sensor.SensorId.BAROMETER, (data) => {
-        this.pressure = `Pressure: ${data.pressure.toFixed(2)} hPa`;
-      }, { interval: INTERVAL });
-    } catch (error) {
-      console.error("Barometer failed.");
-    }
-
-    try {
-      sensor.on(sensor.SensorId.HUMIDITY, (data) => {
-        this.humidity = `Humidity: ${data.humidity.toFixed(2)}%`;
-      }, { interval: INTERVAL });
-    } catch (error) {
-      console.error("Humidity sensor failed.");
-    }
-
-    try {
-      sensor.on(sensor.SensorId.AMBIENT_TEMPERATURE, (data) => {
-        this.temperature = `Temp: ${data.temperature.toFixed(2)} °C`;
-      }, { interval: INTERVAL });
-    } catch (error) {
-      console.error("Temperature sensor failed.");
-    }
-
-    try {
-      sensor.on(sensor.SensorId.ORIENTATION, (data) => {
-        this.orientation = `Pitch: ${data.alpha.toFixed(2)}, Roll: ${data.beta.toFixed(2)}, Yaw: ${data.gamma.toFixed(2)}`;
-      }, { interval: INTERVAL });
-    } catch (error) {
-      console.error("Orientation sensor failed.");
+      console.error(`Sensor subscription failed: ${(error as BusinessError).message}`);
     }
   }
 
   aboutToDisappear(): void {
+    syncService.stop();
+    this.unsubscribeFromSensors();
+  }
+
+  private unsubscribeFromSensors(): void {
     sensor.off(sensor.SensorId.ACCELEROMETER);
-    sensor.off(sensor.SensorId.GRAVITY);
     sensor.off(sensor.SensorId.GYROSCOPE);
-    sensor.off(sensor.SensorId.AMBIENT_LIGHT);
-    sensor.off(sensor.SensorId.BAROMETER);
-    sensor.off(sensor.SensorId.HUMIDITY);
-    sensor.off(sensor.SensorId.AMBIENT_TEMPERATURE);
-    sensor.off(sensor.SensorId.ORIENTATION);
     sensor.off(sensor.SensorId.HEART_RATE);
+    sensor.off(sensor.SensorId.PEDOMETER);
   }
 
   build() {
-    // post users     daten wie
-    // name, pet name, age, health
-    // this consists of the current time
-    // the background image is fetched after posting the sensor data
-    // there is also another page
+    Swiper() {
+      FaceView({ imageUrl: this.petImageUrl })
+      MessageView({ message: this.petMessage })
+    }
+    .indicator(true)
+    .vertical(false)
+    .loop(true)
   }
 }

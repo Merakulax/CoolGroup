@@ -8,6 +8,7 @@ import json
 import os
 import boto3
 from datetime import datetime
+from decimal import Decimal
 
 # Clients
 dynamodb = boto3.resource('dynamodb')
@@ -21,8 +22,8 @@ def handler(event, context):
     Lambda handler for sensor data ingestion
     """
     try:
-        # Parse request
-        body = json.loads(event.get('body', '{}'))
+        # Parse request with Decimal for DynamoDB
+        body = json.loads(event.get('body', '{}'), parse_float=Decimal)
         user_id = body.get('user_id')
         sensor_batch = body.get('batch', [])
 

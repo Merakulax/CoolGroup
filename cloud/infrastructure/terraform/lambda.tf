@@ -46,10 +46,12 @@ resource "aws_lambda_function" "orchestrator" {
 
   environment {
     variables = {
-      DYNAMODB_TABLE = aws_dynamodb_table.user_state.name
-      HEALTH_TABLE   = aws_dynamodb_table.health_data.name
-      USERS_TABLE    = aws_dynamodb_table.users.name
-      ENV            = var.environment
+      DYNAMODB_TABLE           = aws_dynamodb_table.user_state.name
+      HEALTH_TABLE             = aws_dynamodb_table.health_data.name
+      USERS_TABLE              = aws_dynamodb_table.users.name
+      ENV                      = var.environment
+      SUPERVISOR_AGENT_ID      = aws_bedrockagent_agent.supervisor_agent.id
+      SUPERVISOR_AGENT_ALIAS_ID = aws_bedrockagent_agent_alias.supervisor_agent_alias.agent_alias_id
     }
   }
 }

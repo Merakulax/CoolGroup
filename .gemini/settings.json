@@ -1,5 +1,14 @@
 {
   "context": {
     "fileName": "AGENTS.md"
+  },
+  "mcpServers": {
+    "context7": {
+      "httpUrl": "https://mcp.context7.com/mcp",
+      "headers": {
+        "CONTEXT7_API_KEY": "ctx7sk-b960ebb1-918e-4795-83af-144938031e6c",
+        "Accept": "application/json, text/event-stream"
+      }
+    }
   }
 }

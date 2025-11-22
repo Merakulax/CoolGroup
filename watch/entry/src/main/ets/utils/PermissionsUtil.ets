@@ -61,6 +61,8 @@ class PermissionsUtil {
     context: common.UIAbilityContext): Promise<boolean> {
     let atManager: abilityAccessCtrl.AtManager = abilityAccessCtrl.createAtManager();
     const result = await atManager.requestPermissionsFromUser(context, permissions);
+    // Add detailed logging to see the raw permission result from the OS
+    console.info(`[PermissionsUtil] Raw permission result: ${JSON.stringify(result)}`);
     return !!result.authResults.length && result.authResults.every(authResults => authResults === 0);
   }
 }

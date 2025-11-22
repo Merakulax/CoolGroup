@@ -1,11 +1,10 @@
 import { sensor } from '@kit.SensorServiceKit';
 import { BusinessError } from '@kit.BasicServicesKit';
-import PermissionsUtil from '../utils/PermissionsUtil';
 import { FaceView } from './FaceView';
 import { MessageView } from './MessageView';
 import { syncService } from '../services/SyncService';
 import { networkService } from '../utils/NetworkService';
-import { PetState, SensorData, Vector3, UserProfile } from '../models/types';
+import { PetState, SensorData, Vector3, UserProfile, User, Motion } from '../models/types';
 
 @Entry
 @Component
@@ -33,22 +32,21 @@ struct Index {
   async initializeApp(): Promise<void> {
     try {
       this.petMessage = 'Creating user...';
-      // Instead of actually creating a User, use the user we created earlier
-      // const userProfile: UserProfile = { name: "Hacker", pet_name: "Gemini" };
-      // const newUser = await networkService.createUser(userProfile);
-      const user: UserProfile = { name: "Hacker", pet_name: "Gemini"};
-      this.userId = '7fe88792-63d1-4548-afc5-92c53e3436d3';
+      // 1. Create user with a hardcoded profile for this MVP
+      const userProfile: UserProfile = { name: "Hacker", pet_name: "Gemini" };
+      const newUser: User = await networkService.createUser(userProfile);
+      this.userId = newUser.user_id;
 
       // 2. If user is created, start the sync service
       if (this.userId) {
-        this.petMessage = `Welcome, ${user.name}!`;
+        this.petMessage = `Welcome, ${newUser.name}!`;
         syncService.start(
           // UI Update Callback
           (newState: PetState) => {
             this.petMessage = newState.message || '';
-        this.petImageUrl = newState.image_url || ''; // Update the image URL
+            this.petImageUrl = newState.image_url || '';
           },
-          // Sensor Data Getter
+          // Sensor Data Getter - Simplified to always send data
           (): SensorData => ({
             timestamp: Date.now(),
             vitals: { heartRate: this.heartData },
@@ -61,7 +59,8 @@ struct Index {
         this.petMessage = 'Error: Could not create user.';
       }
     } catch (e) {
-      console.error(`App initialization failed: ${JSON.stringify(e)}`);
+      const error = e as BusinessError;
+      console.error(`App initialization failed: ${error.code}, ${error.message}`);
       this.petMessage = 'Error: Connection failed.';
     }
   }
@@ -69,30 +68,40 @@ struct Index {
   private subscribeToSensors(): void {
     const INTERVAL = 100_000_000; // 100 ms in nanoseconds
 
-    PermissionsUtil.requestPermissions([
-      'ohos.permission.ACCELEROMETER',
-      'ohos.permission.ACTIVITY_MOTION',
-      'ohos.permission.GYROSCOPE',
-      'ohos.permission.READ_HEALTH_DATA'
-    ]);
-
+    // Subscribe to sensors using the simple, correct pattern.
     try {
-      sensor.on(sensor.SensorId.ACCELEROMETER, (data) => {
-        this.accelData = { x: data.x, y: data.y, z: data.z };
-        this.accelerometer = `x:${data.x.toFixed(2)}, y:${data.y.toFixed(2)}, z:${data.z.toFixed(2)}`;
-      }, { interval: INTERVAL });
-      sensor.on(sensor.SensorId.PEDOMETER, (data: sensor.PedometerResponse) => {
-        this.pedometer = data.steps;
-      });
-      sensor.on(sensor.SensorId.GYROSCOPE, (data) => {
-        this.gyroData = { x: data.x, y: data.y, z: data.z };
-        this.gyroscope = `x:${data.x.toFixed(2)}, y:${data.y.toFixed(2)}, z:${data.z.toFixed(2)}`;
-      }, { interval: INTERVAL });
       sensor.on(sensor.SensorId.HEART_RATE, (data: sensor.HeartRateResponse) => {
+        console.info(`[Sensor] Heart Rate data received: ${JSON.stringify(data)}`);
         this.heartData = data.heartRate;
       }, { interval: INTERVAL });
     } catch (error) {
-      console.error(`Sensor subscription failed: ${(error as BusinessError).message}`);
+      console.error(`Heart Rate subscription failed: ${(error as BusinessError).message}`);
+    }
+
+    try {
+      sensor.on(sensor.SensorId.ACCELEROMETER, (data: sensor.AccelerometerResponse) => {
+        this.accelData = { x: data.x, y: data.y, z: data.z };
+        this.accelerometer = `x:${data.x.toFixed(2)}, y:${data.y.toFixed(2)}, z:${data.z.toFixed(2)}`;
+      }, { interval: INTERVAL });
+    } catch (error) {
+      console.error(`Accelerometer subscription failed: ${(error as BusinessError).message}`);
+    }
+
+    try {
+      sensor.on(sensor.SensorId.PEDOMETER, (data: sensor.PedometerResponse) => {
+        this.pedometer = data.steps;
+      });
+    } catch (error) {
+      console.error(`Pedometer subscription failed: ${(error as BusinessError).message}`);
+    }
+
+    try {
+      sensor.on(sensor.SensorId.GYROSCOPE, (data: sensor.GyroscopeResponse) => {
+        this.gyroData = { x: data.x, y: data.y, z: data.z };
+        this.gyroscope = `x:${data.x.toFixed(2)}, y:${data.y.toFixed(2)}, z:${data.z.toFixed(2)}`;
+      }, { interval: INTERVAL });
+    } catch (error) {
+      console.error(`Gyroscope subscription failed: ${(error as BusinessError).message}`);
     }
   }
 

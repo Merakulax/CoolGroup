@@ -8,9 +8,12 @@ import os
 import boto3
 from datetime import datetime
 
+# Clients
 dynamodb = boto3.resource('dynamodb')
-health_table = dynamodb.Table(os.environ.get('HEALTH_TABLE', 'health_data'))
 lambda_client = boto3.client('lambda')
+
+# Resources
+health_table = dynamodb.Table(os.environ.get('HEALTH_TABLE', 'health_data'))
 
 def handler(event, context):
     """
@@ -30,7 +33,7 @@ def handler(event, context):
 
         print(f"Received batch of {len(sensor_batch)} samples for user {user_id}")
 
-        # Store in DynamoDB
+        # Store Data (DynamoDB Only)
         store_sensor_data(user_id, sensor_batch)
 
         # Analyze batch for triggers
@@ -57,6 +60,18 @@ def handler(event, context):
             'body': json.dumps({'error': str(e)})
         }
 
+def store_sensor_data(user_id, sensor_batch):
+    """Store sensor batch in DynamoDB"""
+    with health_table.batch_writer() as batch:
+        for sensor in sensor_batch:
+            # Flatten and add user_id
+            item = {
+                'user_id': user_id,
+                'timestamp': sensor.get('timestamp', int(datetime.now().timestamp() * 1000)),
+                **sensor
+            }
+            # Ensure float precision doesn't break DDB (optional, boto3 handles Decimal conversion mostly)
+            batch.put_item(Item=item)
 
 def analyze_batch(sensor_batch):
     """Analyze sensor batch for anomalies or triggers"""
@@ -94,35 +109,12 @@ def should_trigger_agent(analysis):
     """Determine if agentic loop should be triggered"""
     return len(analysis.get('anomalies', [])) > 0
 
-
-def store_sensor_data(user_id, sensor_batch):
-    """Store sensor batch in DynamoDB"""
-    with health_table.batch_writer() as batch:
-        for sensor in sensor_batch:
-            item = {
-                'user_id': user_id,
-                'timestamp': sensor.get('timestamp', int(datetime.now().timestamp() * 1000)),
-                **sensor # Flatten sensor data
-            }
-            # Convert float to Decimal for DynamoDB if needed, but boto3 handles most types.
-            # However, DynamoDB doesn't like floats sometimes. 
-            # For simplicity, we rely on simple types or would need a serializer.
-            # Ideally, we just store it.
-            # Note: Boto3 Table resource handles float to Decimal conversion automatically in newer versions? 
-            # Actually usually explicitly required. We'll assume standard JSON types for now.
-            # For safety, convert floats to string or Decimal if it fails.
-            batch.put_item(Item=item)
-
-
 def invoke_orchestrator(user_id, analysis):
     """Invoke agentic loop orchestrator Lambda"""
     # Construct function name dynamically or use env var
     project = os.environ.get('PROJECT_NAME', 'CoolGroup') # Fallback
     env = os.environ.get('ENV', 'dev')
     function_name = f"{project}-orchestrator-{env}"
-    
-    # If variable not set, try to find it or just print for now if we can't guess.
-    # Actually, let's use a simpler approach: assume we are in the same stack.
     
     try:
         lambda_client.invoke(

@@ -16,6 +16,7 @@ bedrock_runtime = boto3.client('bedrock-runtime', region_name='eu-central-1')
 # Tables
 user_state_table = dynamodb.Table(os.environ.get('DYNAMODB_TABLE', 'user_state'))
 health_table = dynamodb.Table(os.environ.get('HEALTH_TABLE', 'health_data'))
+users_table = dynamodb.Table(os.environ.get('USERS_TABLE', 'users'))
 
 def handler(event, context):
     """
@@ -32,9 +33,9 @@ def handler(event, context):
         print(f"Starting agentic loop for user {user_id}")
 
         # 1. PERCEPTION: Gather full context
-        # For MVP, we use the latest sensor reading in analysis OR fetch from DB
-        health_context = gather_context(user_id, analysis)
+        health_context, user_profile = gather_context(user_id, analysis)
         print(f"Health Context: {health_context}")
+        print(f"User Profile: {user_profile}")
 
         # 2. LOGIC: Determine State (1-10)
         if force_state:
@@ -50,7 +51,7 @@ def handler(event, context):
         if custom_message:
             message = custom_message
         else:
-            message = generate_message(state_index, mood, health_context)
+            message = generate_message(state_index, mood, health_context, user_profile)
         
         print(f"AI Message: {message}")
 
@@ -87,19 +88,25 @@ def handler(event, context):
 
 def gather_context(user_id, analysis):
     """
-    Gather health context from analysis payload or recent DB records
+    Gather health context and user profile
     """
-    # If analysis has the data (from ingest), use it.
-    # Otherwise, we might query DDB (omitted for speed in MVP)
-    
-    # Default values
+    # Health Context
     context = {
         'sleep_score': analysis.get('sleep_score', 70),
         'recovery_score': analysis.get('recovery_score', 70),
         'stress_level': analysis.get('stress_level', 30),
         'avg_hr': analysis.get('avg_heart_rate', 70)
     }
-    return context
+    
+    # User Profile
+    user_profile = {}
+    try:
+        response = users_table.get_item(Key={'user_id': user_id})
+        user_profile = response.get('Item', {})
+    except Exception as e:
+        print(f"Failed to fetch user profile: {e}")
+        
+    return context, user_profile
 
 def calculate_state_logic(context):
     """
@@ -135,27 +142,30 @@ def calculate_energy(context):
     """Calculate 'Energy Budget' (Spoons) 0-100"""
     return int((context.get('sleep_score', 50) + context.get('recovery_score', 50)) / 2)
 
-def generate_message(state_index, mood, context):
+def generate_message(state_index, mood, context, user_profile):
     """
     Use Bedrock (Claude) to generate the German persona message
     """
     try:
         model_id = "anthropic.claude-3-sonnet-20240229-v1:0"
         
-        system_prompt = """Du bist ein Tamagotchi Health Companion. 
-        Deine Aufgabe ist es, deinen Zustand basierend auf den Gesundheitsdaten des Nutzers zu verkörpern.
-        Sprich immer in der Ich-Perspektive. 
-        Halte dich kurz (max 1-2 Sätze).
-        Sei empathisch aber ehrlich."""
+        user_name = user_profile.get('name', 'Nutzer')
+        pet_name = user_profile.get('pet_name', 'Ich')
+        
+        system_prompt = f"""You are {pet_name}, a Tamagotchi Health Companion for {user_name}. 
+        Your task is to embody your state based on the user's health data.
+        Always speak in the first person as {pet_name}.
+        Keep it short (max 1-2 sentences).
+        Be empathic but honest."""
         
         user_prompt = f"""
-        Aktueller Status:
+        Current Status:
         - Level: {state_index}/10
-        - Stimmung: {mood}
-        - Schlaf: {context.get('sleep_score')}/100
-        - Erholung: {context.get('recovery_score')}/100
+        - Mood: {mood}
+        - Sleep: {context.get('sleep_score')}/100
+        - Recovery: {context.get('recovery_score')}/100
         
-        Generiere eine Nachricht an den Nutzer auf Deutsch."""
+        Generate a message to {user_name} in English."""
 
         body = json.dumps({
             "anthropic_version": "bedrock-2023-05-31",

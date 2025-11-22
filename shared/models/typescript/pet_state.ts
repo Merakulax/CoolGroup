@@ -36,6 +36,7 @@ export interface PetState {
   message?: string;
   animation?: Animation;
   hapticPattern?: HapticPattern;
+  imageUrl?: string;
 }
 
 /**

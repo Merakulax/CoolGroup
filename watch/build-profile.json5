@@ -1,6 +1,20 @@
 {
   "app": {
-    "signingConfigs": [],
+    "signingConfigs": [
+      {
+        "name": "default",
+        "type": "HarmonyOS",
+        "material": {
+          "certpath": "/Users/jakobliebig/.ohos/config/default_watch_Txd6k3eV2Wc0jLomkD69VOH_tejfV_HOXC1iReHpYvQ=.cer",
+          "keyAlias": "debugKey",
+          "keyPassword": "0000001B775F552F38CD1A849E53282205E4641216F1644F6B599256D32B2A935B778062A38B727AD07FCD",
+          "profile": "/Users/jakobliebig/.ohos/config/default_watch_Txd6k3eV2Wc0jLomkD69VOH_tejfV_HOXC1iReHpYvQ=.p7b",
+          "signAlg": "SHA256withECDSA",
+          "storeFile": "/Users/jakobliebig/.ohos/config/default_watch_Txd6k3eV2Wc0jLomkD69VOH_tejfV_HOXC1iReHpYvQ=.p12",
+          "storePassword": "0000001BEE0CF6424423C98605DD4A6805A717B0666E576957BDB299D34B33C3E6FB14811DBB6A3D958F11"
+        }
+      }
+    ],
     "products": [
       {
         "name": "default",

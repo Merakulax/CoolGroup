@@ -21,6 +21,11 @@ class Location:
     accuracy: Optional[float] = None
 
 @dataclass
+class BloodPressure:
+    systolic: int
+    diastolic: int
+
+@dataclass
 class VitalsData:
     heartRate: Optional[int] = None
     restingHeartRate: Optional[int] = None
@@ -28,11 +33,23 @@ class VitalsData:
     spo2: Optional[float] = None
     skinTemperature: Optional[float] = None
     bodyTemperature: Optional[float] = None
+    bloodGlucose: Optional[float] = None
+    bloodPressure: Optional[BloodPressure] = None
+    vo2Max: Optional[float] = None
+    ecgResult: Optional[str] = None
+
+@dataclass
+class BodyData:
+    height: Optional[float] = None
+    weight: Optional[float] = None
+    bodyFat: Optional[float] = None
+    bmi: Optional[float] = None
 
 @dataclass
 class ActivityData:
     stepCount: Optional[int] = None
     calories: Optional[int] = None
+    activeHours: Optional[float] = None
     distance: Optional[float] = None
     speed: Optional[float] = None
     isIntensity: Optional[bool] = None
@@ -69,12 +86,14 @@ class WellbeingData:
     stressScore: Optional[int] = None
     emotionStatus: Optional[int] = None
     sleepScore: Optional[int] = None
+    sleepStatus: Optional[str] = None
 
 @dataclass
 class SensorPayload:
     timestamp: int
     deviceId: Optional[str] = None
     vitals: Optional[VitalsData] = None
+    body: Optional[BodyData] = None
     activity: Optional[ActivityData] = None
     runningForm: Optional[RunningFormData] = None
     environment: Optional[EnvironmentData] = None

@@ -24,7 +24,28 @@
         "hrvRMSSD": { "type": "number", "description": "Heart Rate Variability (RMSSD) in ms" },
         "spo2": { "type": "number", "minimum": 0, "maximum": 100, "description": "Blood Oxygen Saturation %" },
         "skinTemperature": { "type": "number", "description": "Skin temperature in Celsius" },
-        "bodyTemperature": { "type": "number", "description": "Estimated core body temperature in Celsius" }
+        "bodyTemperature": { "type": "number", "description": "Estimated core body temperature in Celsius" },
+        "bloodGlucose": { "type": "number", "description": "Blood glucose in mmol/L" },
+        "bloodPressure": { 
+          "type": "object",
+          "properties": {
+            "systolic": { "type": "integer" },
+            "diastolic": { "type": "integer" }
+          }
+        },
+        "vo2Max": { "type": "number", "description": "Maximum oxygen uptake in ml/kg/min" },
+        "ecgResult": { "type": "string", "description": "Result of ECG measurement (e.g. Normal, AFib)" }
+      }
+    },
+
+    "body": {
+      "type": "object",
+      "description": "Body composition metrics",
+      "properties": {
+        "height": { "type": "number", "description": "Height in meters" },
+        "weight": { "type": "number", "description": "Weight in kg" },
+        "bodyFat": { "type": "number", "description": "Body fat percentage" },
+        "bmi": { "type": "number", "description": "Body Mass Index" }
       }
     },
 
@@ -34,6 +55,7 @@
       "properties": {
         "stepCount": { "type": "integer", "minimum": 0 },
         "calories": { "type": "integer", "description": "Total calories burned" },
+        "activeHours": { "type": "number", "description": "Hours spent active today" },
         "distance": { "type": "number", "description": "Distance in meters" },
         "speed": { "type": "number", "description": "Speed in m/s" },
         "isIntensity": { "type": "boolean", "description": "True if medium/high intensity activity" }
@@ -115,7 +137,8 @@
       "properties": {
         "stressScore": { "type": "integer", "minimum": 0, "maximum": 100 },
         "emotionStatus": { "type": "integer", "description": "1: Unpleasant, 2: Neutral, 3: Pleasant" },
-        "sleepScore": { "type": "integer", "minimum": 0, "maximum": 100 }
+        "sleepScore": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "sleepStatus": { "type": "string", "description": "Current sleep status (e.g. Light, Deep, Awake)" }
       }
     }
   }

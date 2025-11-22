@@ -22,6 +22,11 @@ export interface Location {
   accuracy?: number;
 }
 
+export interface BloodPressure {
+  systolic: number;
+  diastolic: number;
+}
+
 export interface VitalsData {
   heartRate?: number;
   restingHeartRate?: number;
@@ -29,11 +34,23 @@ export interface VitalsData {
   spo2?: number;
   skinTemperature?: number;
   bodyTemperature?: number;
+  bloodGlucose?: number; // mmol/L
+  bloodPressure?: BloodPressure;
+  vo2Max?: number; // ml/kg/min
+  ecgResult?: string;
+}
+
+export interface BodyData {
+  height?: number; // meters
+  weight?: number; // kg
+  bodyFat?: number; // %
+  bmi?: number;
 }
 
 export interface ActivityData {
   stepCount?: number;
   calories?: number;
+  activeHours?: number;
   distance?: number;
   speed?: number;
   isIntensity?: boolean;
@@ -70,12 +87,14 @@ export interface WellbeingData {
   stressScore?: number;
   emotionStatus?: number; // 1: Unpleasant, 2: Neutral, 3: Pleasant
   sleepScore?: number;
+  sleepStatus?: string;
 }
 
 export interface SensorPayload {
   timestamp: number;
   deviceId?: string;
   vitals?: VitalsData;
+  body?: BodyData;
   activity?: ActivityData;
   runningForm?: RunningFormData;
   environment?: EnvironmentData;

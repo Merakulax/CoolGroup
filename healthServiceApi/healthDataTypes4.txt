@@ -1,0 +1,263 @@
+
+Sign in
+Materials
+Back
+
+Identity verification
+My profile
+
+    Training center
+
+Customer Service
+My events
+
+Sign out
+
+    Products
+
+Solutions
+Events
+Programs
+Community
+Training
+Support
+
+Back
+
+Back
+
+HarmonyOS
+
+    Release Notes
+    Design
+    Guides
+    References
+    Codelabs
+    Samples
+    Best Practices
+    FAQs 
+
+References
+Application Services Health Service Kit ArkTS APIs Fitness and Health Data Type Constants and Model Definitions
+healthSequenceHelper (Health Record Type Constant)
+healthSequenceHelper (Health Record Type Constant)
+Last updated: 2025-11-21 03:47
+Content overview
+Module Import
+sleepRecord
+Constant
+Model
+Fields
+DetailFields
+sleepNapRecord
+Constant
+Model
+Fields
+DetailFields
+Expand
+
+This module provides data type constants and data models of health records.
+
+Start version: 5.0.0(12)
+Module Import
+Supported devicesPhoneTabletWearable
+
+    import { healthStore } from '@kit.HealthServiceKit';
+
+NOTE
+
+This module is a sub-module of healthStore and needs to be used in healthStore.healthSequenceHelper mode.
+sleepRecord
+Supported devicesPhoneTabletWearable
+
+Nighttime sleep constant and data model.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+Constant
+Supported devicesPhoneTabletWearable
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Description
+
+DATA_TYPE
+	
+
+healthStore.DataType
+	
+
+Nighttime sleep data type.
+Model
+Supported devicesPhoneTabletWearable
+
+type Model = healthModels.SleepRecord
+
+Data model for nighttime sleep records.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthModels.SleepRecord
+	
+
+Data model for nighttime sleep records.
+Fields
+Supported devicesPhoneTabletWearable
+
+type Fields = healthFields.Sleep
+
+List of data fields about nighttime sleep records.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthFields.Sleep
+	
+
+List of data fields about nighttime sleep records.
+DetailFields
+Supported devicesPhoneTabletWearable
+
+type DetailFields = healthFields.SleepDetail
+
+List of data fields about sleep details.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthFields.SleepDetail
+	
+
+List of data fields about sleep details.
+sleepNapRecord
+Supported devicesPhoneTabletWearable
+
+Nap constant and data model.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+Constant
+Supported devicesPhoneTabletWearable
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Description
+
+DATA_TYPE
+	
+
+healthStore.DataType
+	
+
+Nap data type.
+Model
+Supported devicesPhoneTabletWearable
+
+type Model = healthModels.SleepNapRecord
+
+Data model for nap records.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthModels.SleepNapRecord
+	
+
+Data model for nap records.
+Fields
+Supported devicesPhoneTabletWearable
+
+type Fields = healthFields.SleepNap
+
+List of nap record data fields.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthFields.SleepNap
+	
+
+List of nap record data fields.
+DetailFields
+Supported devicesPhoneTabletWearable
+
+type DetailFields = healthFields.SleepDetail
+
+List of data fields about sleep details.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthFields.SleepDetail
+	
+
+List of data fields about sleep details.
+samplePointHelper (Sampling Data Type Constants)
+exerciseSequenceHelper (Exercise Record Type Constant)
+Send feedback
+Was this page helpful?
+Send feedback
+Reach out to us through the community for any other questions.
+Community Q&AIntelligent Assistant
+
+©2025 HUAWEI Developers. All rights reserved.
+Terms of Use
+Statement About HUAWEI Developers and Privacy
+Cookies
+Cookie Settings
+Open-Source Software Notice

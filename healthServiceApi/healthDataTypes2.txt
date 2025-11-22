@@ -1,0 +1,10066 @@
+
+Sign in
+Materials
+Back
+
+Identity verification
+My profile
+
+    Training center
+
+Customer Service
+My events
+
+Sign out
+
+    Products
+
+Solutions
+Events
+Programs
+Community
+Training
+Support
+
+Back
+
+Back
+
+HarmonyOS
+
+    Release Notes
+    Design
+    Guides
+    References
+    Codelabs
+    Samples
+    Best Practices
+    FAQs 
+
+References
+Application Services Health Service Kit ArkTS APIs Fitness and Health Data Type Constants and Model Definitions
+healthFields (Fitness and Health Data Fields)
+healthFields (Fitness and Health Data Fields)
+Last updated: 2025-11-21 03:47
+Content overview
+Expand
+
+This module provides a list of fitness and health data fields.
+
+Start version: 5.0.0(12)
+Module Import
+Supported devicesPhoneTabletWearable
+
+    import { healthStore } from '@kit.HealthServiceKit';
+
+NOTE
+
+This module is a sub-module of healthStore and needs to be used in healthStore.healthFields mode.
+AdventuresDetail
+Supported devicesPhoneTabletWearable
+
+List of data fields about expedition details.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+markPoint
+	
+
+MarkPoint[]
+	
+
+No
+	
+
+Yes
+	
+
+List of marker point details. The value is left empty by default.
+
+altitude
+	
+
+Altitude[]
+	
+
+No
+	
+
+Yes
+	
+
+List of altitude details. The value is left empty by default.
+AdventuresSummary
+Supported devicesPhoneTabletWearable
+
+List of data fields about expedition statistics.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+calorie
+	
+
+CalorieSummary
+	
+
+No
+	
+
+No
+	
+
+Calories statistics.
+
+distance
+	
+
+DistanceSummary
+	
+
+No
+	
+
+No
+	
+
+Distance statistics.
+
+step
+	
+
+StepSummary
+	
+
+No
+	
+
+Yes
+	
+
+Step statistics. The value is left empty by default.
+
+cadence
+	
+
+CadenceSummary
+	
+
+No
+	
+
+Yes
+	
+
+Step cadence statistics. The value is left empty by default.
+
+altitude
+	
+
+AltitudeSummary
+	
+
+No
+	
+
+Yes
+	
+
+Altitude statistics. The value is left empty by default.
+Altitude
+Supported devicesPhoneTabletWearable
+
+List of data fields about altitude details, which inherits from healthStore.SequencePoint.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+altitude
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Altitude.
+
+Unit: meter
+AltitudeSummary
+Supported devicesPhoneTabletWearable
+
+List of data fields about altitude statistics.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+max
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Maximum value.
+
+Unit: meter
+
+min
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Minimum value.
+
+Unit: meter
+
+avg
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Average value. The value is left empty by default.
+
+Unit: meter
+
+totalAscent
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Total ascent. The value is left empty by default.
+
+Unit: meter
+
+Value range: [0, ∞)
+
+totalDescent
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Total descent. The value is left empty by default.
+
+Unit: meter
+
+Value range: [0, ∞)
+BasketballDetail
+Supported devicesPhoneTabletWearable
+
+List of data fields about basketball details.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+exerciseHeartRate
+	
+
+ExerciseHeartRate[]
+	
+
+No
+	
+
+Yes
+	
+
+List of exercise heart rate details. The value is left empty by default.
+
+jump
+	
+
+Jump[]
+	
+
+No
+	
+
+Yes
+	
+
+List of jump details. The value is left empty by default.
+
+speed
+	
+
+Speed[]
+	
+
+No
+	
+
+Yes
+	
+
+List of speed details. The value is left empty by default.
+BasketballFeature
+Supported devicesPhoneTabletWearable
+
+List of data fields about basketball features.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+overallScore
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Overall score.
+
+burstScore
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Explosive power score. The value is left empty by default.
+
+jumpScore
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Hang time score. The value is left empty by default.
+
+runScore
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Running score. The value is left empty by default.
+
+breakthroughScore
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Dribble breakthrough score. The value is left empty by default.
+
+sportIntensityScore
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Intensity score. The value is left empty by default.
+BasketballSummary
+Supported devicesPhoneTabletWearable
+
+List of data fields about basketball statistics.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+basketballFeature
+	
+
+BasketballFeature
+	
+
+No
+	
+
+No
+	
+
+Basketball feature.
+
+calorie
+	
+
+CalorieSummary
+	
+
+No
+	
+
+No
+	
+
+Calories statistics.
+
+jump
+	
+
+JumpSummary
+	
+
+No
+	
+
+No
+	
+
+Jump statistics.
+
+exerciseHeartRate
+	
+
+ExerciseHeartRateSummary
+	
+
+No
+	
+
+Yes
+	
+
+Exercise heart rate statistics. The value is left empty by default.
+BiathlonDetail
+Supported devicesPhoneTabletWearable
+
+List of data fields about biathlon details.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+exerciseHeartRate
+	
+
+ExerciseHeartRate[]
+	
+
+No
+	
+
+Yes
+	
+
+List of exercise heart rate details. The value is left empty by default.
+
+speed
+	
+
+Speed[]
+	
+
+No
+	
+
+Yes
+	
+
+List of speed details. The value is left empty by default.
+BiathlonSummary
+Supported devicesPhoneTabletWearable
+
+List of data fields about biathlon statistics.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+calorie
+	
+
+CalorieSummary
+	
+
+No
+	
+
+No
+	
+
+Calories statistics.
+
+exerciseHeartRate
+	
+
+ExerciseHeartRateSummary
+	
+
+No
+	
+
+Yes
+	
+
+Exercise heart rate statistics. The value is left empty by default.
+BloodOxygenSaturation
+Supported devicesPhoneTabletWearable
+
+List of SpO2 sampling data fields.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+spo2
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+SpO2.
+
+Unit: %
+
+Value range: (0, 100]
+BloodOxygenSaturationAggregation
+Supported devicesPhoneTabletWearable
+
+List of data fields about SpO2 aggregates.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+spo2
+	
+
+Omit<AggregateMetrics, 'sum' | 'count'>
+	
+
+No
+	
+
+No
+	
+
+SpO2 aggregate.
+BloodPressure
+Supported devicesPhoneTabletWearable
+
+List of blood pressure sampling data fields.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+bloodPressureSystolic
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Systolic (top) pressure.
+
+Unit: mmHg
+
+Value range: (0, ∞)
+
+bloodPressureDiastolic
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Diastolic (Bottom) pressure.
+
+Unit: mmHg
+
+Value range: (0, ∞)
+
+sphygmus
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Pulse. The value is left empty by default.
+
+Unit: beats/min
+
+Value range: (0, ∞)
+
+measurementAnomalyFlag
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Measurement exception event. The value is left empty by default.
+
+Value range: (0, ∞)
+
+The options are:
+
+1: normal
+
+2: The device is not level with the user's heart.
+
+3: The user shakes slightly during the measurement.
+
+4: The user does not rest for 5 minutes or more before the measurement.
+
+beforeMeasureActivity
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Activity before measurement. The value is left empty by default.
+
+Value range: (0, ∞)
+
+The options are:
+
+1: intense exercise
+
+2: smoking
+
+3: eating
+
+4: drinking alcohol
+
+5: drinking coffee
+
+6: no activity
+
+7: after getting up
+
+8: prepared for bed
+
+100: custom
+BodyTemperature
+Supported devicesPhoneTabletWearable
+
+List of body temperature sampling data fields.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+bodyTemperature
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Body temperature.
+
+Unit: °C
+
+Value range: [34, 42]
+BodyTemperatureAggregation
+Supported devicesPhoneTabletWearable
+
+List of data fields about body temperature aggregates.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+bodyTemperature
+	
+
+Omit<AggregateMetrics, 'sum' | 'last'>
+	
+
+No
+	
+
+No
+	
+
+Body temperature aggregate.
+BreathHoldingTestDetail
+Supported devicesPhoneTabletWearable
+
+List of data fields about apnea test details.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+exerciseHeartRate
+	
+
+ExerciseHeartRate[]
+	
+
+No
+	
+
+Yes
+	
+
+List of exercise heart rate details. The value is left empty by default.
+BreathHoldingTestFeature
+Supported devicesPhoneTabletWearable
+
+List of data fields about apnea test features.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+diaphragmTime
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Diaphragm contraction.
+
+Unit: second
+BreathHoldingTestSummary
+Supported devicesPhoneTabletWearable
+
+List of data fields about apnea test statistics.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+breathHoldingTestFeature
+	
+
+BreathHoldingTestFeature
+	
+
+No
+	
+
+No
+	
+
+Apnea test feature statistics.
+
+exerciseHeartRate
+	
+
+ExerciseHeartRateSummary
+	
+
+No
+	
+
+Yes
+	
+
+Exercise heart rate statistics. The value is left empty by default.
+BreathHoldingTrainDetail
+Supported devicesPhoneTabletWearable
+
+List of data fields about apnea training details.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+exerciseHeartRate
+	
+
+ExerciseHeartRate[]
+	
+
+No
+	
+
+Yes
+	
+
+List of exercise heart rate details. The value is left empty by default.
+BreathHoldingTrainFeature
+Supported devicesPhoneTabletWearable
+
+List of data fields about apnea training features.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+breathTime
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Breathing time.
+
+Unit: second
+
+breathHoldingTime
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Breath holding time.
+
+Unit: second
+
+breathHoldingTrainRhythm
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Number of apnea training sessions. The value is left empty by default.
+
+Unit: times
+BreathHoldingTrainSummary
+Supported devicesPhoneTabletWearable
+
+List of data fields about apnea training statistics.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+breathHoldingTrainFeature
+	
+
+BreathHoldingTrainFeature
+	
+
+No
+	
+
+No
+	
+
+Apnea training feature statistics.
+
+exerciseHeartRate
+	
+
+ExerciseHeartRateSummary
+	
+
+No
+	
+
+Yes
+	
+
+Exercise heart rate statistics. The value is left empty by default.
+Cadence
+Supported devicesPhoneTabletWearable
+
+List of data fields about step cadence details, which inherits from healthStore.SequencePoint.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+cadence
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Step cadence.
+
+Unit: steps/minute
+
+Value range: [0, ∞)
+CadenceSummary
+Supported devicesPhoneTabletWearable
+
+List of data fields about step cadence statistics.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+avg
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Average value.
+
+Unit: steps/minute
+
+Value range: [0, ∞)
+
+max
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Maximum value.
+
+Unit: steps/minute
+
+Value range: [0, ∞)
+
+min
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Minimum value. The value is left empty by default.
+
+Unit: steps/minute
+
+Value range: [0, ∞)
+CalorieSummary
+Supported devicesPhoneTabletWearable
+
+List of data fields about calories statistics.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+totalCalories
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Total calories.
+
+Unit: cal
+
+Value range: (0, ∞)
+CyclingDetail
+Supported devicesPhoneTabletWearable
+
+List of data fields about cycling details.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+exerciseHeartRate
+	
+
+ExerciseHeartRate[]
+	
+
+No
+	
+
+Yes
+	
+
+List of exercise heart rate details. The value is left empty by default.
+
+speed
+	
+
+Speed[]
+	
+
+No
+	
+
+Yes
+	
+
+List of speed details. The value is left empty by default.
+
+pedalingCadence
+	
+
+PedalingCadence[]
+	
+
+No
+	
+
+Yes
+	
+
+List of pedaling cadence details. The value is left empty by default.
+
+power
+	
+
+Power[]
+	
+
+No
+	
+
+Yes
+	
+
+List of power details. The value is left empty by default.
+
+location
+	
+
+Location[]
+	
+
+No
+	
+
+Yes
+	
+
+List of location details. The value is left empty by default.
+
+altitude
+	
+
+Altitude[]
+	
+
+No
+	
+
+Yes
+	
+
+List of altitude details. The value is left empty by default.
+
+resistance
+	
+
+Resistance[]
+	
+
+No
+	
+
+Yes
+	
+
+List of resistance details. The value is left empty by default.
+CyclingSummary
+Supported devicesPhoneTabletWearable
+
+List of data fields about cycling statistics.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+distance
+	
+
+DistanceSummary
+	
+
+No
+	
+
+No
+	
+
+Distance statistics.
+
+calorie
+	
+
+CalorieSummary
+	
+
+No
+	
+
+No
+	
+
+Calories statistics.
+
+speed
+	
+
+SpeedSummary
+	
+
+No
+	
+
+No
+	
+
+Speed statistics.
+
+exerciseHeartRate
+	
+
+ExerciseHeartRateSummary
+	
+
+No
+	
+
+Yes
+	
+
+Exercise heart rate statistics. The value is left empty by default.
+
+resistance
+	
+
+ResistanceSummary
+	
+
+No
+	
+
+Yes
+	
+
+Resistance statistics. The value is left empty by default.
+
+pedalingCadence
+	
+
+PedalingCadenceSummary
+	
+
+No
+	
+
+Yes
+	
+
+Pedaling cadence statistics. The value is left empty by default.
+
+power
+	
+
+PowerSummary
+	
+
+No
+	
+
+Yes
+	
+
+Power statistics. The value is left empty by default.
+
+altitude
+	
+
+AltitudeSummary
+	
+
+No
+	
+
+Yes
+	
+
+Altitude statistics. The value is left empty by default.
+
+location
+	
+
+LocationSummary
+	
+
+No
+	
+
+Yes
+	
+
+Location statistics. The value is left empty by default.
+DailyActivities
+Supported devicesPhoneTabletWearable
+
+List of daily activity sampling data fields.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+step
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Step count.
+
+Unit: step
+
+Value range: [0, 500]
+
+calorie
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Calories.
+
+Unit: cal
+
+Value range: [0, 65536)
+
+distance
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Distance.
+
+Unit: meter
+
+Value range: [0, ∞)
+
+duration
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Duration. The value is left empty by default.
+
+Unit: minute
+
+Options: 0 or 1
+
+status
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Status (such as walking, running, cycling, and climbing). The value is left empty by default.
+
+The options are:
+
+2: mountain hike
+
+3: cycling
+
+4: running
+
+5: walking
+
+9: swimming
+
+10: working out
+
+13: standing
+
+isIntensity
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Whether an activity is of medium- and high-intensity. The value is left empty by default.
+
+The options are:
+
+0: no
+
+1: yes
+
+climbHighAltitude
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Altitude difference (positive or negative). The value is left empty by default.
+
+Unit: meter
+
+isStand
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Whether the user stands. If there is an activity record in an hour, the first minute of the hour is marked as 1. The value is left empty by default.
+
+The options are:
+
+0: no
+
+1: yes
+DailyActivitiesAggregation
+Supported devicesPhoneTabletWearable
+
+List of data fields about daily activity aggregates.
+
+Atomic service API: This API can be used in atomic services since API version 5.0.0(12).
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+step
+	
+
+Omit<AggregateMetrics, 'max' | 'min' | 'avg' | 'last' | 'count'>
+	
+
+No
+	
+
+No
+	
+
+Step aggregate.
+
+calorie
+	
+
+Omit<AggregateMetrics, 'max' | 'min' | 'avg' | 'last' | 'count'>
+	
+
+No
+	
+
+No
+	
+
+Calories aggregate.
+
+distance
+	
+
+Omit<AggregateMetrics, 'max' | 'min' | 'avg' | 'last' | 'count'>
+	
+
+No
+	
+
+No
+	
+
+Distance aggregate.
+
+climbHighAltitude
+	
+
+Omit<AggregateMetrics, 'max' | 'min' | 'avg' | 'last' | 'count'>
+	
+
+No
+	
+
+No
+	
+
+Altitude difference aggregate.
+
+isIntensity
+	
+
+Omit<AggregateMetrics, 'max' | 'min' | 'avg' | 'last' | 'count'>
+	
+
+No
+	
+
+No
+	
+
+Medium- and high-intensity activity aggregate.
+
+isStand
+	
+
+Omit<AggregateMetrics, 'max' | 'min' | 'avg' | 'last' | 'count'>
+	
+
+No
+	
+
+No
+	
+
+Stand aggregate.
+DistanceSummary
+Supported devicesPhoneTabletWearable
+
+List of data fields about distance statistics.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+totalDistance
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Distance statistics.
+
+Unit: meter
+
+Value range: (0, ∞)
+DivingDepth
+Supported devicesPhoneTabletWearable
+
+List of data fields about diving depth details, which inherits from healthStore.SequencePoint.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+depth
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Diving depth.
+
+Unit: meter
+DivingDepthSummary
+Supported devicesPhoneTabletWearable
+
+List of data fields about diving depth statistics.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+avg
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Average value.
+
+Unit: meter
+
+Value range: [0, ∞)
+
+max
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Maximum value.
+
+Unit: meter
+
+Value range: [0, ∞)
+DivingDetail
+Supported devicesPhoneTabletWearable
+
+List of data fields about free diving details.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+divingDepth
+	
+
+DivingDepth[]
+	
+
+No
+	
+
+Yes
+	
+
+List of diving depth details. The value is left empty by default.
+
+waterTemperature
+	
+
+WaterTemperature[]
+	
+
+No
+	
+
+Yes
+	
+
+List of water temperature details. The value is left empty by default.
+DivingFeature
+Supported devicesPhoneTabletWearable
+
+List of data fields about free diving features.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+divingTime
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Dive time.
+
+Unit: second
+
+divingCount
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Number of dives.
+
+divingMode
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Dive mode.
+
+The options are:
+
+0: free diving
+
+1: recreational dive
+
+2: technical dive
+
+3: gauge dive
+
+maxUnderwaterTime
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Maximum duration of a single dive. The value is left empty by default.
+
+Unit: second
+
+underwaterTime
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Underwater time. The value is left empty by default.
+
+Unit: second
+
+noFlyTime
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+No-fly time. The value is left empty by default.
+
+Unit: hour
+
+waterType
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Water type. The value is left empty by default.
+
+The options are:
+
+0: custom
+
+1: fresh water
+
+2: sea water
+
+waterDensity
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Water density. The value is left empty by default.
+
+Unit: kg/L
+
+maxAscentSpeed
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Maximum ascent speed. The value is left empty by default.
+
+Unit: m/s
+
+maxDescentSpeed
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Maximum descent speed. The value is left empty by default.
+
+Unit: m/s
+DivingSummary
+Supported devicesPhoneTabletWearable
+
+List of data fields about free diving statistics.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+divingFeature
+	
+
+DivingFeature
+	
+
+No
+	
+
+No
+	
+
+Free diving feature.
+
+location
+	
+
+LocationSummary
+	
+
+No
+	
+
+Yes
+	
+
+Location statistics. The value is left empty by default.
+
+divingDepth
+	
+
+DivingDepthSummary
+	
+
+No
+	
+
+Yes
+	
+
+Diving depth statistics. The value is left empty by default.
+
+waterTemperature
+	
+
+WaterTemperatureSummary
+	
+
+No
+	
+
+Yes
+	
+
+Water temperature statistics. The value is left empty by default.
+EllipticalDetail
+Supported devicesPhoneTabletWearable
+
+List of data fields about workout details on the elliptical.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+exerciseHeartRate
+	
+
+ExerciseHeartRate[]
+	
+
+No
+	
+
+Yes
+	
+
+List of exercise heart rate details. The value is left empty by default.
+
+speed
+	
+
+Speed[]
+	
+
+No
+	
+
+Yes
+	
+
+List of speed details. The value is left empty by default.
+
+pedalingCadence
+	
+
+PedalingCadence[]
+	
+
+No
+	
+
+Yes
+	
+
+List of pedaling cadence details. The value is left empty by default.
+
+power
+	
+
+Power[]
+	
+
+No
+	
+
+Yes
+	
+
+List of power details. The value is left empty by default.
+
+cadence
+	
+
+Cadence[]
+	
+
+No
+	
+
+Yes
+	
+
+List of step cadence details. The value is left empty by default.
+EllipticalSummary
+Supported devicesPhoneTabletWearable
+
+List of data fields about workout statistics on the elliptical.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+calorie
+	
+
+CalorieSummary
+	
+
+No
+	
+
+No
+	
+
+Calories statistics.
+
+distance
+	
+
+DistanceSummary
+	
+
+No
+	
+
+Yes
+	
+
+Distance statistics. The value is left empty by default.
+
+exerciseHeartRate
+	
+
+ExerciseHeartRateSummary
+	
+
+No
+	
+
+Yes
+	
+
+Exercise heart rate statistics. The value is left empty by default.
+
+speed
+	
+
+SpeedSummary
+	
+
+No
+	
+
+Yes
+	
+
+Speed statistics. The value is left empty by default.
+
+step
+	
+
+StepSummary
+	
+
+No
+	
+
+Yes
+	
+
+Step statistics. The value is left empty by default.
+
+cadence
+	
+
+CadenceSummary
+	
+
+No
+	
+
+Yes
+	
+
+Step cadence statistics. The value is left empty by default.
+
+resistance
+	
+
+ResistanceSummary
+	
+
+No
+	
+
+Yes
+	
+
+Resistance statistics. The value is left empty by default.
+
+pedalingCadence
+	
+
+PedalingCadenceSummary
+	
+
+No
+	
+
+Yes
+	
+
+Pedaling cadence statistics. The value is left empty by default.
+
+power
+	
+
+PowerSummary
+	
+
+No
+	
+
+Yes
+	
+
+Power statistics. The value is left empty by default.
+Emotion
+Supported devicesPhoneTabletWearable
+
+List of emotion sampling data fields.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.1.0(18)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+emotionStatus
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Emotional state.
+
+Value range: [0, 100)
+
+Currently, the Huawei Health app only displays the following values:
+
+1: unpleasant
+
+2: neutral
+
+3: pleasant
+ExerciseHeartRate
+Supported devicesPhoneTabletWearable
+
+List of data fields about exercise heart rate details, which inherits from healthStore.SequencePoint.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+bpm
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Exercise heart rate details.
+
+Unit: beats/min
+
+Value range: (0, 255)
+ExerciseHeartRateSummary
+Supported devicesPhoneTabletWearable
+
+List of data fields about exercise heart rate statistics.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+avg
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Average value.
+
+Unit: beats/min
+
+Value range: [0, ∞)
+
+max
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Maximum value.
+
+Unit: beats/min
+
+Value range: [0, ∞)
+
+min
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Minimum value. The value is left empty by default.
+
+Unit: beats/min
+
+Value range: [0, ∞)
+GolfCourseModelDetail
+Supported devicesPhoneTabletWearable
+
+List of data fields about golf (Course mode) details.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+exerciseHeartRate
+	
+
+ExerciseHeartRate[]
+	
+
+No
+	
+
+Yes
+	
+
+List of exercise heart rate details. The value is left empty by default.
+
+altitude
+	
+
+Altitude[]
+	
+
+No
+	
+
+Yes
+	
+
+List of altitude details. The value is left empty by default.
+GolfCourseModelFeature
+Supported devicesPhoneTabletWearable
+
+List of data fields about golf (Course mode) features.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+golfSwingCount
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Total swings.
+
+courseId
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Course ID.
+
+holes
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Number of holes.
+
+branchId1
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Layer ID in the first half. The value is left empty by default.
+
+branchId2
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Layer ID in the second half. The value is left empty by default.
+
+gir
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Green in regulation (GIR). The value is left empty by default.
+
+doubleEagle
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Albatross. The value is left empty by default.
+
+eagle
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Eagle. The value is left empty by default.
+
+birdie
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Birdie. The value is left empty by default.
+
+par
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Par. The value is left empty by default.
+
+bogey
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Bogey. The value is left empty by default.
+
+doubleBogey
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Double bogeys. The value is left empty by default.
+
+putts
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Total putts. The value is left empty by default.
+
+avgPutts
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Average putts. The value is left empty by default.
+
+par3
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Par-3. The value is left empty by default.
+
+par4
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Par-4. The value is left empty by default.
+
+par5
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Par-5. The value is left empty by default.
+
+fairwayHits
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Fairway hits. The value is left empty by default.
+
+fairwayLeft
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Hooks. The value is left empty by default.
+
+fairwayRight
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Slices. The value is left empty by default.
+
+avgHandicap
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Average over par. The value is left empty by default.
+
+bestHandicap
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Best over par. The value is left empty by default.
+
+totalHandicap
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Total over par. The value is left empty by default.
+GolfCourseModelSummary
+Supported devicesPhoneTabletWearable
+
+List of data fields about golf (Course mode) statistics.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+golfCourseModelFeature
+	
+
+GolfCourseModelFeature
+	
+
+No
+	
+
+No
+	
+
+Golf (Course mode) feature.
+
+calorie
+	
+
+CalorieSummary
+	
+
+No
+	
+
+No
+	
+
+Calories statistics.
+
+step
+	
+
+StepSummary
+	
+
+No
+	
+
+No
+	
+
+Step count statistics.
+
+exerciseHeartRate
+	
+
+ExerciseHeartRateSummary
+	
+
+No
+	
+
+Yes
+	
+
+Exercise heart rate statistics. The value is left empty by default.
+
+distance
+	
+
+DistanceSummary
+	
+
+No
+	
+
+Yes
+	
+
+Distance statistics. The value is left empty by default.
+
+cadence
+	
+
+CadenceSummary
+	
+
+No
+	
+
+Yes
+	
+
+Step cadence statistics. The value is left empty by default.
+
+altitude
+	
+
+AltitudeSummary
+	
+
+No
+	
+
+Yes
+	
+
+Altitude statistics. The value is left empty by default.
+GolfPracticeDetail
+Supported devicesPhoneTabletWearable
+
+List of data fields about golf (Driving range mode) details.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+exerciseHeartRate
+	
+
+ExerciseHeartRate[]
+	
+
+No
+	
+
+Yes
+	
+
+List of exercise heart rate details. The value is left empty by default.
+GolfPracticeFeature
+Supported devicesPhoneTabletWearable
+
+List of data fields about golf (Driving range mode) features.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+golfSwingCount
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Total swings.
+
+golfSwingSpeed
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Average swing speed. The value is left empty by default.
+
+Unit: cm/s
+
+golfMaxSwingSpeed
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Maximum swing speed. The value is left empty by default.
+
+Unit: cm/s
+
+golfSwingTempo
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Average swing tempo (average backswing time/average downswing time). The value is left empty by default.
+
+golfDownSwingTime
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Average downswing time. The value is left empty by default.
+
+Unit: millisecond
+
+golfBackSwingTime
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Average backswing time. The value is left empty by default.
+
+Unit: millisecond
+GolfPracticeSummary
+Supported devicesPhoneTabletWearable
+
+List of data fields about golf (Driving range mode) statistics.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+golfPracticeFeature
+	
+
+GolfPracticeFeature
+	
+
+No
+	
+
+No
+	
+
+Golf (Driving range mode) feature.
+
+calorie
+	
+
+CalorieSummary
+	
+
+No
+	
+
+No
+	
+
+Calories statistics.
+
+exerciseHeartRate
+	
+
+ExerciseHeartRateSummary
+	
+
+No
+	
+
+Yes
+	
+
+Exercise heart rate statistics. The value is left empty by default.
+HeartRate
+Supported devicesPhoneTabletWearable
+
+List of dynamic heart rate sampling data fields.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+bpm
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Dynamic heart rate.
+
+Unit: beats/min
+
+Value range: [0, ∞)
+HeartRateAggregation
+Supported devicesPhoneTabletWearable
+
+List of data fields abut dynamic heart rate aggregates.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+bpm
+	
+
+Omit<AggregateMetrics, 'avg' | 'sum' | 'count'>
+	
+
+No
+	
+
+No
+	
+
+Dynamic heart rate aggregate.
+HeartRateVariability
+Supported devicesPhoneTabletWearable
+
+List of heart rate variability sampling data fields.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.1.0(18)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+heartRateVariabilityRMSSD
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Heart rate variability.
+
+Unit: millisecond
+
+Value range: (0, 200]
+Height
+Supported devicesPhoneTabletWearable
+
+List of height sampling data fields.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+height
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Height.
+
+Unit: cm
+Jump
+Supported devicesPhoneTabletWearable
+
+List of data fields about jump details, which inherits from healthStore.SequencePoint.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+jumpHeight
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Jump height.
+
+Unit: meter
+
+passageDuration
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Hang time.
+
+Unit: millisecond
+JumpingRopeDetail
+Supported devicesPhoneTabletWearable
+
+List of data fields about rope jumping details.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+exerciseHeartRate
+	
+
+ExerciseHeartRate[]
+	
+
+No
+	
+
+Yes
+	
+
+List of exercise heart rate details. The value is left empty by default.
+
+skipSpeed
+	
+
+SkipSpeed[]
+	
+
+No
+	
+
+Yes
+	
+
+List of jump speed details. The value is left empty by default.
+JumpingRopeFeature
+Supported devicesPhoneTabletWearable
+
+List of data fields about rope jumping features.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+skipNum
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Number of jumps.
+
+Value range: [0, ∞)
+
+interruptions
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Number of interruptions. The value is left empty by default.
+
+Value range: [0, ∞)
+
+longestStreak
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Longest streak. The value is left empty by default.
+
+Value range: [0, ∞)
+
+doubleUnders
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Number of double-unders. The value is left empty by default.
+
+Value range: [0, ∞)
+
+tripleUnders
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Number of triple-unders. The value is left empty by default.
+
+Value range: [0, ∞)
+JumpingRopeSummary
+Supported devicesPhoneTabletWearable
+
+List of data fields about rope jumping statistics.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+jumpingRopeFeature
+	
+
+JumpingRopeFeature
+	
+
+No
+	
+
+No
+	
+
+Rope jumping feature.
+
+calorie
+	
+
+CalorieSummary
+	
+
+No
+	
+
+No
+	
+
+Calories statistics.
+
+skipSpeed
+	
+
+SkipSpeedSummary
+	
+
+No
+	
+
+No
+	
+
+Speed statistics.
+
+exerciseHeartRate
+	
+
+ExerciseHeartRateSummary
+	
+
+No
+	
+
+Yes
+	
+
+Exercise heart rate statistics. The value is left empty by default.
+JumpSummary
+Supported devicesPhoneTabletWearable
+
+List of data fields about jump statistics.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+jumpTimes
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Jump times.
+
+maxJumpHeight
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Maximum jump height. The value is left empty by default.
+
+Unit: meter
+
+maxPassageDuration
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Maximum hang time. The value is left empty by default.
+
+Unit: millisecond
+Location
+Supported devicesPhoneTabletWearable
+
+List of data fields about location details, which inherits from healthStore.SequencePoint.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+latitude
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Latitude.
+
+Unit: degree
+
+Value range: [–90, 90]
+
+longitude
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Longitude.
+
+Unit: degree
+
+Value range: [–180, 180]
+LocationSummary
+Supported devicesPhoneTabletWearable
+
+List of data fields about location statistics.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+coordinate
+	
+
+string
+	
+
+No
+	
+
+No
+	
+
+Coordinate system.
+
+The options are:
+
+'GCJ02'
+
+'WGS84'
+
+'BD09'
+
+startLat
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Latitude of the start point. The value is left empty by default.
+
+Unit: degree
+
+Value range: [–90, 90]
+
+endLat
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Latitude of the end point. The value is left empty by default.
+
+Unit: degree
+
+Value range: [–90, 90]
+
+startLon
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Longitude of the start point. The value is left empty by default.
+
+Unit: degree
+
+Value range: [–180, 180]
+
+endLon
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Longitude of the end point. The value is left empty by default.
+
+Unit: degree
+
+Value range: [–180, 180]
+MarkPoint
+Supported devicesPhoneTabletWearable
+
+List of marked point sampling data fields, which inherits from healthStore.SequencePoint.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+sn
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Serial number.
+
+type
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Type of a marked point.
+
+The options are:
+
+0: general
+
+1: start
+
+2: camp
+
+3: left
+
+4: right
+
+5: straight
+
+6: danger
+
+7: beast
+
+8: health care
+
+9: water
+
+10: food
+
+11: bridge
+
+12: shelter
+
+13: top
+
+14: house
+
+254: end
+
+255: automatically marked point
+
+longitude
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Longitude.
+
+Unit: degree
+
+latitude
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Latitude.
+
+Unit: degree
+
+mode
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Marking mode.
+
+The options are:
+
+0: automatic
+
+1: manual
+
+color
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Color. The value is left empty by default.
+
+The options are:
+
+0: orange
+
+1: red
+
+2: blue
+
+3: yellow
+
+4: gray
+
+5: green
+
+255: color of automatically marked points
+MountainHikeDetail
+Supported devicesPhoneTabletWearable
+
+List of data fields about mountain hike details.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+exerciseHeartRate
+	
+
+ExerciseHeartRate[]
+	
+
+No
+	
+
+Yes
+	
+
+List of exercise heart rate details. The value is left empty by default.
+
+speed
+	
+
+Speed[]
+	
+
+No
+	
+
+Yes
+	
+
+List of speed details. The value is left empty by default.
+
+location
+	
+
+Location[]
+	
+
+No
+	
+
+Yes
+	
+
+List of location details. The value is left empty by default.
+
+altitude
+	
+
+Altitude[]
+	
+
+No
+	
+
+Yes
+	
+
+List of altitude details. The value is left empty by default.
+MountainHikeSummary
+Supported devicesPhoneTabletWearable
+
+List of data fields about mountain hike statistics.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+distance
+	
+
+DistanceSummary
+	
+
+No
+	
+
+No
+	
+
+Distance statistics.
+
+calorie
+	
+
+CalorieSummary
+	
+
+No
+	
+
+No
+	
+
+Calories statistics.
+
+exerciseHeartRate
+	
+
+ExerciseHeartRateSummary
+	
+
+No
+	
+
+Yes
+	
+
+Exercise heart rate statistics. The value is left empty by default.
+
+step
+	
+
+StepSummary
+	
+
+No
+	
+
+Yes
+	
+
+Step statistics. The value is left empty by default.
+
+altitude
+	
+
+AltitudeSummary
+	
+
+No
+	
+
+Yes
+	
+
+Altitude statistics. The value is left empty by default.
+OpenWaterSwimDetail
+Supported devicesPhoneTabletWearable
+
+List of data fields about open water swimming details.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+exerciseHeartRate
+	
+
+ExerciseHeartRate[]
+	
+
+No
+	
+
+Yes
+	
+
+List of exercise heart rate details. The value is left empty by default.
+
+location
+	
+
+Location[]
+	
+
+No
+	
+
+Yes
+	
+
+List of location details. The value is left empty by default.
+
+speed
+	
+
+Speed[]
+	
+
+No
+	
+
+Yes
+	
+
+List of speed details. The value is left empty by default.
+
+swimStrokeRate
+	
+
+SwimStrokeRate[]
+	
+
+No
+	
+
+Yes
+	
+
+List of stroke rate details. The value is left empty by default.
+
+swolf
+	
+
+Swolf[]
+	
+
+No
+	
+
+Yes
+	
+
+List of SWOLF details. The value is left empty by default.
+OpenWaterSwimFeature
+Supported devicesPhoneTabletWearable
+
+List of data fields about open water swimming features.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+pullTimes
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Stroke count.
+
+swimmingStroke
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Main swimming stroke. The value is left empty by default.
+
+The options are:
+
+1: breaststroke
+
+2: freestyle
+
+3: butterfly stroke
+
+4: backstroke
+
+5: medley
+OpenWaterSwimSummary
+Supported devicesPhoneTabletWearable
+
+List of data fields about open water swimming statistics.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+openWaterSwimFeature
+	
+
+OpenWaterSwimFeature
+	
+
+No
+	
+
+No
+	
+
+Open water swimming feature.
+
+distance
+	
+
+DistanceSummary
+	
+
+No
+	
+
+No
+	
+
+Distance statistics.
+
+calorie
+	
+
+CalorieSummary
+	
+
+No
+	
+
+No
+	
+
+Calories statistics.
+
+exerciseHeartRate
+	
+
+ExerciseHeartRateSummary
+	
+
+No
+	
+
+Yes
+	
+
+Exercise heart rate statistics. The value is left empty by default.
+
+swimStrokeRate
+	
+
+SwimStrokeRateSummary
+	
+
+No
+	
+
+Yes
+	
+
+Stroke rate statistics. The value is left empty by default.
+
+swolf
+	
+
+SwolfSummary
+	
+
+No
+	
+
+Yes
+	
+
+SWOLF statistics. The value is left empty by default.
+PedalingCadence
+Supported devicesPhoneTabletWearable
+
+List of data fields about pedaling cadence details, which inherits from healthStore.SequencePoint.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+rpm
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Pedaling cadence details.
+
+Unit: revolutions/minute
+
+Value range: [0, ∞)
+PedalingCadenceSummary
+Supported devicesPhoneTabletWearable
+
+List of data fields about pedaling cadence statistics.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+avg
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Average value.
+
+Unit: revolutions/minute
+
+Value range: [0, ∞)
+
+max
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Maximum value.
+
+Unit: revolutions/minute
+
+Value range: [0, ∞)
+
+min
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Minimum value. The value is left empty by default.
+
+Unit: revolutions/minute
+
+Value range: [0, ∞)
+PoolSwimDetail
+Supported devicesPhoneTabletWearable
+
+List of data fields about pool swimming details.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+exerciseHeartRate
+	
+
+ExerciseHeartRate[]
+	
+
+No
+	
+
+Yes
+	
+
+List of exercise heart rate details. The value is left empty by default.
+
+speed
+	
+
+Speed[]
+	
+
+No
+	
+
+Yes
+	
+
+List of speed details. The value is left empty by default.
+
+swimStrokeRate
+	
+
+SwimStrokeRate[]
+	
+
+No
+	
+
+Yes
+	
+
+List of stroke rate details. The value is left empty by default.
+
+swolf
+	
+
+Swolf[]
+	
+
+No
+	
+
+Yes
+	
+
+List of SWOLF details. The value is left empty by default.
+PoolSwimFeature
+Supported devicesPhoneTabletWearable
+
+List of data fields about pool swimming features.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+pullTimes
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Stroke count.
+
+tripTimes
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Number of trips.
+
+poolLength
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Swimming pool length. The value is left empty by default.
+
+Unit: meter
+
+swimmingStroke
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Main swimming stroke. The value is left empty by default.
+
+The options are:
+
+1: breaststroke
+
+2: freestyle
+
+3: butterfly stroke
+
+4: backstroke
+
+5: medley
+PoolSwimSummary
+Supported devicesPhoneTabletWearable
+
+List of data fields about pool swimming statistics.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+poolSwimFeature
+	
+
+PoolSwimFeature
+	
+
+No
+	
+
+No
+	
+
+Pool swimming feature.
+
+distance
+	
+
+DistanceSummary
+	
+
+No
+	
+
+No
+	
+
+Distance statistics.
+
+calorie
+	
+
+CalorieSummary
+	
+
+No
+	
+
+No
+	
+
+Calories statistics.
+
+exerciseHeartRate
+	
+
+ExerciseHeartRateSummary
+	
+
+No
+	
+
+Yes
+	
+
+Exercise heart rate statistics. The value is left empty by default.
+
+speed
+	
+
+SpeedSummary
+	
+
+No
+	
+
+Yes
+	
+
+Speed statistics. The value is left empty by default.
+
+swimStrokeRate
+	
+
+SwimStrokeRateSummary
+	
+
+No
+	
+
+Yes
+	
+
+Stroke rate statistics. The value is left empty by default.
+
+swolf
+	
+
+SwolfSummary
+	
+
+No
+	
+
+Yes
+	
+
+SWOLF statistics. The value is left empty by default.
+Power
+Supported devicesPhoneTabletWearable
+
+List of data fields about power details, which inherits from healthStore.SequencePoint.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+power
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Power details.
+
+Unit: W
+
+Value range: [0, ∞)
+PowerSummary
+Supported devicesPhoneTabletWearable
+
+List of data fields about power statistics.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+avg
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Average value.
+
+Unit: W
+
+Value range: [0, ∞)
+
+max
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Maximum value.
+
+Unit: W
+
+Value range: [0, ∞)
+
+min
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Minimum value. The value is left empty by default.
+
+Unit: W
+
+Value range: [0, ∞)
+QuantitySummary
+Supported devicesPhoneTabletWearable
+
+List of statistical data fields in the base class.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+avg
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Average value.
+
+Value range: [0, ∞)
+
+max
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Maximum value.
+
+Value range: [0, ∞)
+
+min
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Minimum value. The value is left empty by default.
+
+Value range: [0, ∞)
+Resistance
+Supported devicesPhoneTabletWearable
+
+List of data fields about resistance details, which inherits from healthStore.SequencePoint.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+resLevel
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Resistance level.
+
+Value range: [1, 100]
+ResistanceSummary
+Supported devicesPhoneTabletWearable
+
+List of data fields about resistance statistics.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+resLv1LowerLimit
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Lower limit of resistance level 1.
+
+Value range: [1, 100]
+
+resLv2LowerLimit
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Lower limit of resistance level 2.
+
+Value range: [1, 100]
+
+resLv3LowerLimit
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Lower limit of resistance level 3.
+
+Value range: [1, 100]
+
+resLv4LowerLimit
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Lower limit of resistance level 4.
+
+Value range: [1, 100]
+
+resLv5LowerLimit
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Lower limit of resistance level 5.
+
+Value range: [1, 100]
+
+resLv5UpperLimit
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Upper limit of resistance level 5.
+
+Value range: [1, 100]
+
+resLv1Duration
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Workout duration at resistance level 1.
+
+Unit: minute
+
+Value range: [0, ∞)
+
+resLv2Duration
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Workout duration at resistance level 2.
+
+Unit: minute
+
+Value range: [0, ∞)
+
+resLv3Duration
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Workout duration at resistance level 3.
+
+Unit: minute
+
+Value range: [0, ∞)
+
+resLv4Duration
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Workout duration at resistance level 4.
+
+Unit: minute
+
+Value range: [0, ∞)
+
+resLv5Duration
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Workout duration at resistance level 5.
+
+Unit: minute
+
+Value range: [0, ∞)
+
+maxRes
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Maximum resistance level that can be set for a device. The value is left empty by default.
+
+Value range: [1, 100]
+
+minRes
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Minimum resistance level that can be set for a device. The value is left empty by default.
+
+Value range: [1, 100]
+RestingHeartRate
+Supported devicesPhoneTabletWearable
+
+List of resting heart rate data fields.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+restBpm
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Resting heart rate.
+
+Unit: beats/min
+
+Value range: [0, ∞)
+RestingHeartRateAggregation
+Supported devicesPhoneTabletWearable
+
+List of data fields abut resting heart rate aggregates.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+restBpm
+	
+
+Omit<AggregateMetrics, 'sum' | 'count' | 'max' | 'min' | 'avg'>
+	
+
+No
+	
+
+No
+	
+
+Resting heart rate aggregate.
+RowerDetail
+Supported devicesPhoneTabletWearable
+
+List of data fields about workout details on the rowing machine.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+exerciseHeartRate
+	
+
+ExerciseHeartRate[]
+	
+
+No
+	
+
+Yes
+	
+
+List of exercise heart rate details. The value is left empty by default.
+
+speed
+	
+
+Speed[]
+	
+
+No
+	
+
+Yes
+	
+
+List of speed details. The value is left empty by default.
+
+power
+	
+
+Power[]
+	
+
+No
+	
+
+Yes
+	
+
+List of power details. The value is left empty by default.
+
+resistance
+	
+
+Resistance[]
+	
+
+No
+	
+
+Yes
+	
+
+List of resistance details. The value is left empty by default.
+
+strokeRate
+	
+
+StrokeRate[]
+	
+
+No
+	
+
+Yes
+	
+
+List of stroke rate details. The value is left empty by default.
+RowerFeature
+Supported devicesPhoneTabletWearable
+
+List of data fields about workout features on the rowing machine.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+strokesNum
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Cumulative number of strokes.
+RowerSummary
+Supported devicesPhoneTabletWearable
+
+List of data fields about workout statistics on the rowing machine.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+rowerFeature
+	
+
+RowerFeature
+	
+
+No
+	
+
+No
+	
+
+Workout feature on the rowing machine.
+
+calorie
+	
+
+CalorieSummary
+	
+
+No
+	
+
+No
+	
+
+Calories statistics.
+
+distance
+	
+
+DistanceSummary
+	
+
+No
+	
+
+Yes
+	
+
+Distance statistics. The value is left empty by default.
+
+exerciseHeartRate
+	
+
+ExerciseHeartRateSummary
+	
+
+No
+	
+
+Yes
+	
+
+Exercise heart rate statistics. The value is left empty by default.
+
+speed
+	
+
+SpeedSummary
+	
+
+No
+	
+
+Yes
+	
+
+Speed statistics. The value is left empty by default.
+
+resistance
+	
+
+ResistanceSummary
+	
+
+No
+	
+
+Yes
+	
+
+Resistance statistics. The value is left empty by default.
+
+power
+	
+
+PowerSummary
+	
+
+No
+	
+
+Yes
+	
+
+Power statistics. The value is left empty by default.
+
+strokeRate
+	
+
+StrokeRateSummary
+	
+
+No
+	
+
+Yes
+	
+
+Stroke rate statistics. The value is left empty by default.
+RowingDetail
+Supported devicesPhoneTabletWearable
+
+List of data fields about rowing details.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+exerciseHeartRate
+	
+
+ExerciseHeartRate[]
+	
+
+No
+	
+
+Yes
+	
+
+List of exercise heart rate details. The value is left empty by default.
+
+strokeRate
+	
+
+StrokeRate[]
+	
+
+No
+	
+
+Yes
+	
+
+List of stroke rate details. The value is left empty by default.
+RowingFeature
+Supported devicesPhoneTabletWearable
+
+List of data fields about rowing features.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+strokesNum
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Cumulative number of strokes.
+RowingSummary
+Supported devicesPhoneTabletWearable
+
+List of data fields about rowing statistics.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+rowingFeature
+	
+
+RowingFeature
+	
+
+No
+	
+
+No
+	
+
+Rowing feature.
+
+calorie
+	
+
+CalorieSummary
+	
+
+No
+	
+
+No
+	
+
+Calories statistics.
+
+distance
+	
+
+DistanceSummary
+	
+
+No
+	
+
+Yes
+	
+
+Distance statistics. The value is left empty by default.
+
+exerciseHeartRate
+	
+
+ExerciseHeartRateSummary
+	
+
+No
+	
+
+Yes
+	
+
+Exercise heart rate statistics. The value is left empty by default.
+
+strokeRate
+	
+
+StrokeRateSummary
+	
+
+No
+	
+
+Yes
+	
+
+Stroke rate statistics. The value is left empty by default.
+RunningDetail
+Supported devicesPhoneTabletWearable
+
+List of data fields about running details.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+exerciseHeartRate
+	
+
+ExerciseHeartRate[]
+	
+
+No
+	
+
+Yes
+	
+
+List of exercise heart rate details. The value is left empty by default.
+
+speed
+	
+
+Speed[]
+	
+
+No
+	
+
+Yes
+	
+
+List of speed details. The value is left empty by default.
+
+cadence
+	
+
+Cadence[]
+	
+
+No
+	
+
+Yes
+	
+
+List of step cadence details. The value is left empty by default.
+
+runningForm
+	
+
+RunningForm[]
+	
+
+No
+	
+
+Yes
+	
+
+List of running form details. The value is left empty by default.
+
+location
+	
+
+Location[]
+	
+
+No
+	
+
+Yes
+	
+
+List of location details. The value is left empty by default.
+
+altitude
+	
+
+Altitude[]
+	
+
+No
+	
+
+Yes
+	
+
+List of altitude details. The value is left empty by default.
+RunningFeature
+Supported devicesPhoneTabletWearable
+
+List of data fields about running features.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+avgPace
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Average pace.
+
+Value range: [0, ∞)
+
+Unit: seconds/km
+
+bestPace
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Fastest pace.
+
+Value range: [0, ∞)
+
+Unit: seconds/km
+
+paceMap
+	
+
+healthStore.PaceValueType
+	
+
+No
+	
+
+Yes
+	
+
+Pace per kilometer. The value is left empty by default. Unit: seconds/km
+
+Examples:
+
+'1.0':407.945
+
+'2.0':473.98846
+
+'2.170':473.98846
+
+For the last part of distance, if it is less than one kilometer, the pace will be converted in proportion and then be stored.
+
+partTimeMap
+	
+
+healthStore.PaceValueType
+	
+
+No
+	
+
+Yes
+	
+
+Segment data table in the metric system (key: kilometer; value: second). The value is left empty by default.
+
+When kilometer is used, the distance value is accurate to the fourth decimal place.
+
+Value is the time taken to cover the current distance. Examples:
+
+    '1.0':3.0
+    '2.0':6.0
+
+    '3.0':9.0
+    '21.0975':7020.0
+
+    '42.195':18000.0
+
+Where, 21.0975 and 42.195 are the distances of the half Marathon and full Marathon, respectively. Except for these two types of race, the decimal places for others are 0.
+RunningForm
+Supported devicesPhoneTabletWearable
+
+List of data fields about running form details, which inherits from healthStore.SequencePoint.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+groundContactTime
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Ground contact time.
+
+Unit: millisecond
+
+Value range: [0, 5000]
+
+groundImpactAcceleration
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Landing impact. The value is left empty by default.
+
+Unit: g (gravity acceleration)
+
+Value range: [0, 50]
+
+swingAngle
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Swing angle. The value is left empty by default.
+
+Unit: degree
+
+Value range: [0, 360]
+
+eversionExcursion
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Eversion angle. The value is left empty by default.
+
+Unit: degree
+
+Value range: [–100, 100]
+
+hangTime
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Hang time. The value is left empty by default.
+
+Unit: millisecond
+
+Value range: [0, 500]
+
+groundHangTimeRate
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Flight ratio. The value is left empty by default.
+
+Value range: [0, 500]
+
+foreFootStrikePattern
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Number of forefoot strikes. The value is left empty by default.
+
+Value range: [0, 100]
+
+hindFootStrikePattern
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Number of rearfoot strikes. The value is left empty by default.
+
+Value range: [0, 100]
+
+wholeFootStrikePattern
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Number of full foot strikes. The value is left empty by default.
+
+Value range: [0, 100]
+
+impactPeak
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Active peak. The value is left empty by default.
+
+Unit: BW (multiples of body weight)
+
+Value range: [0, 10]
+
+verticalOscillation
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Vertical oscillation. The value is left empty by default.
+
+Unit: cm
+
+Value range: [0, 25.6]
+
+verticalRatio
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Vertical stride ratio. The value is left empty by default.
+
+Unit: %
+
+Value range: [0, 100]
+
+gcTimeBalance
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Ground contact time balance. The value is left empty by default.
+
+Unit: % (Percentage of ground contact duration of the left foot as compared to the ground contact duration of both feet, and that of the right foot is 100% minus this value.)
+
+Value range: [0, 100]
+RunningFormSummary
+Supported devicesPhoneTabletWearable
+
+List of data fields about running form statistics.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+avgGroundContactTime
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Average ground contact time.
+
+Unit: millisecond
+
+Value range: [0, 5000]
+
+avgGroundImpactAcceleration
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Average landing impact. The value is left empty by default.
+
+Unit: g (gravity acceleration)
+
+avgSwingAngle
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Average swing angle. The value is left empty by default.
+
+Unit: degree
+
+avgEversionExcursion
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Average eversion angle. The value is left empty by default.
+
+Unit: degree
+
+avgHangTime
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Average hang time. The value is left empty by default.
+
+Unit: millisecond
+
+avgGroundHangTimeRate
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Average flight ratio. The value is left empty by default.
+
+foreFootStrikePattern
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Number of forefoot strikes. The value is left empty by default.
+
+hindFootStrikePattern
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Number of rearfoot strikes. The value is left empty by default.
+
+wholeFootStrikePattern
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Number of full foot strikes. The value is left empty by default.
+
+avgImpactPeak
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Average active peak. The value is left empty by default.
+
+Unit: BW (multiples of body weight)
+
+avgVerticalImpactRate
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Average impact loading rate. The value is left empty by default.
+
+Unit: BW/s
+
+avgVerticalOscillation
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Average vertical oscillation. The value is left empty by default.
+
+Unit: cm
+
+avgVerticalRatio
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Average vertical stride ratio. The value is left empty by default.
+
+Unit: %
+
+avgGcTimeBalance
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Average ground contact time balance. The value is left empty by default.
+
+Unit: % (Percentage of ground contact duration of the left foot as compared to the ground contact duration of both feet, and that of the right foot is 100% minus this value.)
+RunningSummary
+Supported devicesPhoneTabletWearable
+
+List of data fields about running statistics.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+distance
+	
+
+DistanceSummary
+	
+
+No
+	
+
+No
+	
+
+Distance statistics.
+
+calorie
+	
+
+CalorieSummary
+	
+
+No
+	
+
+No
+	
+
+Calories statistics.
+
+speed
+	
+
+SpeedSummary
+	
+
+No
+	
+
+No
+	
+
+Speed statistics.
+
+exerciseHeartRate
+	
+
+ExerciseHeartRateSummary
+	
+
+No
+	
+
+Yes
+	
+
+Exercise heart rate statistics. The value is left empty by default.
+
+step
+	
+
+StepSummary
+	
+
+No
+	
+
+Yes
+	
+
+Step statistics. The value is left empty by default.
+
+cadence
+	
+
+CadenceSummary
+	
+
+No
+	
+
+Yes
+	
+
+Step cadence statistics. The value is left empty by default.
+
+altitude
+	
+
+AltitudeSummary
+	
+
+No
+	
+
+Yes
+	
+
+Altitude statistics. The value is left empty by default.
+
+location
+	
+
+LocationSummary
+	
+
+No
+	
+
+Yes
+	
+
+Location statistics. The value is left empty by default.
+
+runningForm
+	
+
+RunningFormSummary
+	
+
+No
+	
+
+Yes
+	
+
+Running form statistics. The value is left empty by default.
+
+runningFeature
+	
+
+RunningFeature
+	
+
+No
+	
+
+Yes
+	
+
+Running feature data. The value is left empty by default.
+ScubaDivingDetail
+Supported devicesPhoneTabletWearable
+
+List of data fields about scuba diving details.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+divingDepth
+	
+
+DivingDepth[]
+	
+
+No
+	
+
+Yes
+	
+
+List of diving depth details. The value is left empty by default.
+
+waterTemperature
+	
+
+WaterTemperature[]
+	
+
+No
+	
+
+Yes
+	
+
+List of water temperature details. The value is left empty by default.
+ScubaDivingFeature
+Supported devicesPhoneTabletWearable
+
+List of data fields about scuba diving features.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+divingTime
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Dive time.
+
+Unit: second
+
+divingCount
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Number of dives.
+
+divingMode
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Dive mode.
+
+The options are:
+
+0: free diving
+
+1: recreational dive
+
+2: technical dive
+
+3: gauge dive
+
+maxUnderwaterTime
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Maximum duration of a single dive. The value is left empty by default.
+
+Unit: second
+
+underwaterTime
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Underwater time. The value is left empty by default.
+
+Unit: second
+
+noFlyTime
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+No-fly time. The value is left empty by default.
+
+Unit: hour
+
+cns
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Central nervous system (CNS) toxicity grade. The value is left empty by default.
+
+Grade:
+
+1: 0%–79%
+
+2: 80%–99%
+
+3: ≥ 100%
+
+otu
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Oxygen toxicity unit (OTU). The value is left empty by default.
+
+Grade:
+
+1: 0–249
+
+2: 250–299
+
+3: ≥ 300
+
+waterType
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Water type. The value is left empty by default.
+
+The options are:
+
+0: custom
+
+1: fresh water
+
+2: sea water
+
+waterDensity
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Water density. The value is left empty by default.
+
+Unit: kg/L
+
+maxAscentSpeed
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Maximum ascent speed. The value is left empty by default.
+
+Unit: m/s
+
+maxDescentSpeed
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Maximum descent speed. The value is left empty by default.
+
+Unit: m/s
+ScubaDivingSummary
+Supported devicesPhoneTabletWearable
+
+List of data fields about scuba diving statistics.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+scubaDivingFeature
+	
+
+ScubaDivingFeature
+	
+
+No
+	
+
+No
+	
+
+Scuba diving feature.
+
+location
+	
+
+LocationSummary
+	
+
+No
+	
+
+Yes
+	
+
+Location statistics. The value is left empty by default.
+
+divingDepth
+	
+
+DivingDepthSummary
+	
+
+No
+	
+
+Yes
+	
+
+Diving depth statistics. The value is left empty by default.
+
+waterTemperature
+	
+
+WaterTemperatureSummary
+	
+
+No
+	
+
+Yes
+	
+
+Water temperature statistics. The value is left empty by default.
+SkiingDetail
+Supported devicesPhoneTabletWearable
+
+List of data fields about skiing details.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+exerciseHeartRate
+	
+
+ExerciseHeartRate[]
+	
+
+No
+	
+
+Yes
+	
+
+List of exercise heart rate details. The value is left empty by default.
+
+speed
+	
+
+Speed[]
+	
+
+No
+	
+
+Yes
+	
+
+List of speed details. The value is left empty by default.
+
+location
+	
+
+Location[]
+	
+
+No
+	
+
+Yes
+	
+
+List of location details. The value is left empty by default.
+
+altitude
+	
+
+Altitude[]
+	
+
+No
+	
+
+Yes
+	
+
+List of altitude details. The value is left empty by default.
+SkiingFeature
+Supported devicesPhoneTabletWearable
+
+List of data fields about skiing features.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+tripTimes
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Number of trips.
+
+maxSlopePercent
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Maximum slope in percentages. The value is left empty by default.
+
+maxSlopeDegree
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Maximum slope. The value is left empty by default.
+
+Unit: degree
+
+totalTime
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Ski duration. The value is left empty by default.
+
+Unit: millisecond
+
+totalDistance
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Ski distance. The value is left empty by default.
+
+Unit: meter
+SkiingSummary
+Supported devicesPhoneTabletWearable
+
+List of data fields about skiing statistics.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+distance
+	
+
+DistanceSummary
+	
+
+No
+	
+
+No
+	
+
+Distance statistics.
+
+calorie
+	
+
+CalorieSummary
+	
+
+No
+	
+
+No
+	
+
+Calories statistics.
+
+skiingFeature
+	
+
+SkiingFeature
+	
+
+No
+	
+
+No
+	
+
+Skiing feature.
+
+altitude
+	
+
+AltitudeSummary
+	
+
+No
+	
+
+Yes
+	
+
+Altitude statistics. The value is left empty by default.
+
+exerciseHeartRate
+	
+
+ExerciseHeartRateSummary
+	
+
+No
+	
+
+Yes
+	
+
+Exercise heart rate statistics. The value is left empty by default.
+SkinTemperature
+Supported devicesPhoneTabletWearable
+
+List of data fields about skin temperature details.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+skinTemperature
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Skin temperature.
+
+Unit: °C
+
+Value range: [20, 42]
+SkinTemperatureAggregation
+Supported devicesPhoneTabletWearable
+
+List of data fields about skin temperature aggregates.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+skinTemperature
+	
+
+Omit<AggregateMetrics, 'sum' | 'last'>
+	
+
+No
+	
+
+No
+	
+
+Skin temperature aggregate.
+SkipSpeed
+Supported devicesPhoneTabletWearable
+
+List of data fields about rope jumping speed details, which inherits from healthStore.SequencePoint.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+skipSpeed
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Rope jumping speed details.
+
+Unit: jumps/minute
+
+Value range: [0, ∞)
+SkipSpeedSummary
+Supported devicesPhoneTabletWearable
+
+List of data fields about rope jumping speed statistics.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+avg
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Average value.
+
+Unit: jumps/minute
+
+Value range: [0, ∞)
+
+max
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Maximum value.
+
+Unit: jumps/minute
+
+Value range: [0, ∞)
+
+min
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Minimum value. The value is left empty by default.
+
+Unit: jumps/minute
+
+Value range: [0, ∞)
+SledDetail
+Supported devicesPhoneTabletWearable
+
+List of data fields about sledding details.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+exerciseHeartRate
+	
+
+ExerciseHeartRate[]
+	
+
+No
+	
+
+Yes
+	
+
+List of exercise heart rate details. The value is left empty by default.
+
+speed
+	
+
+Speed[]
+	
+
+No
+	
+
+Yes
+	
+
+List of speed details. The value is left empty by default.
+SledSummary
+Supported devicesPhoneTabletWearable
+
+List of data fields about sledding statistics.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+calorie
+	
+
+CalorieSummary
+	
+
+No
+	
+
+No
+	
+
+Calories statistics.
+
+exerciseHeartRate
+	
+
+ExerciseHeartRateSummary
+	
+
+No
+	
+
+Yes
+	
+
+Exercise heart rate statistics. The value is left empty by default.
+Sleep
+Supported devicesPhoneTabletWearable
+
+List of nighttime sleep data fields.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+fallAsleepTime
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Earliest fall-asleep time in segment-based sleep data.
+
+Unit: millisecond
+
+Value range: [0, ∞)
+
+wakeupTime
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Latest wake-up time in segment-based sleep data.
+
+Unit: millisecond
+
+Value range: [0, ∞)
+
+duration
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Nighttime/Normal sleep duration (excluding naps).
+
+Unit: second
+
+Value range: [0, ∞)
+
+bedTime
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Earliest lie-down time. The value is left empty by default.
+
+Value range: [0, ∞)
+
+risingTime
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Latest get-up time. The value is left empty by default.
+
+Value range: [0, ∞)
+
+prepareSleepTime
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Time when the user lies down preparing for sleep. The value is left empty by default.
+
+Unit: millisecond
+
+Value range: [0, ∞)
+
+shallowDuration
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Light sleep duration. The value is left empty by default.
+
+Unit: second
+
+Value range: [0, ∞)
+
+deepDuration
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Deep sleep duration. The value is left empty by default.
+
+Unit: second
+
+Value range: [0, ∞)
+
+dreamDuration
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+REM sleep duration. The value is left empty by default.
+
+Unit: second
+
+Value range: [0, ∞)
+
+wakeDuration
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Waking hours. The value is left empty by default.
+
+Unit: second
+
+Value range: [0, ∞)
+
+wakeCount
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Times woken up. The value is left empty by default.
+
+Value range: [0, ∞)
+
+onBedDuration
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Time in bed. The value is left empty by default.
+
+Unit: second
+
+Value range: [0, ∞)
+
+recordDuration
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Sleep record duration. If this parameter is not set, the default value is the end time minus the start time.
+
+Unit: second
+
+Value range: [0, ∞)
+
+sleepEfficiency
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Sleep efficiency. The value is left empty by default.
+
+Value range: [0, 100]
+
+sleepScore
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Sleep score. The value is left empty by default.
+
+Value range: [0, 100]
+
+deepSleepContinuity
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Deep sleep continuity. The value is left empty by default.
+
+Value range: [0, 100]
+
+respiratoryQualityScore
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Respiratory quality. The value is left empty by default.
+
+Value range: [0, 100]
+
+turnOverCount
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Roll-over times. The value is left empty by default.
+
+Value range: [0, ∞)
+
+sleepEndReason
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Sleep end reason. The value is left empty by default.
+
+Value range: [0, ∞)
+
+The options are:
+
+0: sleep monitoring ended manually
+
+1: sleep monitoring ended automatically
+
+2: sleep monitoring interrupted
+
+3: sleep monitoring ended due to a low battery level
+
+sleepSymptoms
+	
+
+string
+	
+
+No
+	
+
+Yes
+	
+
+Sleep symptom. The value is left empty by default.
+
+sleepType
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Sleep data type.
+
+The options are:
+
+1: TruSleep
+
+2: regular sleep
+
+3: manually recorded
+
+4: recorded by phone
+
+If this parameter is not set, the default value 2 is used.
+SleepDetail
+Supported devicesPhoneTabletWearable
+
+List of data fields about sleep details.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+sleepSegment
+	
+
+SleepSegment[]
+	
+
+No
+	
+
+Yes
+	
+
+List of sleep status sampling data. If this parameter is not set, the default value is 7, indicating that an entire sleep is covered.
+SleepNap
+Supported devicesPhoneTabletWearable
+
+List of nap data fields.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+noonDuration
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Nap duration.
+
+Unit: second
+
+Value range: [0, ∞)
+
+noonRecordDuration
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Nap record duration. If this parameter is not set, the default value is the end time minus the start time.
+
+Unit: second
+
+Value range: [0, ∞)
+SleepSegment
+Supported devicesPhoneTabletWearable
+
+List of sleep status sampling data fields, which inherits from healthStore.SequencePoint.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+sleepStatus
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Sleep status.
+
+The options are:
+
+0: unknown
+
+1: deep sleep
+
+2: light sleep
+
+3: REM sleep
+
+4: awake
+
+5: nap
+
+6: in bed
+
+7: sleeping (manually recorded)
+
+endTime
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+End time.
+
+Unit: millisecond
+
+Value range: [0, ∞)
+SnowboardingDetail
+Supported devicesPhoneTabletWearable
+
+List of data fields about snowboarding details.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+exerciseHeartRate
+	
+
+ExerciseHeartRate[]
+	
+
+No
+	
+
+Yes
+	
+
+List of exercise heart rate details. The value is left empty by default.
+
+speed
+	
+
+Speed[]
+	
+
+No
+	
+
+Yes
+	
+
+List of speed details. The value is left empty by default.
+
+location
+	
+
+Location[]
+	
+
+No
+	
+
+Yes
+	
+
+List of location details. The value is left empty by default.
+
+altitude
+	
+
+Altitude[]
+	
+
+No
+	
+
+Yes
+	
+
+List of altitude details. The value is left empty by default.
+SnowboardingFeature
+Supported devicesPhoneTabletWearable
+
+List of data fields about snowboarding features.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+tripTimes
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Number of trips.
+
+maxSlopePercent
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Maximum slope in percentages. The value is left empty by default.
+
+maxSlopeDegree
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Maximum slope. The value is left empty by default.
+
+Unit: degree
+
+totalTime
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Ski duration. The value is left empty by default.
+
+Unit: millisecond
+
+totalDistance
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Ski distance. The value is left empty by default.
+
+Unit: meter
+SnowboardingSummary
+Supported devicesPhoneTabletWearable
+
+List of data fields about snowboarding statistics.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+distance
+	
+
+DistanceSummary
+	
+
+No
+	
+
+No
+	
+
+Distance statistics.
+
+calorie
+	
+
+CalorieSummary
+	
+
+No
+	
+
+No
+	
+
+Calories statistics.
+
+snowboardingFeature
+	
+
+SnowboardingFeature
+	
+
+No
+	
+
+No
+	
+
+Snowboarding feature.
+
+altitude
+	
+
+AltitudeSummary
+	
+
+No
+	
+
+Yes
+	
+
+Altitude statistics. The value is left empty by default.
+
+exerciseHeartRate
+	
+
+ExerciseHeartRateSummary
+	
+
+No
+	
+
+Yes
+	
+
+Exercise heart rate statistics. The value is left empty by default.
+Speed
+Supported devicesPhoneTabletWearable
+
+List of data fields about speed details, which inherits from healthStore.SequencePoint.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+speed
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Speed details.
+
+Unit: m/s
+
+Value range: [0, ∞)
+SpeedSummary
+Supported devicesPhoneTabletWearable
+
+List of data fields about speed statistics.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+avg
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Average value.
+
+Unit: m/s
+
+Value range: [0, ∞)
+
+max
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Maximum value.
+
+Unit: m/s
+
+Value range: [0, ∞)
+
+min
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Minimum value. The value is left empty by default.
+
+Unit: m/s
+
+Value range: [0, ∞)
+SportsDetail
+Supported devicesPhoneTabletWearable
+
+List of general detailed data fields.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+exerciseHeartRate
+	
+
+ExerciseHeartRate[]
+	
+
+No
+	
+
+Yes
+	
+
+List of exercise heart rate details. The value is left empty by default.
+SportsSummary
+Supported devicesPhoneTabletWearable
+
+List of general statistical data fields.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+calorie
+	
+
+CalorieSummary
+	
+
+No
+	
+
+No
+	
+
+Calories statistics.
+
+exerciseHeartRate
+	
+
+ExerciseHeartRateSummary
+	
+
+No
+	
+
+Yes
+	
+
+Exercise heart rate statistics. The value is left empty by default.
+StepSummary
+Supported devicesPhoneTabletWearable
+
+List of data fields about step statistics.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+totalSteps
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Total steps.
+
+Value range: (0, ∞)
+Stress
+Supported devicesPhoneTabletWearable
+
+List of stress sampling data fields.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+stressScore
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Stress score.
+
+Value range: [1, 99]
+StressAggregation
+Supported devicesPhoneTabletWearable
+
+List of data fields about stress score aggregates.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+stressScore
+	
+
+Omit<AggregateMetrics, 'sum'>
+	
+
+No
+	
+
+No
+	
+
+Stress score aggregate.
+StrokeRate
+Supported devicesPhoneTabletWearable
+
+List of stroke rate sampling data fields, which inherits from healthStore.SequencePoint.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+spm
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Stroke rate.
+
+Unit: strokes/min
+StrokeRateSummary
+Supported devicesPhoneTabletWearable
+
+List of data fields about stroke rate statistics.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+avg
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Average value.
+
+Unit: strokes/min
+
+Value range: [0, ∞)
+
+max
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Maximum value.
+
+Unit: strokes/min
+
+Value range: [0, ∞)
+SwimStrokeRate
+Supported devicesPhoneTabletWearable
+
+List of swimming stroke rate sampling data fields, which inherits from healthStore.SequencePoint.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+spm
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Swimming stroke rate.
+
+Unit: strokes/min
+SwimStrokeRateSummary
+Supported devicesPhoneTabletWearable
+
+List of data fields about swimming stroke rate statistics.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+avg
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Average value.
+
+Unit: strokes/min
+
+Value range: [0, ∞)
+Swolf
+Supported devicesPhoneTabletWearable
+
+List of SWOLF sampling data fields, which inherits from healthStore.SequencePoint.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+swolf
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+SWOLF.
+SwolfSummary
+Supported devicesPhoneTabletWearable
+
+List of data fields about SWOLF statistics.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+avg
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Average value.
+
+Value range: [0, ∞)
+
+max
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Maximum value.
+
+Value range: [0, ∞)
+
+min
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Minimum value. The value is left empty by default.
+
+Value range: [0, ∞)
+WalkingDetail
+Supported devicesPhoneTabletWearable
+
+List of data fields about fast walking details.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+exerciseHeartRate
+	
+
+ExerciseHeartRate[]
+	
+
+No
+	
+
+Yes
+	
+
+List of exercise heart rate details. The value is left empty by default.
+
+speed
+	
+
+Speed[]
+	
+
+No
+	
+
+Yes
+	
+
+List of speed details. The value is left empty by default.
+
+cadence
+	
+
+Cadence[]
+	
+
+No
+	
+
+Yes
+	
+
+List of step cadence details. The value is left empty by default.
+
+location
+	
+
+Location[]
+	
+
+No
+	
+
+Yes
+	
+
+List of location details. The value is left empty by default.
+
+altitude
+	
+
+Altitude[]
+	
+
+No
+	
+
+Yes
+	
+
+List of altitude details. The value is left empty by default.
+WalkingSummary
+Supported devicesPhoneTabletWearable
+
+List of data fields about fast walking statistics.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+distance
+	
+
+DistanceSummary
+	
+
+No
+	
+
+No
+	
+
+Distance statistics.
+
+calorie
+	
+
+CalorieSummary
+	
+
+No
+	
+
+No
+	
+
+Calories statistics.
+
+speed
+	
+
+SpeedSummary
+	
+
+No
+	
+
+No
+	
+
+Speed statistics.
+
+exerciseHeartRate
+	
+
+ExerciseHeartRateSummary
+	
+
+No
+	
+
+Yes
+	
+
+Exercise heart rate statistics. The value is left empty by default.
+
+step
+	
+
+StepSummary
+	
+
+No
+	
+
+Yes
+	
+
+Step statistics. The value is left empty by default.
+
+cadence
+	
+
+CadenceSummary
+	
+
+No
+	
+
+Yes
+	
+
+Step cadence statistics. The value is left empty by default.
+
+altitude
+	
+
+AltitudeSummary
+	
+
+No
+	
+
+Yes
+	
+
+Altitude statistics. The value is left empty by default.
+
+location
+	
+
+LocationSummary
+	
+
+No
+	
+
+Yes
+	
+
+Location statistics. The value is left empty by default.
+WaterTemperature
+Supported devicesPhoneTabletWearable
+
+List of water temperature sampling data fields, which inherits from healthStore.SequencePoint.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+temperature
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Temperature.
+
+Unit: °C
+WaterTemperatureSummary
+Supported devicesPhoneTabletWearable
+
+List of data fields about water temperature statistics.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+max
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Maximum value.
+
+Unit: °C
+
+Value range: [0, ∞)
+
+min
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Minimum value. The value is left empty by default.
+
+Unit: °C
+
+Value range: [0, ∞)
+Weight
+Supported devicesPhoneTabletWearable
+
+List of weight sampling data fields.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Read-Only
+	
+
+Optional
+	
+
+Description
+
+bodyWeight
+	
+
+number
+	
+
+No
+	
+
+No
+	
+
+Weight.
+
+Unit: kg
+
+Value range: [0.1, 500]
+
+bmi
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Body mass index (BMI). The value is left empty by default.
+
+Unit: kg/m
+
+Value range: [1, 200]
+
+bodyFat
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Body fat. The value is left empty by default.
+
+Unit: kg
+
+Value range: [0, 500]
+
+bodyFatRate
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Body fat percentage. The value is left empty by default.
+
+Unit: %
+
+Value range: [0, 100]
+
+muscleMass
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Muscle mass. The value is left empty by default.
+
+Unit: kg
+
+Value range: [0.1, 150]
+
+basalMetabolism
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Basal metabolic rate. The value is left empty by default.
+
+Unit: kcal/day
+
+Value range: [0, ∞)
+
+moisture
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Body water. The value is left empty by default.
+
+Unit: kg
+
+Value range: [0, 500]
+
+moistureRate
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Body water percentage. The value is left empty by default.
+
+Unit: %
+
+Value range: [0, 100]
+
+visceralFatLevel
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Visceral fat level. The value is left empty by default.
+
+Value range: [1, 59]
+
+boneSalt
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Bone mineral content. The value is left empty by default.
+
+Unit: kg
+
+Value range: [0.5, 5]
+
+proteinRate
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Protein rate. The value is left empty by default.
+
+Unit: %
+
+Value range: [0, 100]
+
+bodyScore
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Body score. The value is left empty by default.
+
+Unit: %
+
+Value range: [0, 100]
+
+bodyAge
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Body age. The value is left empty by default.
+
+Value range: [5, 99]
+
+skeletalMuscleMass
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Skeletal muscle mass. The value is left empty by default.
+
+Unit: kg
+
+Value range: [1, 150]
+
+impedance
+	
+
+number
+	
+
+No
+	
+
+Yes
+	
+
+Impedance.
+
+Unit: ohm
+
+Value range: [0.1, 100000]
+healthDataTypes (Fitness and Health Data Type Constants)
+healthModels (Health and Fitness Data Model)
+Send feedback
+Was this page helpful?
+Send feedback
+Reach out to us through the community for any other questions.
+Community Q&AIntelligent Assistant
+
+©2025 HUAWEI Developers. All rights reserved.
+Terms of Use
+Statement About HUAWEI Developers and Privacy
+Cookies
+Cookie Settings
+Open-Source Software Notice

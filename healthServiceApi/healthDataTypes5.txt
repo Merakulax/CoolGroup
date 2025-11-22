@@ -1,0 +1,449 @@
+
+Sign in
+Materials
+Back
+
+Identity verification
+My profile
+
+    Training center
+
+Customer Service
+My events
+
+Sign out
+
+    Products
+
+Solutions
+Events
+Programs
+Community
+Training
+Support
+
+Back
+
+Back
+
+HarmonyOS
+
+    Release Notes
+    Design
+    Guides
+    References
+    Codelabs
+    Samples
+    Best Practices
+    FAQs 
+
+References
+Application Services Health Service Kit
+ArkTS API Error Codes
+ArkTS API Error Codes
+Last updated: 2025-11-21 03:46
+Content overview
+201 Authentication Failure
+401 Invalid Parameters
+801 API Not Supported
+1002700001 System Internal Error
+1002700002 Database Error
+1002701001 Network Error
+1002702001 Not Signed In
+1002702002 Account Exception
+1002703001 Privacy Agreement Not Agreed To
+1009104001 Linking Service Enabled
+1009104002 Workout Type Not Supported
+1009104003 Illegal Command
+1009104004 Permission Verification Error
+1009104999 Universal Error Codes
+14500101 Service Exception
+Expand
+
+For details about authorization-related error codes, please refer to Account Kit ArkTS Error Codes.
+
+Name
+	
+
+Value
+	
+
+Description
+
+PACKAGE_FINGERPRINT_CHECK_ERROR
+	
+
+1001500001
+	
+
+The certificate fingerprint of the app fails to be verified.
+
+DUPLICATE_REQUEST_REJECTED
+	
+
+1001500002
+	
+
+Repeated request. No operation is needed to address this error code. Your app needs to implement tap control to prevent consecutive taps from initiating the same request.
+
+ACCOUNT_NOT_LOGGED_IN
+	
+
+1001502001
+	
+
+The HUAWEI ID is not signed in.
+
+APP_NOT_AUTHORIZED
+	
+
+1001502002
+	
+
+The app is not authorized.
+
+PARAMETER_INVALID
+	
+
+1001502003
+	
+
+Invalid parameters.
+
+NETWORK_ERROR
+	
+
+1001502005
+	
+
+Network error.
+
+INTERNAL_ERROR
+	
+
+1001502009
+	
+
+Internal errors, such as Account Kit server errors.
+
+USER_CANCELED
+	
+
+1001502012
+	
+
+The user cancels authorization.
+
+SCOPE_OR_PERMISSION_NOT_REQUESTED
+	
+
+1001502014
+	
+
+The app does not have the required scopes or permissions.
+201 Authentication Failure
+Supported devicesPhoneTabletWearable
+
+Error message
+
+Permission verification failed.
+
+Description
+
+Authentication failed.
+
+Possible causes
+
+1. The app fingerprint is incorrectly configured.
+
+2. Insufficient permission
+
+3. Some APIs can be called only by users in the trustlist.
+
+4. The number of test users has reached the upper limit.
+
+Solution
+
+1. Ensure that the certificate fingerprint configured in AppGallery Connect for the app is correct by referring to Adding the Public Key Fingerprint.
+
+2. Verify that required permissions have been granted by referring to Managing User Authorization.
+
+3. The user's application for the beta version has been rejected. Complete the app acceptance process in the console by referring to Applying for Formal Scopes.
+
+4. Submit a ticket online. Huawei will get back to you as soon as possible.
+401 Invalid Parameters
+Supported devicesPhoneTabletWearable
+
+Error message
+
+Parameter error.Possible causes: 1. Mandatory parameters are left unspecified;2. Incorrect parameter types; 3.Parameter verification failed.
+
+Description
+
+Invalid parameters.
+
+Possible causes
+
+Invalid parameters.
+
+Solution
+
+1. Check whether the mandatory parameters and value ranges are correct by referring to the documentation.
+
+2. Submit a ticket online. Huawei will get back to you as soon as possible.
+801 API Not Supported
+Supported devicesPhoneTabletWearable
+
+Error message
+
+Capability not supported. Failed to call the API due to limited device capabilities.
+
+Description
+
+The device does not support this API. Therefore, it cannot be called properly.
+
+Possible causes
+
+The device supports Syscap associated with the API but does not support the API itself.
+
+Solution
+
+Do not use this API on the device. Alternatively, implement conditional checks in the code to mitigate the effects of the application running across various devices, particularly under abnormal circumstances.
+1002700001 System Internal Error
+Supported devicesPhoneTabletWearable
+
+Error message
+
+System internal error.
+
+Description
+
+An internal system error occurs.
+
+Possible causes
+
+Unknown.
+
+Solution
+
+Resolve the issue for the specific scenario based on the actual error message. If the error persists, submit a ticket online. Huawei will get back to you as soon as possible.
+1002700002 Database Error
+Supported devicesPhoneTabletWearable
+
+Error message
+
+Database processing error.
+
+Description
+
+Database error.
+
+Possible causes
+
+Unknown.
+
+Solution
+
+Submit a ticket online. Huawei will get back to you as soon as possible.
+1002701001 Network Error
+Supported devicesPhoneTabletWearable
+
+Error message
+
+Network error. The network is unavailable.
+
+Description
+
+A network error occurs.
+
+Possible causes
+
+The network is not connected.
+
+Solution
+
+1. Check the network configurations.
+
+2. Submit a ticket online. Huawei will get back to you as soon as possible.
+1002702001 Not Signed In
+Supported devicesPhoneTabletWearable
+
+Error message
+
+Account error. The user has not logged in with HUAWEI ID.
+
+Description
+
+The account is not signed in.
+
+Possible causes
+
+The account is not signed in.
+
+Solution
+
+1. Start the sign-in authorization process by referring to Managing User Authorization, sign in to the account, and call the API again after the account is signed in.
+
+2. Submit a ticket online. Huawei will get back to you as soon as possible.
+1002702002 Account Exception
+Supported devicesPhoneTabletWearable
+
+Error message
+
+Account error. Failed to obtain account information with HUAWEI ID.
+
+Description
+
+Account error.
+
+Possible causes
+
+Account error.
+
+Solution
+
+Submit a ticket online. Huawei will get back to you as soon as possible.
+1002703001 Privacy Agreement Not Agreed To
+Supported devicesPhoneTabletWearable
+
+Error message
+
+User privacy is not agreed.
+
+Description
+
+The user does not agree to the privacy agreement.
+
+Possible causes
+
+The user has never started the Huawei Health app.
+
+Solution
+
+Instruct the user to start the Huawei Health app by referring to FAQs.
+1009104001 Linking Service Enabled
+Supported devicesPhoneTabletWearable
+
+Error message
+
+Sport service busy. Workout is already started by other application.
+
+Description
+
+The linking service is enabled.
+
+Possible causes
+
+The application or other applications have called start to enable the linking service.
+
+Solution
+
+1. Check whether the linking service is repeatedly enabled in the service process.
+
+2. Capture exception handling scenarios where the linking service is enabled for other applications.
+1009104002 Workout Type Not Supported
+Supported devicesPhoneTabletWearable
+
+Error message
+
+Unsupported sport type.
+
+Description
+
+The workout type is not supported.
+
+Possible causes
+
+An unsupported workout type is passed.
+
+Solution
+
+Check the passed workout type. For details, please refer to Exercise Record Type Constant.
+1009104003 Illegal Command
+Supported devicesPhoneTabletWearable
+
+Error message
+
+Illegal command.
+
+Description
+
+The command is illegal in the current state.
+
+Possible causes
+
+The API is called at a wrong time. The linking service has been enabled for other applications.
+
+Solution
+
+1. Check the service process of the application.
+
+2. Capture exception handling scenarios where the linking service is enabled for other applications.
+1009104004 Permission Verification Error
+Supported devicesPhoneTabletWearable
+
+Error message
+
+Permission verification error. Application has no permission, such as Motion Permission.
+
+Description
+
+The application does not have the required permission, for example, the physical activity permission.
+
+Possible causes
+
+The application does not have the required permission.
+
+Solution
+
+Check whether the application has the required permission to call the API.
+1009104999 Universal Error Codes
+Supported devicesPhoneTabletWearable
+
+Error message
+
+System internal error.
+
+Description
+
+An unknown exception occurs.
+
+Possible causes
+
+Others.
+
+Solution
+
+Resolve the issue for the specific scenario based on the actual error message. If the error persists, submit a ticket online. Huawei will get back to you as soon as possible.
+14500101 Service Exception
+Supported devicesPhoneTabletWearable
+
+Error message
+
+Service exception.
+
+Description
+
+Service exception.
+
+Possible causes
+
+Unknown.
+
+Solution
+
+Submit a ticket online. Huawei will get back to you as soon as possible.
+exerciseSequenceHelper (Exercise Record Type Constant)
+IAP Kit
+Send feedback
+Was this page helpful?
+Send feedback
+Reach out to us through the community for any other questions.
+Community Q&AIntelligent Assistant
+
+©2025 HUAWEI Developers. All rights reserved.
+Terms of Use
+Statement About HUAWEI Developers and Privacy
+Cookies
+Cookie Settings
+Open-Source Software Notice

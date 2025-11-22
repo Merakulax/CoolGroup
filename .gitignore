@@ -43,3 +43,9 @@ out/
 *.apk
 *.hap
 *.app
+
+# Project Specific Ignores
+watch/.hvigor/
+.claude/settings.local.json
+phone/oh_modules/
+

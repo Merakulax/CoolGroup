@@ -1,0 +1,1295 @@
+
+Sign in
+Materials
+Back
+
+Identity verification
+My profile
+
+    Training center
+
+Customer Service
+My events
+
+Sign out
+
+    Products
+
+Solutions
+Events
+Programs
+Community
+Training
+Support
+
+Back
+
+Back
+
+HarmonyOS
+
+    Release Notes
+    Design
+    Guides
+    References
+    Codelabs
+    Samples
+    Best Practices
+    FAQs 
+
+References
+Application Services Health Service Kit ArkTS APIs Fitness and Health Data Type Constants and Model Definitions
+healthModels (Health and Fitness Data Model)
+healthModels (Health and Fitness Data Model)
+Last updated: 2025-11-21 03:47
+Content overview
+Module Import
+Adventures
+Basketball
+Biathlon
+BloodOxygenSaturation
+BloodOxygenSaturationAggregateRequest
+BloodOxygenSaturationAggregateResult
+BloodPressure
+Bmx
+BodyTemperature
+BodyTemperatureAggregateRequest
+BodyTemperatureAggregateResult
+BreathHoldingTest
+BreathHoldingTrain
+Cycling
+DailyActivities
+DailyActivitiesAggregateRequest
+DailyActivitiesAggregateResult
+Diving
+Elliptical
+Emotion
+GolfCourseModel
+GolfPractice
+HeartRate
+HeartRateAggregateRequest
+HeartRateAggregateResult
+HeartRateVariability
+Height
+Hiking
+IndoorCycling
+IndoorRunning
+IndoorWalking
+JumpingRope
+MountainHike
+OpenWaterSwim
+PoolSwim
+RestingHeartRate
+RestingHeartRateAggregateRequest
+RestingHeartRateAggregateResult
+Rower
+Rowing
+Running
+ScubaDiving
+Skiing
+SkinTemperature
+SkinTemperatureAggregateRequest
+SkinTemperatureAggregateResult
+Sled
+SleepNapRecord
+SleepRecord
+Snowboarding
+Spinning
+Sports
+Stress
+StressAggregateRequest
+StressAggregateResult
+TrailRunning
+Walking
+Weight
+Expand
+
+This module provides health and fitness data models.
+
+Start version: 5.0.0(12)
+Module Import
+Supported devicesPhoneTabletWearable
+
+    import { healthStore } from '@kit.HealthServiceKit';
+
+NOTE
+
+This module is a sub-module of healthStore and needs to be used in healthStore.healthModels mode.
+Adventures
+Supported devicesPhoneTabletWearable
+
+type Adventures = healthStore.ExerciseSequence<healthFields.AdventuresSummary, healthFields.AdventuresDetail>
+
+Data model for expedition records.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthStore.ExerciseSequence<healthFields.AdventuresSummary, healthFields.AdventuresDetail>
+	
+
+Data model for expedition records.
+Basketball
+Supported devicesPhoneTabletWearable
+
+type Basketball = healthStore.ExerciseSequence<healthFields.BasketballSummary, healthFields.BasketballDetail>
+
+Data model for basketball records.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthStore.ExerciseSequence<healthFields.BasketballSummary, healthFields.BasketballDetail>
+	
+
+Data model for basketball records.
+Biathlon
+Supported devicesPhoneTabletWearable
+
+type Biathlon = healthStore.ExerciseSequence<healthFields.BiathlonSummary, healthFields.BiathlonDetail>
+
+Data model for biathlon records.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthStore.ExerciseSequence<healthFields.BiathlonSummary, healthFields.BiathlonDetail>
+	
+
+Data model for biathlon records.
+BloodOxygenSaturation
+Supported devicesPhoneTabletWearable
+
+type BloodOxygenSaturation = healthStore.SamplePoint<healthFields.BloodOxygenSaturation>
+
+Data model for SpO2 sampling.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthStore.SamplePoint<healthFields.BloodOxygenSaturation>
+	
+
+Data model for SpO2 sampling.
+BloodOxygenSaturationAggregateRequest
+Supported devicesPhoneTabletWearable
+
+type BloodOxygenSaturationAggregateRequest = healthStore.AggregateRequest<healthFields.BloodOxygenSaturationAggregation>
+
+Model for requesting aggregation of SpO2 sampling data.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthStore.AggregateRequest<healthFields.BloodOxygenSaturationAggregation>
+	
+
+Model for requesting aggregation of SpO2 sampling data.
+BloodOxygenSaturationAggregateResult
+Supported devicesPhoneTabletWearable
+
+type BloodOxygenSaturationAggregateResult = healthStore.AggregateResult<healthFields.BloodOxygenSaturationAggregation>
+
+Data model for SpO2 aggregation results.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthStore.AggregateResult<healthFields.BloodOxygenSaturationAggregation>
+	
+
+Data model for SpO2 aggregation results.
+BloodPressure
+Supported devicesPhoneTabletWearable
+
+type BloodPressure = healthStore.SamplePoint<healthFields.BloodPressure>
+
+Data model for blood pressure sampling.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthStore.SamplePoint<healthFields.BloodPressure>
+	
+
+Data model for blood pressure sampling.
+Bmx
+Supported devicesPhoneTabletWearable
+
+type Bmx = healthStore.ExerciseSequence<healthFields.CyclingSummary, healthFields.CyclingDetail>
+
+Data model for BMX cycling records.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthStore.ExerciseSequence<healthFields.CyclingSummary, healthFields.CyclingDetail>
+	
+
+Data model for BMX cycling records.
+BodyTemperature
+Supported devicesPhoneTabletWearable
+
+type BodyTemperature = healthStore.SamplePoint<healthFields.BodyTemperature>
+
+Data model for body temperature sampling.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthStore.SamplePoint<healthFields.BodyTemperature>
+	
+
+Data model for body temperature sampling.
+BodyTemperatureAggregateRequest
+Supported devicesPhoneTabletWearable
+
+type BodyTemperatureAggregateRequest = healthStore.AggregateRequest<healthFields.BodyTemperatureAggregation>
+
+Model for requesting aggregation of body temperature sampling data.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthStore.AggregateRequest<healthFields.BodyTemperatureAggregation>
+	
+
+Model for requesting aggregation of body temperature sampling data.
+BodyTemperatureAggregateResult
+Supported devicesPhoneTabletWearable
+
+type BodyTemperatureAggregateResult = healthStore.AggregateResult<healthFields.BodyTemperatureAggregation>
+
+Data model for body temperature aggregation results.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthStore.AggregateResult<healthFields.BodyTemperatureAggregation>
+	
+
+Data model for body temperature aggregation results.
+BreathHoldingTest
+Supported devicesPhoneTabletWearable
+
+type BreathHoldingTest = healthStore.ExerciseSequence<healthFields.BreathHoldingTestSummary, healthFields.BreathHoldingTestDetail>
+
+Data model for apnea test records.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthStore.ExerciseSequence<healthFields.BreathHoldingTestSummary, healthFields.BreathHoldingTestDetail>
+	
+
+Data model for apnea test records.
+BreathHoldingTrain
+Supported devicesPhoneTabletWearable
+
+type BreathHoldingTrain = healthStore.ExerciseSequence<healthFields.BreathHoldingTrainSummary, healthFields.BreathHoldingTrainDetail>
+
+Data model for apnea training records.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthStore.ExerciseSequence<healthFields.BreathHoldingTrainSummary, healthFields.BreathHoldingTrainDetail>
+	
+
+Data model for apnea training records.
+Cycling
+Supported devicesPhoneTabletWearable
+
+type Cycling = healthStore.ExerciseSequence<healthFields.CyclingSummary, healthFields.CyclingDetail>
+
+Data model for outdoor cycling records.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthStore.ExerciseSequence<healthFields.CyclingSummary, healthFields.CyclingDetail>
+	
+
+Data model for outdoor cycling records.
+DailyActivities
+Supported devicesPhoneTabletWearable
+
+type DailyActivities = healthStore.SamplePoint<healthFields.DailyActivities>
+
+Data model for daily activity sampling.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthStore.SamplePoint<healthFields.DailyActivities>
+	
+
+Data model for daily activity sampling.
+DailyActivitiesAggregateRequest
+Supported devicesPhoneTabletWearable
+
+type DailyActivitiesAggregateRequest = healthStore.AggregateRequest<healthFields.DailyActivitiesAggregation>
+
+Model for requesting aggregation of daily activity sampling data.
+
+Atomic service API: This API can be used in atomic services since API version 5.0.0(12).
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthStore.AggregateRequest<healthFields.DailyActivitiesAggregation>
+	
+
+Model for requesting aggregation of daily activity sampling data.
+DailyActivitiesAggregateResult
+Supported devicesPhoneTabletWearable
+
+type DailyActivitiesAggregateResult = healthStore.AggregateResult<healthFields.DailyActivitiesAggregation>
+
+Data model for daily activity aggregation results.
+
+Atomic service API: This API can be used in atomic services since API version 5.0.0(12).
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthStore.AggregateResult<healthFields.DailyActivitiesAggregation>
+	
+
+Data model for daily activity aggregation results.
+Diving
+Supported devicesPhoneTabletWearable
+
+type Diving = healthStore.ExerciseSequence<healthFields.DivingSummary, healthFields.DivingDetail>
+
+Data model for freedive records.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthStore.ExerciseSequence<healthFields.DivingSummary, healthFields.DivingDetail>
+	
+
+Data model for freedive records.
+Elliptical
+Supported devicesPhoneTabletWearable
+
+type Elliptical = healthStore.ExerciseSequence<healthFields.EllipticalSummary, healthFields.EllipticalDetail>
+
+Data model for elliptical workout records.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthStore.ExerciseSequence<healthFields.EllipticalSummary, healthFields.EllipticalDetail>
+	
+
+Data model for elliptical workout records.
+Emotion
+Supported devicesPhoneTabletWearable
+
+type Emotion = healthStore.SamplePoint<healthFields.Emotion>
+
+Data model for emotion sampling.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.1.0(18)
+
+Type
+	
+
+Description
+
+healthStore.SamplePoint<healthFields.Emotion>
+	
+
+Data model for emotion sampling.
+GolfCourseModel
+Supported devicesPhoneTabletWearable
+
+type GolfCourseModel = healthStore.ExerciseSequence<healthFields.GolfCourseModelSummary, healthFields.GolfCourseModelDetail>
+
+Data model for golf (Course mode) records.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthStore.ExerciseSequence<healthFields.GolfCourseModelSummary, healthFields.GolfCourseModelDetail>
+	
+
+Data model for golf (Course mode) records.
+GolfPractice
+Supported devicesPhoneTabletWearable
+
+type GolfPractice = healthStore.ExerciseSequence<healthFields.GolfPracticeSummary, healthFields.GolfPracticeDetail>
+
+Data model for golf (Driving range mode) records.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthStore.ExerciseSequence<healthFields.GolfPracticeSummary, healthFields.GolfPracticeDetail>
+	
+
+Data model for golf (Driving range mode) records.
+HeartRate
+Supported devicesPhoneTabletWearable
+
+type HeartRate = healthStore.SamplePoint<healthFields.HeartRate>
+
+Data model for dynamic heart rate sampling.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthStore.SamplePoint<healthFields.HeartRate>
+	
+
+Data model for dynamic heart rate sampling.
+HeartRateAggregateRequest
+Supported devicesPhoneTabletWearable
+
+type HeartRateAggregateRequest = healthStore.AggregateRequest<healthFields.HeartRateAggregation>
+
+Model for requesting aggregation of dynamic heart rate sampling data.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthStore.AggregateRequest<healthFields.HeartRateAggregation>
+	
+
+Model for requesting aggregation of dynamic heart rate sampling data.
+HeartRateAggregateResult
+Supported devicesPhoneTabletWearable
+
+type HeartRateAggregateResult = healthStore.AggregateResult<healthFields.HeartRateAggregation>
+
+Data model for dynamic heart rate aggregation results.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthStore.AggregateResult<healthFields.HeartRateAggregation>
+	
+
+Data model for dynamic heart rate aggregation results.
+HeartRateVariability
+Supported devicesPhoneTabletWearable
+
+type HeartRateVariability = healthStore.SamplePoint<healthFields.HeartRateVariability>
+
+Data model for heart rate variability sampling.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.1.0(18)
+
+Type
+	
+
+Description
+
+healthStore.SamplePoint<healthFields.HeartRateVariability>
+	
+
+Data model for heart rate variability sampling.
+Height
+Supported devicesPhoneTabletWearable
+
+type Height = healthStore.SamplePoint<healthFields.Height>
+
+Data model for height sampling.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthStore.SamplePoint<healthFields.Height>
+	
+
+Data model for height sampling.
+Hiking
+Supported devicesPhoneTabletWearable
+
+type Hiking = healthStore.ExerciseSequence<healthFields.WalkingSummary, healthFields.WalkingDetail>
+
+Data model for hiking records.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthStore.ExerciseSequence<healthFields.WalkingSummary, healthFields.WalkingDetail>
+	
+
+Data model for hiking records.
+IndoorCycling
+Supported devicesPhoneTabletWearable
+
+type IndoorCycling = healthStore.ExerciseSequence<healthFields.CyclingSummary, healthFields.CyclingDetail>
+
+Data model for indoor cycling records.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthStore.ExerciseSequence<healthFields.CyclingSummary, healthFields.CyclingDetail>
+	
+
+Data model for indoor cycling records.
+IndoorRunning
+Supported devicesPhoneTabletWearable
+
+type IndoorRunning = healthStore.ExerciseSequence<healthFields.RunningSummary, healthFields.RunningDetail>
+
+Data model for indoor running records.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthStore.ExerciseSequence<healthFields.RunningSummary, healthFields.RunningDetail>
+	
+
+Data model for indoor running records.
+IndoorWalking
+Supported devicesPhoneTabletWearable
+
+type IndoorWalking = healthStore.ExerciseSequence<healthFields.WalkingSummary, healthFields.WalkingDetail>
+
+Data model for indoor walking records.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthStore.ExerciseSequence<healthFields.WalkingSummary, healthFields.WalkingDetail>
+	
+
+Data model for indoor walking records.
+JumpingRope
+Supported devicesPhoneTabletWearable
+
+type JumpingRope = healthStore.ExerciseSequence<healthFields.JumpingRopeSummary, healthFields.JumpingRopeDetail>
+
+Data model for rope jumping records.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthStore.ExerciseSequence<healthFields.JumpingRopeSummary, healthFields.JumpingRopeDetail>
+	
+
+Data model for rope jumping records.
+MountainHike
+Supported devicesPhoneTabletWearable
+
+type MountainHike = healthStore.ExerciseSequence<healthFields.MountainHikeSummary, healthFields.MountainHikeDetail>
+
+Data model for mountain hike records.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthStore.ExerciseSequence<healthFields.MountainHikeSummary, healthFields.MountainHikeDetail>
+	
+
+Data model for mountain hike records.
+OpenWaterSwim
+Supported devicesPhoneTabletWearable
+
+type OpenWaterSwim = healthStore.ExerciseSequence<healthFields.OpenWaterSwimSummary, healthFields.OpenWaterSwimDetail>
+
+Data model for open water swimming records.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthStore.ExerciseSequence<healthFields.OpenWaterSwimSummary, healthFields.OpenWaterSwimDetail>
+	
+
+Data model for open water swimming records.
+PoolSwim
+Supported devicesPhoneTabletWearable
+
+type PoolSwim = healthStore.ExerciseSequence<healthFields.PoolSwimSummary, healthFields.PoolSwimDetail>
+
+Data model for pool swimming records.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthStore.ExerciseSequence<healthFields.PoolSwimSummary, healthFields.PoolSwimDetail>
+	
+
+Data model for pool swimming records.
+RestingHeartRate
+Supported devicesPhoneTabletWearable
+
+type RestingHeartRate = healthStore.SamplePoint<healthFields.RestingHeartRate>
+
+Data model for resting heart rate sampling.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthStore.SamplePoint<healthFields.RestingHeartRate>
+	
+
+Data model for resting heart rate sampling.
+RestingHeartRateAggregateRequest
+Supported devicesPhoneTabletWearable
+
+type RestingHeartRateAggregateRequest = healthStore.AggregateRequest<healthFields.RestingHeartRateAggregation>
+
+Model for requesting aggregation of resting heart rate sampling data.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthStore.AggregateRequest<healthFields.RestingHeartRateAggregation>
+	
+
+Model for requesting aggregation of resting heart rate sampling data.
+RestingHeartRateAggregateResult
+Supported devicesPhoneTabletWearable
+
+type RestingHeartRateAggregateResult = healthStore.AggregateResult<healthFields.RestingHeartRateAggregation>
+
+Data model for resting heart rate aggregation results.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthStore.AggregateResult<healthFields.RestingHeartRateAggregation>
+	
+
+Data model for resting heart rate aggregation results.
+Rower
+Supported devicesPhoneTabletWearable
+
+type Rower = healthStore.ExerciseSequence<healthFields.RowerSummary, healthFields.RowerDetail>
+
+Data model for rower workout records.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthStore.ExerciseSequence<healthFields.RowerSummary, healthFields.RowerDetail>
+	
+
+Data model for rower workout records.
+Rowing
+Supported devicesPhoneTabletWearable
+
+type Rowing = healthStore.ExerciseSequence<healthFields.RowingSummary, healthFields.RowingDetail>
+
+Data model for rowing records.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthStore.ExerciseSequence<healthFields.RowingSummary, healthFields.RowingDetail>
+	
+
+Data model for rowing records.
+Running
+Supported devicesPhoneTabletWearable
+
+type Running = healthStore.ExerciseSequence<healthFields.RunningSummary, healthFields.RunningDetail>
+
+Data model for outdoor running records.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthStore.ExerciseSequence<healthFields.RunningSummary, healthFields.RunningDetail>
+	
+
+Data model for outdoor running records.
+ScubaDiving
+Supported devicesPhoneTabletWearable
+
+type ScubaDiving = healthStore.ExerciseSequence<healthFields.ScubaDivingSummary, healthFields.ScubaDivingDetail>
+
+Data model for scuba diving records.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthStore.ExerciseSequence<healthFields.ScubaDivingSummary, healthFields.ScubaDivingDetail>
+	
+
+Data model for scuba diving records.
+Skiing
+Supported devicesPhoneTabletWearable
+
+type Skiing = healthStore.ExerciseSequence<healthFields.SkiingSummary, healthFields.SkiingDetail>
+
+Data model for skiing records.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthStore.ExerciseSequence<healthFields.SkiingSummary, healthFields.SkiingDetail>
+	
+
+Data model for skiing records.
+SkinTemperature
+Supported devicesPhoneTabletWearable
+
+type SkinTemperature = healthStore.SamplePoint<healthFields.SkinTemperature>
+
+Data model for skin temperature sampling.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthStore.SamplePoint<healthFields.SkinTemperature>
+	
+
+Data model for skin temperature sampling.
+SkinTemperatureAggregateRequest
+Supported devicesPhoneTabletWearable
+
+type SkinTemperatureAggregateRequest = healthStore.AggregateRequest<healthFields.SkinTemperatureAggregation>
+
+Model for requesting aggregation of skin temperature sampling data.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthStore.AggregateRequest<healthFields.SkinTemperatureAggregation>
+	
+
+Model for requesting aggregation of skin temperature sampling data.
+SkinTemperatureAggregateResult
+Supported devicesPhoneTabletWearable
+
+type SkinTemperatureAggregateResult = healthStore.AggregateResult<healthFields.SkinTemperatureAggregation>
+
+Data model for skin temperature aggregation results.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthStore.AggregateResult<healthFields.SkinTemperatureAggregation>
+	
+
+Data model for skin temperature aggregation results.
+Sled
+Supported devicesPhoneTabletWearable
+
+type Sled = healthStore.ExerciseSequence<healthFields.SledSummary, healthFields.SledDetail>
+
+Data model for sledding records.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthStore.ExerciseSequence<healthFields.SledSummary, healthFields.SledDetail>
+	
+
+Data model for sledding records.
+SleepNapRecord
+Supported devicesPhoneTabletWearable
+
+type SleepNapRecord = healthStore.HealthSequence<healthFields.SleepNap, healthFields.SleepDetail>
+
+Data model for nap records.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthStore.HealthSequence<healthFields.SleepNap, healthFields.SleepDetail>
+	
+
+Data model for nap records.
+SleepRecord
+Supported devicesPhoneTabletWearable
+
+type SleepRecord = healthStore.HealthSequence<healthFields.Sleep, healthFields.SleepDetail>
+
+Data model for nighttime sleep records.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthStore.HealthSequence<healthFields.Sleep, healthFields.SleepDetail>
+	
+
+Data model for nighttime sleep records.
+Snowboarding
+Supported devicesPhoneTabletWearable
+
+type Snowboarding = healthStore.ExerciseSequence<healthFields.SnowboardingSummary, healthFields.SnowboardingDetail>
+
+Data model for snowboarding records.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthStore.ExerciseSequence<healthFields.SnowboardingSummary, healthFields.SnowboardingDetail>
+	
+
+Data model for snowboarding records.
+Spinning
+Supported devicesPhoneTabletWearable
+
+type Spinning = healthStore.ExerciseSequence<healthFields.CyclingSummary, healthFields.CyclingDetail>
+
+Data model for spinning records.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthStore.ExerciseSequence<healthFields.CyclingSummary, healthFields.CyclingDetail>
+	
+
+Data model for spinning records.
+Sports
+Supported devicesPhoneTabletWearable
+
+type Sports = healthStore.ExerciseSequence<healthFields.SportsSummary, healthFields.SportsDetail>
+
+General exercise record data model.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthStore.ExerciseSequence<healthFields.SportsSummary, healthFields.SportsDetail>
+	
+
+General exercise record data model.
+Stress
+Supported devicesPhoneTabletWearable
+
+type Stress = healthStore.SamplePoint<healthFields.Stress>
+
+Data model for stress sampling.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthStore.SamplePoint<healthFields.Stress>
+	
+
+Data model for stress sampling.
+StressAggregateRequest
+Supported devicesPhoneTabletWearable
+
+type StressAggregateRequest = healthStore.AggregateRequest<healthFields.StressAggregation>
+
+Model for requesting aggregation of stress sampling data.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthStore.AggregateRequest<healthFields.StressAggregation>
+	
+
+Model for requesting aggregation of stress sampling data.
+StressAggregateResult
+Supported devicesPhoneTabletWearable
+
+type StressAggregateResult = healthStore.AggregateResult<healthFields.StressAggregation>
+
+Data model for stress aggregation results.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthStore.AggregateResult<healthFields.StressAggregation>
+	
+
+Data model for stress aggregation results.
+TrailRunning
+Supported devicesPhoneTabletWearable
+
+type TrailRunning = healthStore.ExerciseSequence<healthFields.RunningSummary, healthFields.RunningDetail>
+
+Data model for trail running records.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthStore.ExerciseSequence<healthFields.RunningSummary, healthFields.RunningDetail>
+	
+
+Data model for trail running records.
+Walking
+Supported devicesPhoneTabletWearable
+
+type Walking = healthStore.ExerciseSequence<healthFields.WalkingSummary, healthFields.WalkingDetail>
+
+Data model for outdoor walking records.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthStore.ExerciseSequence<healthFields.WalkingSummary, healthFields.WalkingDetail>
+	
+
+Data model for outdoor walking records.
+Weight
+Supported devicesPhoneTabletWearable
+
+type Weight = healthStore.SamplePoint<healthFields.Weight>
+
+Data model for weight sampling.
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Type
+	
+
+Description
+
+healthStore.SamplePoint<healthFields.Weight>
+	
+
+Data model for weight sampling.
+healthFields (Fitness and Health Data Fields)
+samplePointHelper (Sampling Data Type Constants)
+Send feedback
+Was this page helpful?
+Send feedback
+Reach out to us through the community for any other questions.
+Community Q&AIntelligent Assistant
+
+©2025 HUAWEI Developers. All rights reserved.
+Terms of Use
+Statement About HUAWEI Developers and Privacy
+Cookies
+Cookie Settings
+Open-Source Software Notice

@@ -1,0 +1,1139 @@
+
+Sign in
+Materials
+Back
+
+Identity verification
+My profile
+
+    Training center
+
+Customer Service
+My events
+
+Sign out
+
+    Products
+
+Solutions
+Events
+Programs
+Community
+Training
+Support
+
+Back
+
+Back
+
+HarmonyOS
+
+    Release Notes
+    Design
+    Guides
+    References
+    Codelabs
+    Samples
+    Best Practices
+    FAQs 
+
+References
+Application Services Health Service Kit ArkTS APIs Fitness and Health Data Type Constants and Model Definitions
+healthDataTypes (Fitness and Health Data Type Constants)
+healthDataTypes (Fitness and Health Data Type Constants)
+Last updated: 2025-11-21 03:47
+Content overview
+Module Import
+Constant
+
+This module provides constants of fitness and health data types.
+
+Start version: 5.0.0(12)
+Module Import
+Supported devicesPhoneTabletWearable
+
+    import { healthStore } from '@kit.HealthServiceKit';
+
+NOTE
+
+This module is a sub-module of healthStore and needs to be used in healthStore.healthDataTypes mode.
+Constant
+Supported devicesPhoneTabletWearable
+
+System capability: SystemCapability.Health.HealthStore
+
+Start version: 5.0.0(12)
+
+Name
+	
+
+Type
+	
+
+Description
+
+BLOOD_OXYGEN_SATURATION
+	
+
+healthStore.DataType
+	
+
+SpO2 data type.
+
+BLOOD_PRESSURE
+	
+
+healthStore.DataType
+	
+
+Blood pressure data type.
+
+BODY_TEMPERATURE
+	
+
+healthStore.DataType
+	
+
+Body temperature data type.
+
+DAILY_ACTIVITIES
+	
+
+healthStore.DataType
+	
+
+Daily activity data type.
+
+EMOTION
+	
+
+healthStore.DataType
+	
+
+Emotion data type.
+
+Start version: 5.1.0(18)
+
+HEART_RATE
+	
+
+healthStore.DataType
+	
+
+Dynamic heart rate data type.
+
+HEART_RATE_VARIABILITY
+	
+
+healthStore.DataType
+	
+
+Heart rate variability data type.
+
+Start version: 5.1.0(18)
+
+HEIGHT
+	
+
+healthStore.DataType
+	
+
+Height data type.
+
+RESTING_HEART_RATE
+	
+
+healthStore.DataType
+	
+
+Resting heart rate data type.
+
+SKIN_TEMPERATURE
+	
+
+healthStore.DataType
+	
+
+Skin temperature data type.
+
+STRESS
+	
+
+healthStore.DataType
+	
+
+Stress data type.
+
+WEIGHT
+	
+
+healthStore.DataType
+	
+
+Weight data type.
+
+SLEEP_RECORD
+	
+
+healthStore.DataType
+	
+
+Nighttime sleep data type.
+
+SLEEP_NAP_RECORD
+	
+
+healthStore.DataType
+	
+
+Nap data type.
+
+WORKOUT
+	
+
+healthStore.DataType
+	
+
+Workout record data type.
+
+ADVENTURES
+	
+
+healthStore.SubDataType
+	
+
+Expedition subdata type.
+
+AEROBICS
+	
+
+healthStore.SubDataType
+	
+
+Aerobics subdata type.
+
+AIR_WALKER
+	
+
+healthStore.SubDataType
+	
+
+Air walker subdata type.
+
+ARCHERY
+	
+
+healthStore.SubDataType
+	
+
+Archery subdata type.
+
+BADMINTON
+	
+
+healthStore.SubDataType
+	
+
+Badminton subdata type.
+
+BALLET
+	
+
+healthStore.SubDataType
+	
+
+Ballet subdata type.
+
+BASEBALL
+	
+
+healthStore.SubDataType
+	
+
+Baseball subdata type.
+
+BASKETBALL
+	
+
+healthStore.SubDataType
+	
+
+Basketball subdata type.
+
+BEACH_SOCCER
+	
+
+healthStore.SubDataType
+	
+
+Beach soccer subdata type.
+
+BEACH_VOLLEYBALL
+	
+
+healthStore.SubDataType
+	
+
+Beach volleyball subdata type.
+
+BELLY_DANCE
+	
+
+healthStore.SubDataType
+	
+
+Belly dance subdata type.
+
+BIATHLON
+	
+
+healthStore.SubDataType
+	
+
+Biathlon subdata type.
+
+BMX
+	
+
+healthStore.SubDataType
+	
+
+BMX cycling subdata type.
+
+BODY_COMBAT
+	
+
+healthStore.SubDataType
+	
+
+Body combat subdata type.
+
+BOWLING
+	
+
+healthStore.SubDataType
+	
+
+Bowling subdata type.
+
+BOXING
+	
+
+healthStore.SubDataType
+	
+
+Boxing subdata type.
+
+BREATH_HOLDING_TEST
+	
+
+healthStore.SubDataType
+	
+
+Apnea test subdata type.
+
+BREATH_HOLDING_TRAIN
+	
+
+healthStore.SubDataType
+	
+
+Apnea training subdata type.
+
+BUNGEE_JUMPING
+	
+
+healthStore.SubDataType
+	
+
+Bungee jumping subdata type.
+
+CANOEING
+	
+
+healthStore.SubDataType
+	
+
+Canoeing subdata type.
+
+CORE_TRAINING
+	
+
+healthStore.SubDataType
+	
+
+Core training subdata type.
+
+CRICKET
+	
+
+healthStore.SubDataType
+	
+
+Cricket subdata type.
+
+CROSS_COUNTRY_SKIING
+	
+
+healthStore.SubDataType
+	
+
+Cross-country skiing subdata type.
+
+CROSS_FIT
+	
+
+healthStore.SubDataType
+	
+
+CrossFit subdata type.
+
+CURLING
+	
+
+healthStore.SubDataType
+	
+
+Curling subdata type.
+
+CYCLING
+	
+
+healthStore.SubDataType
+	
+
+Outdoor cycling subdata type.
+
+DANCE
+	
+
+healthStore.SubDataType
+	
+
+Dance subdata type.
+
+DARTS
+	
+
+healthStore.SubDataType
+	
+
+Darts subdata type.
+
+DIVING
+	
+
+healthStore.SubDataType
+	
+
+Freedive subdata type.
+
+DODGE_BALL
+	
+
+healthStore.SubDataType
+	
+
+Dodgeball subdata type.
+
+DRAGON_BOAT
+	
+
+healthStore.SubDataType
+	
+
+Dragon boat subdata type.
+
+DRIFTING
+	
+
+healthStore.SubDataType
+	
+
+Drifting subdata type.
+
+ELLIPTICAL
+	
+
+healthStore.SubDataType
+	
+
+Elliptical subdata type.
+
+ESPORTS
+	
+
+healthStore.SubDataType
+	
+
+eSports subdata type.
+
+FENCING
+	
+
+healthStore.SubDataType
+	
+
+Fencing subdata type.
+
+FISHING
+	
+
+healthStore.SubDataType
+	
+
+Fishing subdata type.
+
+FREE_SPARRING
+	
+
+healthStore.SubDataType
+	
+
+Free sparring subdata type.
+
+FREE_TRAINING
+	
+
+healthStore.SubDataType
+	
+
+Free training subdata type.
+
+FRISBEE
+	
+
+healthStore.SubDataType
+	
+
+Frisbee subdata type.
+
+FUNCTIONAL_TRAINING
+	
+
+healthStore.SubDataType
+	
+
+Functional training subdata type.
+
+GATEBALL
+	
+
+healthStore.SubDataType
+	
+
+Gateball subdata type.
+
+GOLF_COURSE_MODEL
+	
+
+healthStore.SubDataType
+	
+
+Golf (Course mode) subdata type.
+
+GOLF_PRACTICE
+	
+
+healthStore.SubDataType
+	
+
+Golf (Driving range mode) subdata type.
+
+HANDBALL
+	
+
+healthStore.SubDataType
+	
+
+Handball subdata type.
+
+HIIT
+	
+
+healthStore.SubDataType
+	
+
+HIIT subdata type.
+
+HIKING
+	
+
+healthStore.SubDataType
+	
+
+Hiking subdata type.
+
+HOCKEY
+	
+
+healthStore.SubDataType
+	
+
+Hockey subdata type.
+
+HORSE_RIDING
+	
+
+healthStore.SubDataType
+	
+
+Horse riding subdata type.
+
+HULA_HOOP
+	
+
+healthStore.SubDataType
+	
+
+Hula hoop subdata type.
+
+HUNTING
+	
+
+healthStore.SubDataType
+	
+
+Battle game subdata type.
+
+ICE_HOCKEY
+	
+
+healthStore.SubDataType
+	
+
+Ice hockey subdata type.
+
+INDOOR_CYCLING
+	
+
+healthStore.SubDataType
+	
+
+Indoor cycling subdata type.
+
+INDOOR_RUNNING
+	
+
+healthStore.SubDataType
+	
+
+Indoor running subdata type.
+
+INDOOR_WALKING
+	
+
+healthStore.SubDataType
+	
+
+Indoor walking subdata type.
+
+JAZZ_DANCE
+	
+
+healthStore.SubDataType
+	
+
+Jazz dance subdata type.
+
+JUMPING_ROPE
+	
+
+healthStore.SubDataType
+	
+
+Rope jumping subdata type.
+
+KARATE
+	
+
+healthStore.SubDataType
+	
+
+Karate subdata type.
+
+KENDO
+	
+
+healthStore.SubDataType
+	
+
+Kendo subdata type.
+
+KITE_FLYING
+	
+
+healthStore.SubDataType
+	
+
+Kite flying subdata type.
+
+LATIN_DANCE
+	
+
+healthStore.SubDataType
+	
+
+Latin dance subdata type.
+
+MARTIAL_ARTS
+	
+
+healthStore.SubDataType
+	
+
+Martial arts subdata type.
+
+MOTORBOAT
+	
+
+healthStore.SubDataType
+	
+
+Motorboat subdata type.
+
+MOUNTAIN_HIKE
+	
+
+healthStore.SubDataType
+	
+
+Mountain hike subdata type.
+
+OBSTACLE_RACE
+	
+
+healthStore.SubDataType
+	
+
+Obstacle race subdata type.
+
+OPEN_WATER_SWIM
+	
+
+healthStore.SubDataType
+	
+
+Open water swimming subdata type.
+
+ORIENTEERING
+	
+
+healthStore.SubDataType
+	
+
+Orienteering subdata type.
+
+PADEL
+	
+
+healthStore.SubDataType
+	
+
+Padel subdata type.
+
+PARACHUTE
+	
+
+healthStore.SubDataType
+	
+
+Parachuting subdata type.
+
+PARALLEL_BARS
+	
+
+healthStore.SubDataType
+	
+
+Parallel bars subdata type.
+
+PARKOUR
+	
+
+healthStore.SubDataType
+	
+
+Parkour subdata type.
+
+PHYSICAL_TRAINING
+	
+
+healthStore.SubDataType
+	
+
+Physical training subdata type.
+
+PILATES
+	
+
+healthStore.SubDataType
+	
+
+Pilates subdata type.
+
+PLAYGROUND_RACE
+	
+
+healthStore.SubDataType
+	
+
+Track run subdata type.
+
+PLAZA_DANCING
+	
+
+healthStore.SubDataType
+	
+
+Plaza dance subdata type.
+
+POOL
+	
+
+healthStore.SubDataType
+	
+
+Pool subdata type.
+
+POOL_SWIM
+	
+
+healthStore.SubDataType
+	
+
+Pool swimming subdata type.
+
+RACING_CAR
+	
+
+healthStore.SubDataType
+	
+
+Auto racing subdata type.
+
+ROCK_CLIMBING
+	
+
+healthStore.SubDataType
+	
+
+Rock climbing subdata type.
+
+ROLLER_SKATING
+	
+
+healthStore.SubDataType
+	
+
+Roller skating subdata type.
+
+ROWER
+	
+
+healthStore.SubDataType
+	
+
+Rowing machine subdata type.
+
+ROWING
+	
+
+healthStore.SubDataType
+	
+
+Rowing subdata type.
+
+RUGBY
+	
+
+healthStore.SubDataType
+	
+
+Rugby subdata type.
+
+RUNNING
+	
+
+healthStore.SubDataType
+	
+
+Outdoor running subdata type.
+
+SAILBOAT
+	
+
+healthStore.SubDataType
+	
+
+Sailing subdata type.
+
+SCUBA_DIVING
+	
+
+healthStore.SubDataType
+	
+
+Scuba diving subdata type.
+
+SENSE_SPORT
+	
+
+healthStore.SubDataType
+	
+
+Motion-controlled sports subdata type.
+
+SEPAKTAKRAW
+	
+
+healthStore.SubDataType
+	
+
+Sepak takraw subdata type.
+
+SHUTTLECOCK
+	
+
+healthStore.SubDataType
+	
+
+Shuttlecock subdata type.
+
+SINGLE_BAR
+	
+
+healthStore.SubDataType
+	
+
+Single bar subdata type.
+
+SKATEBOARD
+	
+
+healthStore.SubDataType
+	
+
+Skateboard subdata type.
+
+SKATING
+	
+
+healthStore.SubDataType
+	
+
+Skating subdata type.
+
+SKIING
+	
+
+healthStore.SubDataType
+	
+
+Skiing subdata type.
+
+SLED
+	
+
+healthStore.SubDataType
+	
+
+Sledding subdata type.
+
+SNOWBOARDING
+	
+
+healthStore.SubDataType
+	
+
+Snowboarding subdata type.
+
+SNOWMOBILE
+	
+
+healthStore.SubDataType
+	
+
+Snowmobile subdata type.
+
+SOCCER
+	
+
+healthStore.SubDataType
+	
+
+Soccer subdata type.
+
+SOFTBALL
+	
+
+healthStore.SubDataType
+	
+
+Softball subdata type.
+
+SPINNING
+	
+
+healthStore.SubDataType
+	
+
+Spinning subdata type.
+
+SQUASH
+	
+
+healthStore.SubDataType
+	
+
+Squash subdata type.
+
+STAIR_CLIMBING
+	
+
+healthStore.SubDataType
+	
+
+Stair climbing subdata type.
+
+STEPPER
+	
+
+healthStore.SubDataType
+	
+
+Stepper subdata type.
+
+STREET_DANCE
+	
+
+healthStore.SubDataType
+	
+
+Street dance subdata type.
+
+STRENGTH_TRAINING
+	
+
+healthStore.SubDataType
+	
+
+Strength training subdata type.
+
+SUP
+	
+
+healthStore.SubDataType
+	
+
+SUP subdata type.
+
+SURFING
+	
+
+healthStore.SubDataType
+	
+
+Surfing subdata type.
+
+SWINGING
+	
+
+healthStore.SubDataType
+	
+
+Swinging subdata type.
+
+TABLE_TENNIS
+	
+
+healthStore.SubDataType
+	
+
+Table tennis subdata type.
+
+TAEKWONDO
+	
+
+healthStore.SubDataType
+	
+
+Taekwondo subdata type.
+
+TAI_CHI
+	
+
+healthStore.SubDataType
+	
+
+Tai Chi subdata type.
+
+TENNIS
+	
+
+healthStore.SubDataType
+	
+
+Tennis subdata type.
+
+TRAIL_RUNNING
+	
+
+healthStore.SubDataType
+	
+
+Trail running subdata type.
+
+TRIATHLON
+	
+
+healthStore.SubDataType
+	
+
+Triathlon subdata type.
+
+TUG_OF_WAR
+	
+
+healthStore.SubDataType
+	
+
+Tug of war subdata type.
+
+VOLLEYBALL
+	
+
+healthStore.SubDataType
+	
+
+Volleyball subdata type.
+
+WALKING
+	
+
+healthStore.SubDataType
+	
+
+Outdoor walking subdata type.
+
+YOGA
+	
+
+healthStore.SubDataType
+	
+
+Yoga subdata type.
+Fitness and Health Data Type Constants and Model Definitions
+healthFields (Fitness and Health Data Fields)
+Send feedback
+Was this page helpful?
+Send feedback
+Reach out to us through the community for any other questions.
+Community Q&AIntelligent Assistant
+
+©2025 HUAWEI Developers. All rights reserved.
+Terms of Use
+Statement About HUAWEI Developers and Privacy
+Cookies
+Cookie Settings
+Open-Source Software Notice

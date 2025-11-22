@@ -1,70 +1,122 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "SensorPayload",
-  "description": "Sensor data payload from Watch to Phone/Cloud",
-  "version": "1.0.0",
+  "description": "Comprehensive sensor data payload from Huawei Watch 5 to Cloud",
+  "version": "2.0.0",
   "type": "object",
-  "required": ["heartRate", "timestamp"],
+  "required": ["timestamp"],
   "properties": {
-    "heartRate": {
-      "type": "integer",
-      "description": "Heart rate in beats per minute",
-      "minimum": 30,
-      "maximum": 220
-    },
-    "accelerometer": {
-      "type": "object",
-      "description": "3-axis accelerometer data in m/s²",
-      "properties": {
-        "x": { "type": "number" },
-        "y": { "type": "number" },
-        "z": { "type": "number" }
-      }
-    },
-    "gyroscope": {
-      "type": "object",
-      "description": "3-axis gyroscope data in rad/s",
-      "properties": {
-        "x": { "type": "number" },
-        "y": { "type": "number" },
-        "z": { "type": "number" }
-      }
-    },
-    "gps": {
-      "type": "object",
-      "description": "GPS coordinates",
-      "properties": {
-        "latitude": { "type": "number", "minimum": -90, "maximum": 90 },
-        "longitude": { "type": "number", "minimum": -180, "maximum": 180 },
-        "altitude": { "type": "number" },
-        "accuracy": { "type": "number" }
-      }
-    },
-    "barometer": {
-      "type": "number",
-      "description": "Atmospheric pressure in hPa"
-    },
-    "sleepScore": {
-      "type": "integer",
-      "description": "Daily sleep quality score",
-      "minimum": 0,
-      "maximum": 100
-    },
-    "recoveryScore": {
-      "type": "integer",
-      "description": "Daily recovery/readiness score",
-      "minimum": 0,
-      "maximum": 100
-    },
-    "stressLevel": {
-      "type": "integer",
-      "description": "Current stress level",
-      "minimum": 0,
-      "maximum": 100
-    },
     "timestamp": {
       "type": "integer",
       "description": "Unix timestamp in milliseconds"
+    },
+    "deviceId": {
+      "type": "string",
+      "description": "Unique identifier for the source device"
+    },
+    
+    "vitals": {
+      "type": "object",
+      "description": "Core physiological metrics",
+      "properties": {
+        "heartRate": { "type": "integer", "minimum": 0, "maximum": 255 },
+        "restingHeartRate": { "type": "integer", "minimum": 0, "maximum": 255 },
+        "hrvRMSSD": { "type": "number", "description": "Heart Rate Variability (RMSSD) in ms" },
+        "spo2": { "type": "number", "minimum": 0, "maximum": 100, "description": "Blood Oxygen Saturation %" },
+        "skinTemperature": { "type": "number", "description": "Skin temperature in Celsius" },
+        "bodyTemperature": { "type": "number", "description": "Estimated core body temperature in Celsius" }
+      }
+    },
+
+    "activity": {
+      "type": "object",
+      "description": "Physical activity metrics",
+      "properties": {
+        "stepCount": { "type": "integer", "minimum": 0 },
+        "calories": { "type": "integer", "description": "Total calories burned" },
+        "distance": { "type": "number", "description": "Distance in meters" },
+        "speed": { "type": "number", "description": "Speed in m/s" },
+        "isIntensity": { "type": "boolean", "description": "True if medium/high intensity activity" }
+      }
+    },
+
+    "runningForm": {
+      "type": "object",
+      "description": "Advanced running metrics",
+      "properties": {
+        "groundImpactAcceleration": { "type": "number", "description": "Impact force in g" },
+        "verticalOscillation": { "type": "number", "description": "Vertical motion in cm" },
+        "groundContactTime": { "type": "integer", "description": "Ground contact time in ms" }
+      }
+    },
+
+    "environment": {
+      "type": "object",
+      "description": "Environmental context",
+      "properties": {
+        "ambientLight": { "type": "number", "description": "Light intensity in lux" },
+        "barometer": { "type": "number", "description": "Atmospheric pressure in hPa" },
+        "altitude": { "type": "number", "description": "Altitude in meters" },
+        "location": {
+          "type": "object",
+          "properties": {
+            "latitude": { "type": "number" },
+            "longitude": { "type": "number" },
+            "accuracy": { "type": "number" }
+          }
+        }
+      }
+    },
+
+    "motion": {
+      "type": "object",
+      "description": "Raw IMU sensor data",
+      "properties": {
+        "accelerometer": { 
+          "type": "object", 
+          "properties": { "x": {"type": "number"}, "y": {"type": "number"}, "z": {"type": "number"} } 
+        },
+        "gyroscope": { 
+          "type": "object", 
+          "properties": { "x": {"type": "number"}, "y": {"type": "number"}, "z": {"type": "number"} } 
+        },
+        "magnetometer": { 
+          "type": "object", 
+          "properties": { "x": {"type": "number"}, "y": {"type": "number"}, "z": {"type": "number"} } 
+        },
+        "gravity": { 
+          "type": "object", 
+          "properties": { "x": {"type": "number"}, "y": {"type": "number"}, "z": {"type": "number"} } 
+        },
+        "linearAcceleration": { 
+          "type": "object", 
+          "properties": { "x": {"type": "number"}, "y": {"type": "number"}, "z": {"type": "number"} } 
+        },
+        "rotationVector": { 
+          "type": "object", 
+          "properties": { "x": {"type": "number"}, "y": {"type": "number"}, "z": {"type": "number"}, "w": {"type": "number"} } 
+        }
+      }
+    },
+
+    "status": {
+      "type": "object",
+      "properties": {
+        "wearDetection": { 
+          "type": "string", 
+          "enum": ["WORN", "NOT_WORN", "UNKNOWN"] 
+        },
+        "batteryLevel": { "type": "integer", "minimum": 0, "maximum": 100 }
+      }
+    },
+
+    "wellbeing": {
+      "type": "object",
+      "properties": {
+        "stressScore": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "emotionStatus": { "type": "integer", "description": "1: Unpleasant, 2: Neutral, 3: Pleasant" },
+        "sleepScore": { "type": "integer", "minimum": 0, "maximum": 100 }
+      }
     }
   }
 }

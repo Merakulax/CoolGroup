@@ -38,6 +38,9 @@ class SensorPayload:
     gyroscope: Optional[Gyroscope] = None
     gps: Optional[GPS] = None
     barometer: Optional[float] = None
+    sleep_score: Optional[int] = None
+    recovery_score: Optional[int] = None
+    stress_level: Optional[int] = None
 
     def to_dict(self):
         """Convert to dictionary for JSON serialization"""
@@ -68,6 +71,12 @@ class SensorPayload:
                 result['gps']['accuracy'] = self.gps.accuracy
         if self.barometer:
             result['barometer'] = self.barometer
+        if self.sleep_score is not None:
+            result['sleepScore'] = self.sleep_score
+        if self.recovery_score is not None:
+            result['recoveryScore'] = self.recovery_score
+        if self.stress_level is not None:
+            result['stressLevel'] = self.stress_level
 
         return result
 
@@ -100,5 +109,8 @@ class SensorPayload:
             accelerometer=accelerometer,
             gyroscope=gyroscope,
             gps=gps,
-            barometer=data.get('barometer')
+            barometer=data.get('barometer'),
+            sleep_score=data.get('sleepScore'),
+            recovery_score=data.get('recoveryScore'),
+            stress_level=data.get('stressLevel')
         )

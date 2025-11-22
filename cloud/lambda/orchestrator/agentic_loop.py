@@ -5,54 +5,76 @@ Coordinates the Perception → Reasoning → Planning → Action cycle
 
 import json
 import os
-# import boto3
+import boto3
 from datetime import datetime
+from decimal import Decimal
 
-# bedrock = boto3.client('bedrock-agent-runtime')
-# sagemaker = boto3.client('sagemaker-runtime')
+# Clients
+dynamodb = boto3.resource('dynamodb')
+bedrock_runtime = boto3.client('bedrock-runtime', region_name='eu-central-1')
 
+# Tables
+user_state_table = dynamodb.Table(os.environ.get('DYNAMODB_TABLE', 'user_state'))
+health_table = dynamodb.Table(os.environ.get('HEALTH_TABLE', 'health_data'))
 
 def handler(event, context):
     """
     Orchestrate the agentic AI loop
-
-    Steps:
-    1. Perception: Gather context (sensor data, user state, calendar)
-    2. Reasoning: LLM analyzes situation via Bedrock Agent
-    3. Planning: Generate action plan
-    4. Action: Execute autonomously (modify calendar, update pet state)
     """
     try:
         user_id = event.get('user_id')
         analysis = event.get('analysis', {})
+        
+        # Check for demo trigger overrides
+        force_state = event.get('force_state')
+        custom_message = event.get('custom_message')
 
         print(f"Starting agentic loop for user {user_id}")
 
         # 1. PERCEPTION: Gather full context
-        context = gather_context(user_id, analysis)
-        print(f"Context: {context}")
+        # For MVP, we use the latest sensor reading in analysis OR fetch from DB
+        health_context = gather_context(user_id, analysis)
+        print(f"Health Context: {health_context}")
 
-        # 2. REASONING: Bedrock Agent analyzes
-        bedrock_response = invoke_bedrock_agent(user_id, context)
-        print(f"Bedrock reasoning: {bedrock_response}")
+        # 2. LOGIC: Determine State (1-10)
+        if force_state:
+            state_index = int(force_state)
+            mood = "Forced State"
+            reasoning = "Demo Override"
+        else:
+            state_index, mood, reasoning = calculate_state_logic(health_context)
+        
+        print(f"Determined State: {state_index} ({mood})")
 
-        # 3. PLANNING: Parse action plan from LLM
-        action_plan = parse_action_plan(bedrock_response)
-        print(f"Action plan: {action_plan}")
+        # 3. NARRATIVE: Generate AI Message
+        if custom_message:
+            message = custom_message
+        else:
+            message = generate_message(state_index, mood, health_context)
+        
+        print(f"AI Message: {message}")
 
-        # 4. ACTION: Execute each action
-        results = []
-        for action in action_plan:
-            result = execute_action(user_id, action)
-            results.append(result)
+        # 4. PERSISTENCE: Update Pet State
+        new_state = {
+            'user_id': user_id,
+            'stateIndex': state_index,
+            'mood': mood,
+            'energy': calculate_energy(health_context),
+            'message': message,
+            'internalReasoning': reasoning,
+            'timestamp': int(datetime.now().timestamp() * 1000),
+            'last_updated': datetime.now().isoformat()
+        }
+        
+        update_pet_state(new_state)
 
         return {
             'statusCode': 200,
             'body': json.dumps({
                 'user_id': user_id,
-                'actions_taken': len(results),
-                'results': results
-            })
+                'new_state': new_state,
+                'success': True
+            }, default=str)
         }
 
     except Exception as e:
@@ -65,103 +87,101 @@ def handler(event, context):
 
 def gather_context(user_id, analysis):
     """
-    Perception: Gather comprehensive user context
-    - Current sensor analysis
-    - Historical health metrics (from DynamoDB)
-    - User calendar (if integrated)
-    - Current pet state
+    Gather health context from analysis payload or recent DB records
     """
-    # TODO: Fetch from DynamoDB
+    # If analysis has the data (from ingest), use it.
+    # Otherwise, we might query DDB (omitted for speed in MVP)
+    
+    # Default values
     context = {
-        'current_analysis': analysis,
-        'health_history': {
-            'hrv_trend': [60, 58, 55],  # Last 3 days
-            'sleep_hours': [7, 6, 5],
-            'stress_level': 'moderate'
-        },
-        'scheduled_activities': [
-            {'time': '18:00', 'activity': 'HIIT workout', 'duration': 45}
-        ],
-        'pet_state': {
-            'mood': 'Concerned',
-            'energy_budget': 60  # Spoon theory: 60% energy remaining
-        }
+        'sleep_score': analysis.get('sleep_score', 70),
+        'recovery_score': analysis.get('recovery_score', 70),
+        'stress_level': analysis.get('stress_level', 30),
+        'avg_hr': analysis.get('avg_heart_rate', 70)
     }
     return context
 
-
-def invoke_bedrock_agent(user_id, context):
+def calculate_state_logic(context):
     """
-    Reasoning: Use Bedrock Agent for qualitative analysis
+    Map physiological data to 1-10 state.
+    Returns: (state_index, mood_string, reasoning)
     """
-    # TODO: Implement Bedrock Agent invocation
-    # prompt = f"""
-    # User health context:
-    # - HRV declining: {context['health_history']['hrv_trend']}
-    # - Sleep: {context['health_history']['sleep_hours'][-1]} hours last night
-    # - Scheduled: {context['scheduled_activities']}
-    # - Energy budget: {context['pet_state']['energy_budget']}%
-    #
-    # As an autonomous health coach, what actions should be taken?
-    # Format: JSON array of actions with reasoning.
-    # """
-    #
-    # response = bedrock.invoke_agent(
-    #     agentId=os.environ['BEDROCK_AGENT_ID'],
-    #     inputText=prompt,
-    #     sessionId=user_id
-    # )
-
-    # Mock response for development
-    mock_response = """
-    {
-        "reasoning": "User shows declining HRV and poor sleep. Scheduled HIIT is too intense given 60% energy budget. Risk of flare-up.",
-        "actions": [
-            {
-                "type": "modify_workout",
-                "details": {"downgrade_to": "Zone 2 recovery run", "duration": 30}
-            },
-            {
-                "type": "cancel_evening_plans",
-                "details": {"reason": "Prevent energy depletion"}
-            },
-            {
-                "type": "update_pet_mood",
-                "details": {"mood": "Concerned", "message": "You need rest today"}
-            }
-        ]
+    sleep = context.get('sleep_score', 0)
+    recovery = context.get('recovery_score', 0)
+    stress = context.get('stress_level', 0)
+    
+    # Simple Algorithm
+    # Base score: Average of Sleep + Recovery
+    base = (sleep + recovery) / 2
+    
+    # Penalize for stress
+    if stress > 70:
+        base -= 20
+    
+    # Normalize to 1-10
+    score = max(1, min(10, int(base / 10)))
+    
+    # Mood Mapping
+    moods = {
+        1: "Exhausted", 2: "Sick", 3: "Tired", 4: "Concerned", 
+        5: "Okay", 6: "Recovering", 7: "Good", 8: "Energetic", 
+        9: "Happy", 10: "Ecstatic"
     }
+    
+    reasoning = f"Sleep={sleep}, Recovery={recovery}, Stress={stress} -> Base={base}"
+    return score, moods.get(score, "Neutral"), reasoning
+
+def calculate_energy(context):
+    """Calculate 'Energy Budget' (Spoons) 0-100"""
+    return int((context.get('sleep_score', 50) + context.get('recovery_score', 50)) / 2)
+
+def generate_message(state_index, mood, context):
     """
-    return json.loads(mock_response)
-
-
-def parse_action_plan(bedrock_response):
+    Use Bedrock (Claude) to generate the German persona message
     """
-    Planning: Extract actionable steps from LLM response
-    """
-    return bedrock_response.get('actions', [])
+    try:
+        model_id = "anthropic.claude-3-sonnet-20240229-v1:0"
+        
+        system_prompt = """Du bist ein Tamagotchi Health Companion. 
+        Deine Aufgabe ist es, deinen Zustand basierend auf den Gesundheitsdaten des Nutzers zu verkörpern.
+        Sprich immer in der Ich-Perspektive. 
+        Halte dich kurz (max 1-2 Sätze).
+        Sei empathisch aber ehrlich."""
+        
+        user_prompt = f"""
+        Aktueller Status:
+        - Level: {state_index}/10
+        - Stimmung: {mood}
+        - Schlaf: {context.get('sleep_score')}/100
+        - Erholung: {context.get('recovery_score')}/100
+        
+        Generiere eine Nachricht an den Nutzer auf Deutsch."""
 
+        body = json.dumps({
+            "anthropic_version": "bedrock-2023-05-31",
+            "max_tokens": 100,
+            "system": system_prompt,
+            "messages": [
+                {"role": "user", "content": user_prompt}
+            ]
+        })
 
-def execute_action(user_id, action):
-    """
-    Action: Execute autonomous intervention
-    """
-    action_type = action.get('type')
-    details = action.get('details', {})
+        response = bedrock_runtime.invoke_model(
+            body=body, 
+            modelId=model_id, 
+            accept='application/json', 
+            contentType='application/json'
+        )
+        
+        response_body = json.loads(response.get('body').read())
+        return response_body['content'][0]['text']
 
-    print(f"Executing action: {action_type} - {details}")
+    except Exception as e:
+        print(f"Bedrock error: {e}")
+        return f"Ich fühle mich {mood}. (AI Offline)"
 
-    if action_type == 'modify_workout':
-        # TODO: Integrate with calendar API
-        return {'action': action_type, 'status': 'success', 'details': details}
-
-    elif action_type == 'cancel_evening_plans':
-        # TODO: Integrate with calendar API
-        return {'action': action_type, 'status': 'success'}
-
-    elif action_type == 'update_pet_mood':
-        # TODO: Update DynamoDB pet state + send WebSocket to phone
-        return {'action': action_type, 'status': 'success', 'mood': details.get('mood')}
-
-    else:
-        return {'action': action_type, 'status': 'unknown_action'}
+def update_pet_state(state_item):
+    """Update user_state table"""
+    # Convert float/int to Decimal is standard for Boto3 DDB, 
+    # but simple types usually work. If issues arise, explicit Decimal conversion needed.
+    user_state_table.put_item(Item=state_item)

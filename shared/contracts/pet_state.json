@@ -4,8 +4,14 @@
   "description": "Pet state update from Cloud to Phone/Watch",
   "version": "1.0.0",
   "type": "object",
-  "required": ["mood", "energy", "timestamp"],
+  "required": ["mood", "energy", "timestamp", "stateIndex"],
   "properties": {
+    "stateIndex": {
+      "type": "integer",
+      "description": "Global state index (1-10) where 1=Critical/Low, 10=Peak/High",
+      "minimum": 1,
+      "maximum": 10
+    },
     "mood": {
       "type": "string",
       "description": "Current pet mood/emotion",
@@ -31,6 +37,10 @@
       "type": "string",
       "description": "Haptic feedback pattern",
       "enum": ["gentle", "alert", "celebration", "warning"]
+    },
+    "internalReasoning": {
+      "type": "string",
+      "description": "Debug explanation for why this state was chosen"
     },
     "timestamp": {
       "type": "integer",

@@ -37,16 +37,19 @@ class HapticPattern(Enum):
 @dataclass
 class PetState:
     """Pet state update from Cloud to Phone/Watch"""
+    state_index: int  # 1-10
     mood: PetMood
     energy: int  # 0-100 percentage
     timestamp: int
     message: Optional[str] = None
     animation: Optional[Animation] = None
     haptic_pattern: Optional[HapticPattern] = None
+    internal_reasoning: Optional[str] = None
 
     def to_dict(self):
         """Convert to dictionary for JSON serialization"""
         result = {
+            'stateIndex': self.state_index,
             'mood': self.mood.value,
             'energy': self.energy,
             'timestamp': self.timestamp
@@ -57,6 +60,8 @@ class PetState:
             result['animation'] = self.animation.value
         if self.haptic_pattern:
             result['hapticPattern'] = self.haptic_pattern.value
+        if self.internal_reasoning:
+            result['internalReasoning'] = self.internal_reasoning
 
         return result
 
@@ -64,10 +69,12 @@ class PetState:
     def from_dict(data: dict) -> 'PetState':
         """Create from dictionary (e.g., from JSON)"""
         return PetState(
+            state_index=data['stateIndex'],
             mood=PetMood(data['mood']),
             energy=data['energy'],
             timestamp=data['timestamp'],
             message=data.get('message'),
             animation=Animation(data['animation']) if 'animation' in data else None,
-            haptic_pattern=HapticPattern(data['hapticPattern']) if 'hapticPattern' in data else None
+            haptic_pattern=HapticPattern(data['hapticPattern']) if 'hapticPattern' in data else None,
+            internal_reasoning=data.get('internalReasoning')
         )

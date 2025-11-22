@@ -44,6 +44,24 @@
       "type": "number",
       "description": "Atmospheric pressure in hPa"
     },
+    "sleepScore": {
+      "type": "integer",
+      "description": "Daily sleep quality score",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "recoveryScore": {
+      "type": "integer",
+      "description": "Daily recovery/readiness score",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "stressLevel": {
+      "type": "integer",
+      "description": "Current stress level",
+      "minimum": 0,
+      "maximum": 100
+    },
     "timestamp": {
       "type": "integer",
       "description": "Unix timestamp in milliseconds"

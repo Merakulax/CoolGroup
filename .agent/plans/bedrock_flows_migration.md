@@ -46,31 +46,26 @@ graph TD
     G --> H
 ```
 
-## 3. Implementation Phases
+## 3. Implementation Phases (Pivoted to Direct Model Invocation)
 
-### Phase 1: Infrastructure & Knowledge Base (Foundation)
-*   [ ] **Vector DB Setup**: Deploy **OpenSearch Serverless** to store user health logs as vector embeddings.
-*   [ ] **Ingestion Pipeline**: Create a Lambda to vectorize incoming daily summaries and store them in OpenSearch.
-*   [ ] **Bedrock Knowledge Base**: Connect Bedrock to OpenSearch. Configure "Hybrid Search" for accuracy.
+### Phase 1: Core Orchestrator & Model Integration
+*   [x] **Direct Model Invocation**: Orchestrator Lambda (`agentic_loop.py`) now directly calls `bedrock_runtime.converse` using a specified `MODEL_ID`.
+*   [x] **IAM Permissions**: Lambda execution role (`lambda_role`) configured with `bedrock:InvokeModel` permissions.
+*   [x] **Context Retriever Integration**: Orchestrator invokes `context_retriever` Lambda to fetch historical data and includes it in model prompts.
+*   [x] **Structured Output**: Model prompts designed for JSON output, and Orchestrator parses this output.
 
-### Phase 2: The "State Reactor" Flow
-*   [ ] **Flow Definition**: Create a `flow.json` definition using the Bedrock Flows JSON schema.
-    *   **Input**: `type: Input` receiving sensor data.
-    *   **Context**: `type: KnowledgeBase` querying past events.
-    *   **Supervisor**: `type: Prompt` with `guardrailConfiguration` to filter medical advice.
-    *   **Sub-Agents**: `type: Agent` nodes pointing to specialized Bedrock Agent Aliases.
-*   [ ] **Integration**: Update the `orchestrator` Lambda to invoke the Flow ARN (`bedrock-agent-runtime.invoke_flow`) instead of the Agent Alias ID.
+### Phase 2: State Reactor (Real-time Analysis)
+*   [x] **Logic Implementation**: `run_state_reactor` function in `agentic_loop.py` handles real-time sensor data analysis, state determination, and updates.
+*   [x] **Trigger Mechanism**: Triggered by incoming sensor data events (e.g., via API Gateway or other Lambda invokes).
 
-### Phase 3: The "Proactive Coach" Flow
-*   [ ] **Trend Agent**: Create a specialized `Prompt` node focused on *subtle* patterns (e.g., "Sleep quality is degrading 5% per night this week").
-*   [ ] **Strategy Logic**: Implement a `Condition` node:
-    *   `conditions`: `[{ "expression": "#stressLevel > 80", "output": "SoothingNode" }, ...]`
-*   [ ] **Feedback Loop**: Add a mechanism for the user to rate the tip (Thumps Up/Down) on the watch, feeding back into the Flow's future decision-making.
+### Phase 3: Proactive Coach (Async/Scheduled Analysis)
+*   [x] **Logic Implementation**: `run_proactive_coach` function in `agentic_loop.py` iterates through users, fetches history, and generates proactive tips using a dedicated model prompt.
+*   [x] **Trigger Mechanism**: CloudWatch Event Rule triggers Orchestrator hourly to run `run_proactive_coach`.
 
-### Phase 4: Testing & Migration
-*   [ ] **Shadow Mode**: Deploy the Flow alongside the current Agent. Log outputs of both for 24h and compare quality.
-*   [ ] **Safety Red-Teaming**: Intentionally flood the Flow with "medical emergency" data to ensure the Guardrail attached to the Supervisor Node terminates correctly.
-*   [ ] **Cutover**: Switch the production Lambda to point to the Flow Alias.
+### Phase 4: Testing & Validation
+*   [x] **Unit Testing**: Local testing script (`scripts/test_model.py`) verifies direct model invocation, context integration, and state updates.
+*   [ ] **Safety Validation**: Implement mechanisms (e.g., input filtering, output validation) to ensure model responses are safe and adhere to guidelines (e.g., no medical advice).
+*   [ ] **Refinement**: Iterate on model prompts and inference parameters for optimal performance and pet behavior.
 
 ## 4. Technical Components
 

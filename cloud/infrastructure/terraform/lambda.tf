@@ -50,8 +50,8 @@ resource "aws_lambda_function" "orchestrator" {
       HEALTH_TABLE             = aws_dynamodb_table.health_data.name
       USERS_TABLE              = aws_dynamodb_table.users.name
       ENV                      = var.environment
-      SUPERVISOR_AGENT_ID      = aws_bedrockagent_agent.supervisor_agent.id
-      SUPERVISOR_AGENT_ALIAS_ID = aws_bedrockagent_agent_alias.supervisor_agent_alias.agent_alias_id
+      MODEL_ID                 = "eu.anthropic.claude-sonnet-4-5-20250929-v1:0"
+      CONTEXT_RETRIEVER_LAMBDA_ARN = aws_lambda_function.context_retriever.arn
     }
   }
 }
@@ -164,4 +164,30 @@ resource "aws_lambda_function" "echo" {
   runtime          = "python3.11"
   timeout          = 5
   memory_size      = 128
+}
+
+# Zip the retriever function code
+data "archive_file" "retriever_zip" {
+  type        = "zip"
+  source_dir  = "${path.module}/../../lambda/retriever"
+  output_path = "${path.module}/.build/retriever.zip"
+  excludes    = ["__pycache__"]
+}
+
+resource "aws_lambda_function" "context_retriever" {
+  filename         = data.archive_file.retriever_zip.output_path
+  function_name    = "${var.project_name}-context-retriever-${var.environment}"
+  role             = aws_iam_role.lambda_role.arn
+  handler          = "context_retriever.handler"
+  source_code_hash = data.archive_file.retriever_zip.output_base64sha256
+  runtime          = "python3.11"
+  timeout          = 10
+  memory_size      = 128
+
+  environment {
+    variables = {
+      HEALTH_TABLE = aws_dynamodb_table.health_data.name
+      ENV          = var.environment
+    }
+  }
 }

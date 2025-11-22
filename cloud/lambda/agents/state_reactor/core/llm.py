@@ -26,6 +26,11 @@ PET_STATE_TOOL_SCHEMA = {
           "reasoning": {
             "type": "string",
             "description": "A concise, user-friendly explanation for the determined state, based on health data."
+          },
+          "detected_activity": {
+            "type": "string",
+            "enum": ["Sleeping", "Coding", "Running", "Commuting", "Resting", "Meditating", "Unknown", "Working", "Walking", "Cycling"],
+            "description": "Inferred activity based on sensor data."
           }
         },
         "required": ["state", "mood", "reasoning"]

@@ -24,7 +24,11 @@ def handler(event, context):
     try:
         # Parse request with Decimal for DynamoDB
         body = json.loads(event.get('body', '{}'), parse_float=Decimal)
-        user_id = body.get('user_id')
+        
+        # Extract user_id from path (preferred) or body
+        path_params = event.get('pathParameters', {})
+        user_id = path_params.get('user_id') or body.get('user_id')
+        
         sensor_batch = body.get('batch', [])
 
         # Also support single data point push (not in a 'batch' list) for simple tests

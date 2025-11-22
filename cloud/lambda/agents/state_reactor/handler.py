@@ -42,7 +42,22 @@ Here is relevant historical context for the user:
 Here is a predictive analysis based on recent trends:
 {json.dumps(predictive_context, cls=DecimalEncoder)}
 
-Based on the current, historical, and predictive data, call the 'pet_state_analyzer' tool to output the pet's state.
+Guidance on State Classification:
+- TIRED: If Heart Rate is low (<60) AND 'sleep_status' is 'ASLEEP' or accelerometer is stationary for long periods.
+- STRESS: If Heart Rate is elevated (>100) BUT movement is minimal/stationary.
+- EXERCISE: If Heart Rate is elevated (>110) AND movement is high/active.
+- HAPPY: Balanced metrics, moderate activity.
+
+Guidance on Activity Detection:
+- Infer what the user is likely doing. Select one of the following: ['Sleeping', 'Coding', 'Running', 'Commuting', 'Resting', 'Meditating', 'Working', 'Walking', 'Cycling'].
+- Use accelerometer patterns and heart rate to distinguish between sedentary stress (Working/Coding) vs active stress (Running/Cycling).
+- IF 'bodyTemperature' > 37.5 OR 'symptoms' present: Activity is likely 'Resting' (Sick).
+- IF 'speed' > 10 km/h (approx 2.7 m/s) AND 'step_count' is low: Activity is likely 'Commuting'.
+- IF 'heartRate' is low (<60) AND 'stress_score' is low (<20) AND stationary:
+    - IF 'sleep_status' is 'ASLEEP': Activity is 'Sleeping'.
+    - ELSE: Activity is likely 'Meditating' or 'Resting'.
+
+Based on the current, historical, and predictive data, call the 'pet_state_analyzer' tool to output the pet's state and detected activity.
 """
 
     user_message = f"""

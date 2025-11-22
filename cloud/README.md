@@ -220,9 +220,9 @@ for action in action_plan:
 ## API Endpoints
 
 ### REST API
-- `POST /api/sensor-data` - Ingest sensor batch from phone
-- `GET /api/pet-state/{user_id}` - Get current pet state
-- `POST /api/actions/execute` - Trigger manual action
+- `POST /api/v1/user/{user_id}/data` - Ingest sensor batch from phone
+- `GET /api/v1/user/{user_id}/state` - Get current pet state
+- `POST /api/v1/demo/trigger` - Trigger manual action
 
 ### WebSocket
 - `wss://api.example.com/socket` - Real-time pet state updates to phone

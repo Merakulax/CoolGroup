@@ -1,4 +1,3 @@
-import numpy as np
 from datetime import datetime, timedelta
 from core import database, utils
 

@@ -17,13 +17,13 @@ def handler(event, context):
     route_key = event.get('routeKey')
     
     try:
-        if route_key == 'POST /users':
+        if route_key == 'POST /api/v1/users':
             return create_user(event)
-        elif route_key == 'GET /users/{user_id}':
+        elif route_key == 'GET /api/v1/users/{user_id}':
             return get_user(event)
-        elif route_key == 'GET /users/{user_id}/avatar/upload-url':
+        elif route_key == 'GET /api/v1/users/{user_id}/avatar/upload-url':
             return get_upload_url(event)
-        elif route_key == 'GET /avatar/current-state/{user_id}':
+        elif route_key == 'GET /api/v1/user/{user_id}/state':
             return get_avatar_state(event)
         else:
             return {
@@ -108,7 +108,7 @@ def get_avatar_state(event):
         "mood": item.get('mood', 'Neutral'),
         "image_url": item.get('image_url'),
         "timestamp": int(item.get('timestamp', 0)),
-        "message": item.get('message', '')
+        "message": item.get('message') or item.get('reasoning', '')
     }
     
     return {

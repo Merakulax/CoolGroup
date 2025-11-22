@@ -120,6 +120,7 @@ def update_state_db(user_id, analysis, time_gap):
         'stateEnum': analysis.get('state'),
         'mood': analysis.get('mood', 'Neutral'),
         'reasoning': analysis.get('reasoning', 'No reasoning provided'),
+        'detected_activity': analysis.get('detected_activity', 'Unknown'),
         'last_updated': datetime.now().isoformat()
     }
     try:

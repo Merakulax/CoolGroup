@@ -101,7 +101,9 @@ resource "aws_iam_role_policy" "lambda_invoke_access" {
         Effect   = "Allow"
         Resource = [
           aws_lambda_function.avatar_generator.arn,
-          aws_lambda_function.orchestrator.arn
+          aws_lambda_function.orchestrator.arn,
+          aws_lambda_function.state_reactor.arn,
+          aws_lambda_function.proactive_coach.arn
         ]
       }
     ]

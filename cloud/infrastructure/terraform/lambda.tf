@@ -107,3 +107,57 @@ resource "aws_lambda_function" "user_manager" {
     }
   }
 }
+
+# Zip the avatar generator function code
+data "archive_file" "avatar_zip" {
+  type        = "zip"
+  source_dir  = "${path.module}/../../lambda/avatar"
+  output_path = "${path.module}/.build/avatar.zip"
+  excludes    = ["__pycache__"]
+}
+
+resource "aws_lambda_function" "avatar_generator" {
+  filename         = data.archive_file.avatar_zip.output_path
+  function_name    = "${var.project_name}-avatar-generator-${var.environment}"
+  role             = aws_iam_role.lambda_role.arn
+  handler          = "generator.handler"
+  source_code_hash = data.archive_file.avatar_zip.output_base64sha256
+  runtime          = "python3.11"
+  timeout          = 30
+  memory_size      = 3008
+  layers           = [aws_lambda_layer_version.gcp_deps_layer.arn]
+
+  environment {
+    variables = {
+      USERS_TABLE   = aws_dynamodb_table.users.name
+      HEALTH_TABLE  = aws_dynamodb_table.health_data.name
+      GCP_PROJECT_ID = var.gcp_project_id
+      GCP_REGION     = var.gcp_region
+      GCP_API_KEY    = var.gcp_api_key
+      AVATAR_BUCKET  = aws_s3_bucket.avatars.id
+      ENV            = var.environment
+      GOOGLE_CLOUD_PROJECT = var.gcp_project_id
+      GOOGLE_CLOUD_LOCATION = var.gcp_region
+      GOOGLE_GENAI_USE_VERTEXAI = "True"
+    }
+  }
+}
+
+# Zip the echo function code
+data "archive_file" "echo_zip" {
+  type        = "zip"
+  source_dir  = "${path.module}/../../lambda/echo"
+  output_path = "${path.module}/.build/echo.zip"
+  excludes    = ["__pycache__"]
+}
+
+resource "aws_lambda_function" "echo" {
+  filename         = data.archive_file.echo_zip.output_path
+  function_name    = "${var.project_name}-echo-${var.environment}"
+  role             = aws_iam_role.lambda_role.arn
+  handler          = "echo.handler"
+  source_code_hash = data.archive_file.echo_zip.output_base64sha256
+  runtime          = "python3.11"
+  timeout          = 5
+  memory_size      = 128
+}

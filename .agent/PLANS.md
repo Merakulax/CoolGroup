@@ -155,4 +155,5 @@ When you revise a plan, you must ensure your changes are comprehensively reflect
 
 - [Backend MVP Infra & Logic](plans/backend_infra_mvp.md)
 - [User Management & Onboarding](plans/user_management.md)
-- [Timestream Storage Migration](plans/timestream_migration.md)
+- [Timestream Storage Migration (Cancelled)](plans/timestream_migration.md)
+- [Generative Avatar Endpoint (Completed)](plans/generative_avatar.md)

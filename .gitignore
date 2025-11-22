@@ -1,25 +1,19 @@
 # HarmonyOS / DevEco Studio
-watch/.idea/
-watch/build/
-watch/node_modules/
-watch/oh_modules/
-watch/.hvigor/
-watch/local.properties
-
-# Phone app (platform-specific)
-phone/.gradle/
-phone/build/
-phone/.idea/
-phone/node_modules/
-phone/.expo/
+frontend/.idea/
+frontend/build/
+frontend/node_modules/
+frontend/oh_modules/
+frontend/.hvigor/
+frontend/local.properties
 
 # Cloud / Python
-cloud/.venv/
-cloud/__pycache__/
-cloud/*.pyc
-cloud/.env
-cloud/.aws-sam/
-cloud/.terraform/
+.venv/
+__pycache__/
+*.pyc
+.env
+.terraform/
+.terraform.lock.hcl
+.build/
 
 # Shared
 *.log

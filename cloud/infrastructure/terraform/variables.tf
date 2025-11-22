@@ -15,3 +15,10 @@ variable "environment" {
   type        = string
   default     = "dev"
 }
+
+variable "gcp_api_key" {
+  description = "API Key for Google Cloud Vertex AI"
+  type        = string
+  sensitive   = true
+  default     = ""
+}

@@ -39,9 +39,14 @@ __pycache__/
 *.pem
 *.key
 
+# Temporary authentication virtual environment
+.auth_venv/
+
 # Build outputs
 dist/
 out/
 *.apk
 *.hap
 *.app
+lambda_layers/
+*.zip

@@ -14,6 +14,7 @@ resource "aws_apigatewayv2_integration" "sensor_ingest" {
   api_id           = aws_apigatewayv2_api.http_api.id
   integration_type = "AWS_PROXY"
   integration_uri  = aws_lambda_function.sensor_ingest.invoke_arn
+  payload_format_version = "2.0"
 }
 
 resource "aws_apigatewayv2_route" "sensor_ingest" {
@@ -35,6 +36,7 @@ resource "aws_apigatewayv2_integration" "demo_trigger" {
   api_id           = aws_apigatewayv2_api.http_api.id
   integration_type = "AWS_PROXY"
   integration_uri  = aws_lambda_function.demo_trigger.invoke_arn
+  payload_format_version = "2.0"
 }
 
 resource "aws_apigatewayv2_route" "demo_trigger" {
@@ -56,6 +58,7 @@ resource "aws_apigatewayv2_integration" "user_manager" {
   api_id           = aws_apigatewayv2_api.http_api.id
   integration_type = "AWS_PROXY"
   integration_uri  = aws_lambda_function.user_manager.invoke_arn
+  payload_format_version = "2.0"
 }
 
 resource "aws_apigatewayv2_route" "create_user" {
@@ -82,4 +85,48 @@ resource "aws_lambda_permission" "api_gw_user" {
   function_name = aws_lambda_function.user_manager.function_name
   principal     = "apigateway.amazonaws.com"
   source_arn    = "${aws_apigatewayv2_api.http_api.execution_arn}/*/*/users*"
+}
+
+# Integration for Avatar Generator
+resource "aws_apigatewayv2_integration" "avatar_generator" {
+  api_id           = aws_apigatewayv2_api.http_api.id
+  integration_type = "AWS_PROXY"
+  integration_uri  = aws_lambda_function.avatar_generator.invoke_arn
+  payload_format_version = "2.0"
+}
+
+resource "aws_apigatewayv2_route" "get_avatar_state" {
+  api_id    = aws_apigatewayv2_api.http_api.id
+  route_key = "GET /avatar/current-state/{user_id}"
+  target    = "integrations/${aws_apigatewayv2_integration.avatar_generator.id}"
+}
+
+resource "aws_lambda_permission" "api_gw_avatar" {
+  statement_id  = "AllowExecutionFromAPIGatewayAvatar"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.avatar_generator.function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_apigatewayv2_api.http_api.execution_arn}/*/*/avatar/*"
+}
+
+# Integration for Echo
+resource "aws_apigatewayv2_integration" "echo" {
+  api_id           = aws_apigatewayv2_api.http_api.id
+  integration_type = "AWS_PROXY"
+  integration_uri  = aws_lambda_function.echo.invoke_arn
+  payload_format_version = "2.0"
+}
+
+resource "aws_apigatewayv2_route" "echo" {
+  api_id    = aws_apigatewayv2_api.http_api.id
+  route_key = "POST /echo"
+  target    = "integrations/${aws_apigatewayv2_integration.echo.id}"
+}
+
+resource "aws_lambda_permission" "api_gw_echo" {
+  statement_id  = "AllowExecutionFromAPIGatewayEcho"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.echo.function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_apigatewayv2_api.http_api.execution_arn}/*/*/echo"
 }

@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "PetState",
+  "description": "Pet state update from Cloud to Phone/Watch",
+  "version": "1.0.0",
+  "type": "object",
+  "required": ["mood", "energy", "timestamp"],
+  "properties": {
+    "mood": {
+      "type": "string",
+      "description": "Current pet mood/emotion",
+      "enum": ["Happy", "Energetic", "Sleepy", "Concerned", "Anxious", "Recovering", "Proud"]
+    },
+    "energy": {
+      "type": "integer",
+      "description": "Energy budget (Spoon Theory) - percentage",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "message": {
+      "type": "string",
+      "description": "Optional message from pet to user",
+      "maxLength": 200
+    },
+    "animation": {
+      "type": "string",
+      "description": "Animation name to play on watch",
+      "enum": ["smile", "jump", "sleep", "worry", "celebrate", "breathe"]
+    },
+    "hapticPattern": {
+      "type": "string",
+      "description": "Haptic feedback pattern",
+      "enum": ["gentle", "alert", "celebration", "warning"]
+    },
+    "timestamp": {
+      "type": "integer",
+      "description": "Unix timestamp in milliseconds"
+    }
+  }
+}

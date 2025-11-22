@@ -1,0 +1,13 @@
+{
+  "name": "tamagotchi-watch",
+  "version": "1.0.0",
+  "description": "AI Tamagotchi Health Companion - Watch Application",
+  "main": "entry/src/main/arkts/pages/Index.arkts",
+  "author": "CoolGroup Team",
+  "license": "MIT",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "@ohos/hypium": "1.0.16"
+  }
+}

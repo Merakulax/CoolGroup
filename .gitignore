@@ -1,0 +1,51 @@
+# HarmonyOS / DevEco Studio
+watch/.idea/
+watch/build/
+watch/node_modules/
+watch/oh_modules/
+watch/.hvigor/
+watch/local.properties
+
+# Phone app (platform-specific)
+phone/.gradle/
+phone/build/
+phone/.idea/
+phone/node_modules/
+phone/.expo/
+
+# Cloud / Python
+cloud/.venv/
+cloud/__pycache__/
+cloud/*.pyc
+cloud/.env
+cloud/.aws-sam/
+cloud/.terraform/
+
+# Shared
+*.log
+.DS_Store
+*.swp
+*.swo
+*~
+
+# Environment files
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.iml
+
+# Secrets
+**/secrets.json
+**/credentials.json
+*.pem
+*.key
+
+# Build outputs
+dist/
+out/
+*.apk
+*.hap
+*.app

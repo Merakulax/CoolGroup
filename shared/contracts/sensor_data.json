@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SensorPayload",
+  "description": "Sensor data payload from Watch to Phone/Cloud",
+  "version": "1.0.0",
+  "type": "object",
+  "required": ["heartRate", "timestamp"],
+  "properties": {
+    "heartRate": {
+      "type": "integer",
+      "description": "Heart rate in beats per minute",
+      "minimum": 30,
+      "maximum": 220
+    },
+    "accelerometer": {
+      "type": "object",
+      "description": "3-axis accelerometer data in m/s²",
+      "properties": {
+        "x": { "type": "number" },
+        "y": { "type": "number" },
+        "z": { "type": "number" }
+      }
+    },
+    "gyroscope": {
+      "type": "object",
+      "description": "3-axis gyroscope data in rad/s",
+      "properties": {
+        "x": { "type": "number" },
+        "y": { "type": "number" },
+        "z": { "type": "number" }
+      }
+    },
+    "gps": {
+      "type": "object",
+      "description": "GPS coordinates",
+      "properties": {
+        "latitude": { "type": "number", "minimum": -90, "maximum": 90 },
+        "longitude": { "type": "number", "minimum": -180, "maximum": 180 },
+        "altitude": { "type": "number" },
+        "accuracy": { "type": "number" }
+      }
+    },
+    "barometer": {
+      "type": "number",
+      "description": "Atmospheric pressure in hPa"
+    },
+    "timestamp": {
+      "type": "integer",
+      "description": "Unix timestamp in milliseconds"
+    }
+  }
+}

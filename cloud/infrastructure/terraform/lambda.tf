@@ -1,7 +1,7 @@
 # Zip the ingest function code (This assumes the code exists locally)
 data "archive_file" "ingest_zip" {
   type        = "zip"
-  source_dir  = "${path.module}/../../../lambda/ingest"
+  source_dir  = "${path.module}/../../lambda/ingest"
   output_path = "${path.module}/.build/ingest.zip"
   excludes    = ["requirements.txt", "__pycache__"]
 }
@@ -27,7 +27,7 @@ resource "aws_lambda_function" "sensor_ingest" {
 # Zip the orchestrator function code
 data "archive_file" "orchestrator_zip" {
   type        = "zip"
-  source_dir  = "${path.module}/../../../lambda/orchestrator"
+  source_dir  = "${path.module}/../../lambda/orchestrator"
   output_path = "${path.module}/.build/orchestrator.zip"
   excludes    = ["requirements.txt", "__pycache__"]
 }

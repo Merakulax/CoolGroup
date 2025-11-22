@@ -24,6 +24,7 @@ Lambda ──WebSocket──> Phone (Bridge)
 - **Runtime**: Python 3.11+
 - **Region**: `eu-central-1` (GDPR compliance).
 - **Infrastructure**: AWS SAM or Terraform.
+    - **Terraform Usage**: All Terraform commands (`terraform init`, `terraform plan`, `terraform apply`) must be executed from the `cloud/infrastructure/terraform` directory. Ensure your AWS credentials are correctly configured before execution.
 - **Key Services**:
     - **Lambda**: Serverless compute for API & orchestration.
     - **Bedrock**: Claude Sonnet for agentic reasoning.

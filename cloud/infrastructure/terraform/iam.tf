@@ -38,7 +38,30 @@ resource "aws_iam_role_policy" "dynamodb_access" {
         Effect   = "Allow"
         Resource = [
           aws_dynamodb_table.user_state.arn,
-          aws_dynamodb_table.health_data.arn
+          aws_dynamodb_table.health_data.arn,
+          aws_dynamodb_table.users.arn
+        ]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy" "s3_access" {
+  name = "s3_access"
+  role = aws_iam_role.lambda_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "s3:PutObject",
+          "s3:GetObject"
+        ]
+        Effect = "Allow"
+        Resource = [
+          aws_s3_bucket.avatars.arn,
+          "${aws_s3_bucket.avatars.arn}/*"
         ]
       }
     ]

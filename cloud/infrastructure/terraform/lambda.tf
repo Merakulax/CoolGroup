@@ -48,6 +48,7 @@ resource "aws_lambda_function" "orchestrator" {
     variables = {
       DYNAMODB_TABLE = aws_dynamodb_table.user_state.name
       HEALTH_TABLE   = aws_dynamodb_table.health_data.name
+      USERS_TABLE    = aws_dynamodb_table.users.name
       ENV            = var.environment
     }
   }
@@ -76,6 +77,33 @@ resource "aws_lambda_function" "demo_trigger" {
       DYNAMODB_TABLE = aws_dynamodb_table.user_state.name
       ENV            = var.environment
       PROJECT_NAME   = var.project_name
+    }
+  }
+}
+
+# Zip the user manager function code
+data "archive_file" "user_zip" {
+  type        = "zip"
+  source_dir  = "${path.module}/../../lambda/user"
+  output_path = "${path.module}/.build/user.zip"
+  excludes    = ["__pycache__"]
+}
+
+resource "aws_lambda_function" "user_manager" {
+  filename         = data.archive_file.user_zip.output_path
+  function_name    = "${var.project_name}-user-manager-${var.environment}"
+  role             = aws_iam_role.lambda_role.arn
+  handler          = "manager.handler"
+  source_code_hash = data.archive_file.user_zip.output_base64sha256
+  runtime          = "python3.11"
+  timeout          = 10
+  memory_size      = 128
+
+  environment {
+    variables = {
+      USERS_TABLE   = aws_dynamodb_table.users.name
+      AVATAR_BUCKET = aws_s3_bucket.avatars.id
+      ENV           = var.environment
     }
   }
 }

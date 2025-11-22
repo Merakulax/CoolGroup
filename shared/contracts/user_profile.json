@@ -1,0 +1,43 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "UserProfile",
+  "description": "User profile and preferences",
+  "version": "1.0.0",
+  "type": "object",
+  "required": ["user_id", "name", "pet_name"],
+  "properties": {
+    "user_id": {
+      "type": "string",
+      "description": "Unique identifier for the user (UUID)",
+      "format": "uuid"
+    },
+    "name": {
+      "type": "string",
+      "description": "User's display name",
+      "minLength": 1
+    },
+    "age": {
+      "type": "integer",
+      "description": "User's age",
+      "minimum": 0,
+      "maximum": 120
+    },
+    "health_goals": {
+      "type": "array",
+      "description": "List of user's health goals",
+      "items": {
+        "type": "string"
+      }
+    },
+    "pet_name": {
+      "type": "string",
+      "description": "Name of the user's Tamagotchi",
+      "minLength": 1
+    },
+    "avatar_url": {
+      "type": "string",
+      "description": "URL to the user/pet avatar image",
+      "format": "uri"
+    }
+  }
+}

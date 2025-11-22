@@ -50,3 +50,36 @@ resource "aws_lambda_permission" "api_gw_demo" {
   principal     = "apigateway.amazonaws.com"
   source_arn    = "${aws_apigatewayv2_api.http_api.execution_arn}/*/*/demo/trigger"
 }
+
+# Integration for User Manager
+resource "aws_apigatewayv2_integration" "user_manager" {
+  api_id           = aws_apigatewayv2_api.http_api.id
+  integration_type = "AWS_PROXY"
+  integration_uri  = aws_lambda_function.user_manager.invoke_arn
+}
+
+resource "aws_apigatewayv2_route" "create_user" {
+  api_id    = aws_apigatewayv2_api.http_api.id
+  route_key = "POST /users"
+  target    = "integrations/${aws_apigatewayv2_integration.user_manager.id}"
+}
+
+resource "aws_apigatewayv2_route" "get_user" {
+  api_id    = aws_apigatewayv2_api.http_api.id
+  route_key = "GET /users/{user_id}"
+  target    = "integrations/${aws_apigatewayv2_integration.user_manager.id}"
+}
+
+resource "aws_apigatewayv2_route" "get_upload_url" {
+  api_id    = aws_apigatewayv2_api.http_api.id
+  route_key = "GET /users/{user_id}/avatar/upload-url"
+  target    = "integrations/${aws_apigatewayv2_integration.user_manager.id}"
+}
+
+resource "aws_lambda_permission" "api_gw_user" {
+  statement_id  = "AllowExecutionFromAPIGatewayUser"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.user_manager.function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_apigatewayv2_api.http_api.execution_arn}/*/*/users*"
+}

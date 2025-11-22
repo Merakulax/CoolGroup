@@ -1,23 +1,25 @@
 import json
 
+
 def handler(event, context):
     print("Event:", json.dumps(event))
-    body = event.get('body', '')
-    
-    # If body is JSON string, try to parse it to return structured data, or just return as is
+    body = event.get("body", "")
+
+    sample_image_url = "https://picsum.photos/200/300"  # Using a generic placeholder
+
+    response_payload = {"message": "Echo", "image_url": sample_image_url}
+
     try:
         parsed_body = json.loads(body)
-        response_body = json.dumps({
-            "message": "Echo",
-            "received": parsed_body
-        })
-    except:
-        response_body = body
+        response_payload["received"] = parsed_body
+    except json.JSONDecodeError:
+        response_payload["received_raw"] = (
+            body  # If not valid JSON, put it as raw string
+        )
 
     return {
-        'statusCode': 200,
-        'headers': {
-            'Content-Type': 'application/json'
-        },
-        'body': response_body
+        "statusCode": 200,
+        "headers": {"Content-Type": "application/json"},
+        "body": json.dumps(response_payload),
     }
+

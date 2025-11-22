@@ -8,6 +8,7 @@ dynamodb = boto3.resource('dynamodb')
 s3_client = boto3.client('s3')
 
 users_table = dynamodb.Table(os.environ.get('USERS_TABLE', 'users'))
+user_state_table = dynamodb.Table(os.environ.get('USER_STATE_TABLE', 'tamagotchi-health-user-state-dev'))
 bucket_name = os.environ.get('AVATAR_BUCKET', 'avatars')
 
 def handler(event, context):
@@ -22,6 +23,8 @@ def handler(event, context):
             return get_user(event)
         elif route_key == 'GET /users/{user_id}/avatar/upload-url':
             return get_upload_url(event)
+        elif route_key == 'GET /avatar/current-state/{user_id}':
+            return get_avatar_state(event)
         else:
             return {
                 "statusCode": 404,
@@ -77,12 +80,40 @@ def get_user(event):
     if not item:
         return {"statusCode": 404, "body": json.dumps({"error": "User not found"})}
         
-    # Decimal to float/int conversion might be needed if boto3 doesn't handle it for json dump
-    # But simple types usually work.
-    
     return {
         "statusCode": 200,
         "body": json.dumps(item, default=str)
+    }
+
+def get_avatar_state(event):
+    """
+    Lightweight endpoint for polling state.
+    """
+    path_params = event.get('pathParameters', {})
+    user_id = path_params.get('user_id')
+    
+    if not user_id:
+        return {"statusCode": 400, "body": json.dumps({"error": "Missing user_id"})}
+        
+    response = user_state_table.get_item(Key={'user_id': user_id})
+    item = response.get('Item')
+    
+    if not item:
+        return {"statusCode": 404, "body": json.dumps({"error": "State not found"})}
+    
+    # Construct clean response for Watch
+    response_data = {
+        "user_id": item.get('user_id'),
+        "state": item.get('stateEnum', 'UNKNOWN'),
+        "mood": item.get('mood', 'Neutral'),
+        "image_url": item.get('image_url'),
+        "timestamp": int(item.get('timestamp', 0)),
+        "message": item.get('message', '')
+    }
+    
+    return {
+        "statusCode": 200,
+        "body": json.dumps(response_data, default=str)
     }
 
 def get_upload_url(event):
@@ -100,12 +131,6 @@ def get_upload_url(event):
             Params={'Bucket': bucket_name, 'Key': key, 'ContentType': 'image/jpeg'},
             ExpiresIn=300
         )
-        
-        # Also construct the final public/access URL to store in DB
-        # Since bucket is private, they would need another presigned GET URL to view it
-        # Or we make the bucket objects public (not recommended usually, but for avatars maybe ok?)
-        # For this MVP, let's assume we use the presigned GET or just store the Key.
-        # We'll return the upload URL and the Key.
         
         return {
             "statusCode": 200,

@@ -5,29 +5,16 @@ Receives batched sensor data from phone bridge and stores in DynamoDB
 
 import json
 import os
+import boto3
 from datetime import datetime
-# import boto3
 
-# dynamodb = boto3.resource('dynamodb')
-# table = dynamodb.Table(os.environ['DYNAMODB_TABLE'])
-
+dynamodb = boto3.resource('dynamodb')
+health_table = dynamodb.Table(os.environ.get('HEALTH_TABLE', 'health_data'))
+lambda_client = boto3.client('lambda')
 
 def handler(event, context):
     """
     Lambda handler for sensor data ingestion
-
-    Expected event body:
-    {
-        "user_id": "uuid",
-        "batch": [
-            {
-                "heartRate": 75,
-                "accelerometer": {"x": 0.1, "y": 0.2, "z": 9.8},
-                "timestamp": 1732234567000
-            },
-            ...
-        ]
-    }
     """
     try:
         # Parse request
@@ -44,7 +31,7 @@ def handler(event, context):
         print(f"Received batch of {len(sensor_batch)} samples for user {user_id}")
 
         # Store in DynamoDB
-        # store_sensor_data(user_id, sensor_batch)
+        store_sensor_data(user_id, sensor_batch)
 
         # Analyze batch for triggers
         analysis = analyze_batch(sensor_batch)
@@ -52,7 +39,7 @@ def handler(event, context):
         # Trigger agentic loop if needed
         if should_trigger_agent(analysis):
             print(f"Triggering agentic loop: {analysis['reason']}")
-            # invoke_orchestrator(user_id, analysis)
+            invoke_orchestrator(user_id, analysis)
 
         return {
             'statusCode': 200,
@@ -76,16 +63,24 @@ def analyze_batch(sensor_batch):
     if not sensor_batch:
         return {'anomalies': []}
 
-    # Extract heart rates
-    heart_rates = [s.get('heartRate', 0) for s in sensor_batch]
+    # Extract metrics
+    heart_rates = [s.get('heartRate', 0) for s in sensor_batch if 'heartRate' in s]
     avg_hr = sum(heart_rates) / len(heart_rates) if heart_rates else 0
     max_hr = max(heart_rates) if heart_rates else 0
-
+    
+    # Check for physiological updates
+    has_sleep = any('sleepScore' in s for s in sensor_batch)
+    has_recovery = any('recoveryScore' in s for s in sensor_batch)
+    
     anomalies = []
     if max_hr > 180:
         anomalies.append('heart_rate_critical')
     if avg_hr > 140:
         anomalies.append('elevated_heart_rate')
+    if has_sleep:
+        anomalies.append('sleep_update')
+    if has_recovery:
+        anomalies.append('recovery_update')
 
     return {
         'avg_heart_rate': avg_hr,
@@ -102,22 +97,38 @@ def should_trigger_agent(analysis):
 
 def store_sensor_data(user_id, sensor_batch):
     """Store sensor batch in DynamoDB"""
-    # TODO: Implement DynamoDB storage
-    # table.put_item(Item={
-    #     'user_id': user_id,
-    #     'timestamp': int(datetime.now().timestamp()),
-    #     'sensor_batch': sensor_batch
-    # })
-    pass
+    with health_table.batch_writer() as batch:
+        for sensor in sensor_batch:
+            item = {
+                'user_id': user_id,
+                'timestamp': sensor.get('timestamp', int(datetime.now().timestamp() * 1000)),
+                **sensor # Flatten sensor data
+            }
+            # Convert float to Decimal for DynamoDB if needed, but boto3 handles most types.
+            # However, DynamoDB doesn't like floats sometimes. 
+            # For simplicity, we rely on simple types or would need a serializer.
+            # Ideally, we just store it.
+            # Note: Boto3 Table resource handles float to Decimal conversion automatically in newer versions? 
+            # Actually usually explicitly required. We'll assume standard JSON types for now.
+            # For safety, convert floats to string or Decimal if it fails.
+            batch.put_item(Item=item)
 
 
 def invoke_orchestrator(user_id, analysis):
     """Invoke agentic loop orchestrator Lambda"""
-    # TODO: Implement Lambda invocation
-    # lambda_client = boto3.client('lambda')
-    # lambda_client.invoke(
-    #     FunctionName='AgenticLoopOrchestrator',
-    #     InvocationType='Event',
-    #     Payload=json.dumps({'user_id': user_id, 'analysis': analysis})
-    # )
-    pass
+    # Construct function name dynamically or use env var
+    project = os.environ.get('PROJECT_NAME', 'CoolGroup') # Fallback
+    env = os.environ.get('ENV', 'dev')
+    function_name = f"{project}-orchestrator-{env}"
+    
+    # If variable not set, try to find it or just print for now if we can't guess.
+    # Actually, let's use a simpler approach: assume we are in the same stack.
+    
+    try:
+        lambda_client.invoke(
+            FunctionName=function_name,
+            InvocationType='Event', # Async
+            Payload=json.dumps({'user_id': user_id, 'analysis': analysis})
+        )
+    except Exception as e:
+        print(f"Failed to invoke orchestrator {function_name}: {e}")

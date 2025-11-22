@@ -19,7 +19,9 @@ resource "aws_lambda_function" "sensor_ingest" {
   environment {
     variables = {
       DYNAMODB_TABLE = aws_dynamodb_table.user_state.name
+      HEALTH_TABLE   = aws_dynamodb_table.health_data.name
       ENV            = var.environment
+      PROJECT_NAME   = var.project_name
     }
   }
 }
@@ -45,7 +47,35 @@ resource "aws_lambda_function" "orchestrator" {
   environment {
     variables = {
       DYNAMODB_TABLE = aws_dynamodb_table.user_state.name
+      HEALTH_TABLE   = aws_dynamodb_table.health_data.name
       ENV            = var.environment
+    }
+  }
+}
+
+# Zip the demo trigger function code
+data "archive_file" "demo_zip" {
+  type        = "zip"
+  source_dir  = "${path.module}/../../lambda/demo"
+  output_path = "${path.module}/.build/demo.zip"
+  excludes    = ["__pycache__"]
+}
+
+resource "aws_lambda_function" "demo_trigger" {
+  filename         = data.archive_file.demo_zip.output_path
+  function_name    = "${var.project_name}-demo-trigger-${var.environment}"
+  role             = aws_iam_role.lambda_role.arn
+  handler          = "trigger.handler"
+  source_code_hash = data.archive_file.demo_zip.output_base64sha256
+  runtime          = "python3.11"
+  timeout          = 10
+  memory_size      = 128
+
+  environment {
+    variables = {
+      DYNAMODB_TABLE = aws_dynamodb_table.user_state.name
+      ENV            = var.environment
+      PROJECT_NAME   = var.project_name
     }
   }
 }

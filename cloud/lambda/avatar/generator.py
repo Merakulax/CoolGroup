@@ -10,37 +10,42 @@ from google.genai.types import GenerateContentConfig, Modality
 import google.oauth2.credentials
 
 # Clients
-dynamodb = boto3.resource("dynamodb")
-s3 = boto3.client("s3")
+dynamodb = boto3.resource('dynamodb')
+s3 = boto3.client('s3')
 
 # Config
-PROJECT_ID = os.environ.get("GCP_PROJECT_ID")
-REGION = "global"
-API_KEY = os.environ.get("GCP_API_KEY")
-USERS_TABLE = os.environ.get("USERS_TABLE")
-HEALTH_TABLE = os.environ.get("HEALTH_TABLE")
-BUCKET = os.environ.get("AVATAR_BUCKET")
+PROJECT_ID = os.environ.get('GCP_PROJECT_ID')
+REGION = "us-central1" # Hardcoded for Gemini 2.5/3 Preview support
+API_KEY = os.environ.get('GCP_API_KEY')
+USERS_TABLE = os.environ.get('USERS_TABLE')
+HEALTH_TABLE = os.environ.get('HEALTH_TABLE')
+USER_STATE_TABLE = os.environ.get('USER_STATE_TABLE', 'tamagotchi-health-user-state-dev')
+BUCKET = os.environ.get('AVATAR_BUCKET')
 
 users_table = dynamodb.Table(USERS_TABLE)
 health_table = dynamodb.Table(HEALTH_TABLE)
-
+user_state_table = dynamodb.Table(USER_STATE_TABLE)
 
 def handler(event, context):
     print("Event:", json.dumps(event))
-
-    user_id = event.get("pathParameters", {}).get("user_id")
+    
+    # Support both API Gateway (pathParameters) and Direct Invocation (payload)
+    user_id = event.get('user_id')
     if not user_id:
-        return {"statusCode": 400, "body": json.dumps({"error": "Missing user_id"})}
+        user_id = event.get('pathParameters', {}).get('user_id')
+        
+    if not user_id:
+        raise ValueError("Missing user_id")
 
     try:
         # 1. Get Context
         user_profile = get_user_profile(user_id)
         health_data = get_latest_health(user_id)
-
+        
         # 2. Construct Prompt
         prompt_text = construct_prompt(user_profile, health_data)
         print(f"Prompt: {prompt_text}")
-
+        
         # 3. Generate Image
         # Hard-coded OAuth2 credentials from user
         CREDENTIALS_INFO = {
@@ -50,30 +55,20 @@ def handler(event, context):
             "quota_project_id": "hackatum25mun-1040",
             "refresh_token": "1//03Ck1NMZxjKFfCgYIARAAGAMSNwF-L9Ir-4mPMPDUBM-Ag4x-TWdKpgo4mvY7pVVjZbPro6vW1169ZHJ_V7NxeyCmICVejHElxcQ",
             "type": "authorized_user",
-            "universe_domain": "googleapis.com",
+            "universe_domain": "googleapis.com"
         }
-
-        credentials = google.oauth2.credentials.Credentials.from_authorized_user_info(
-            CREDENTIALS_INFO
-        )
-        client = genai.Client(
-            vertexai=True, project=PROJECT_ID, location=REGION, credentials=credentials
-        )
+        
+        credentials = google.oauth2.credentials.Credentials.from_authorized_user_info(CREDENTIALS_INFO)
+        client = genai.Client(vertexai=True, project=PROJECT_ID, location=REGION, credentials=credentials)
 
         contents = [prompt_text]
-        avatar_url = user_profile.get("avatar_url")
-        if avatar_url:
-            try:
-                # Download image from S3
-                obj = s3.get_object(Bucket=BUCKET, Key=avatar_url.split("/")[-1])
-                # image_bytes = obj['Body'].read() # Unused for now
-                pass
-            except Exception as e:
-                print(f"Failed to load init image: {e}")
+        avatar_url = user_profile.get('avatar_url')
+        
+        # Optional: Use Init Image if we wanted to do image-to-image (omitted for now)
 
-        # Generate
-        model_id = "gemini-2.5-flash-image"
-
+        # Generate using generate_content with IMAGE modality
+        model_id = "gemini-2.5-flash-image" 
+        
         try:
             response = client.models.generate_content(
                 model=model_id,
@@ -105,76 +100,79 @@ def handler(event, context):
                 ExpiresIn=3600
             )
             
-            return {
-                "statusCode": 200,
-                "body": json.dumps({
-                    "image_url": url,
-                    "prompt": prompt_text,
-                    "health_summary": health_data
-                })
-            }
+            print(f"Image Generated: {url}")
+            
+            # 4. Update User State with new Image URL
+            update_user_state_image(user_id, url)
+            
+            print(json.dumps({
+                "status": "GENERATED",
+                "image_url": url,
+                "prompt": prompt_text
+            }))
             
         except Exception as e:
             print(f"Image generation failed: {e}")
-            # Fallback is now redundant as the main call uses generate_content, 
-            # but we can return the error.
-            return {
-                "statusCode": 200,
-                "body": json.dumps({
-                    "message": "Image generation failed.",
-                    "error": str(e)
-                })
-            }
+            raise Exception(f"Image generation failed: {e}")
 
     except Exception as e:
         print(f"Error: {e}")
         import traceback
-
         traceback.print_exc()
-        return {"statusCode": 500, "body": json.dumps({"error": str(e)})}
-
+        raise Exception(f"Unhandled error: {e}")
 
 def get_user_profile(user_id):
-    resp = users_table.get_item(Key={"user_id": user_id})
-    return resp.get("Item", {})
-
+    resp = users_table.get_item(Key={'user_id': user_id})
+    return resp.get('Item', {})
 
 def get_latest_health(user_id):
     # Query health data by timestamp descending
     resp = health_table.query(
-        KeyConditionExpression=boto3.dynamodb.conditions.Key("user_id").eq(user_id),
+        KeyConditionExpression=boto3.dynamodb.conditions.Key('user_id').eq(user_id),
         ScanIndexForward=False,
-        Limit=1,
+        Limit=1
     )
-    items = resp.get("Items", [])
+    items = resp.get('Items', [])
     return items[0] if items else {}
 
+def update_user_state_image(user_id, url):
+    """Update the user_state table with the new image URL"""
+    try:
+        user_state_table.update_item(
+            Key={'user_id': user_id},
+            UpdateExpression="set image_url = :u, last_image_generated = :t",
+            ExpressionAttributeValues={
+                ':u': url,
+                ':t': int(time.time() * 1000)
+            }
+        )
+        print(f"Updated UserState for {user_id} with image URL.")
+    except Exception as e:
+        print(f"Failed to update UserState DB: {e}")
 
 def construct_prompt(user_profile, health_data):
-    name = user_profile.get("pet_name", "Pet")
+    name = user_profile.get('pet_name', 'Pet')
     # Base visual style
     base = f"A cute 3D render of a {name}, digital pet style, vibrant colors, 4k."
-
+    
     # Health modifiers
-    sleep = int(health_data.get("sleepScore", 70))
-    stress = int(health_data.get("stressLevel", 30))
-    hr = int(health_data.get("heartRate", 70))
-
+    sleep = int(health_data.get('sleepScore', 70))
+    stress = int(health_data.get('stressLevel', 30))
+    hr = int(health_data.get('heartRate', 70))
+    
     state = []
     if sleep < 50:
-        state.append(
-            "very tired, sleepy eyes, yawning, wearing pajamas, blue dark lighting"
-        )
+        state.append("very tired, sleepy eyes, yawning, wearing pajamas, blue dark lighting")
     elif sleep > 80:
         state.append("energetic, glowing aura, wide awake, bright lighting")
-
+        
     if stress > 70:
         state.append("nervous, sweating, shaking, chaotic background")
     elif stress < 30:
         state.append("calm, zen, peaceful background, floating")
-
+        
     if hr > 120:
         state.append("sweating, sporty headband, running motion")
-
+        
     prompt = f"{base} {', '.join(state)}"
     return prompt

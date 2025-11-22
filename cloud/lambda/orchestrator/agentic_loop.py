@@ -1,17 +1,22 @@
 """
 Agentic Loop Orchestrator
-Coordinates the Perception → Reasoning → Planning → Action cycle
+The "Brain" of the system.
+1. Fetches recent health history.
+2. Uses Bedrock (Claude) to analyze trends and determine state.
+3. Updates state and triggers Avatar Generator ONLY if state changes.
 """
 
 import json
 import os
 import boto3
 from datetime import datetime
+from boto3.dynamodb.conditions import Key
 from decimal import Decimal
 
 # Clients
 dynamodb = boto3.resource('dynamodb')
 bedrock_runtime = boto3.client('bedrock-runtime', region_name='eu-central-1')
+lambda_client = boto3.client('lambda')
 
 # Tables
 user_state_table = dynamodb.Table(os.environ.get('DYNAMODB_TABLE', 'user_state'))
@@ -24,174 +29,213 @@ def handler(event, context):
     """
     try:
         user_id = event.get('user_id')
-        analysis = event.get('analysis', {})
+        if not user_id:
+            print("No user_id provided.")
+            return {'statusCode': 400, 'error': 'Missing user_id'}
+
+        print(f"Starting Brain for user {user_id}")
+
+        # 1. PERCEPTION: Gather History
+        # Fetch last 15 minutes / 20 items
+        history = get_health_history(user_id, limit=20)
+        if not history:
+            print("No recent health data found.")
+            return {'statusCode': 200, 'message': 'No data'}
+
+        # Fetch User Profile (Name, Pet Name)
+        user_profile = get_user_profile(user_id)
+
+        # 2. REASONING: Analyze Trend with Bedrock
+        # We send the raw data to LLM to detect "Stress" vs "Exercise" vs "Sleep"
+        analysis = analyze_with_bedrock(history, user_profile)
         
-        # Check for demo trigger overrides
-        force_state = event.get('force_state')
-        custom_message = event.get('custom_message')
+        print(f"AI Analysis: {json.dumps(analysis)}")
+        
+        new_state_enum = analysis.get('state', 'UNKNOWN')
+        new_mood = analysis.get('mood', 'Neutral')
+        reasoning = analysis.get('reasoning', 'No reasoning provided')
+        
+        # 3. STATE DIFFING
+        last_state_item = get_last_state(user_id)
+        last_state_enum = last_state_item.get('stateEnum', 'NONE') if last_state_item else 'NONE'
+        
+        # Logic: Update if State Enum changes OR Mood changes significantly OR it's been > 1 hour
+        should_trigger = (new_state_enum != last_state_enum)
+        
+        # Optional: Time-based refresh (e.g., every hour even if state matches)
+        last_update_ts = last_state_item.get('timestamp', 0) if last_state_item else 0
+        time_since_update = (int(datetime.now().timestamp() * 1000) - last_update_ts) / 1000
+        if time_since_update > 3600: 
+            should_trigger = True
 
-        print(f"Starting agentic loop for user {user_id}")
-
-        # 1. PERCEPTION: Gather full context
-        health_context, user_profile = gather_context(user_id, analysis)
-        print(f"Health Context: {health_context}")
-        print(f"User Profile: {user_profile}")
-
-        # 2. LOGIC: Determine State (1-10)
-        if force_state:
-            state_index = int(force_state)
-            mood = "Forced State"
-            reasoning = "Demo Override"
+        if should_trigger:
+            print(f"State Change Detected: {last_state_enum} -> {new_state_enum}")
+            
+            # 4. ACTION: Persist & Visualize
+            
+            # Update DB
+            update_state_db(user_id, analysis, time_since_update)
+            
+            # Trigger Avatar Generator (Fire and Forget)
+            invoke_avatar_generator(user_id)
+            
+            return {
+                'statusCode': 200,
+                'body': json.dumps({
+                    'status': 'UPDATED',
+                    'old_state': last_state_enum,
+                    'new_state': new_state_enum
+                })
+            }
         else:
-            state_index, mood, reasoning = calculate_state_logic(health_context)
-        
-        print(f"Determined State: {state_index} ({mood})")
-
-        # 3. NARRATIVE: Generate AI Message
-        if custom_message:
-            message = custom_message
-        else:
-            message = generate_message(state_index, mood, health_context, user_profile)
-        
-        print(f"AI Message: {message}")
-
-        # 4. PERSISTENCE: Update Pet State
-        new_state = {
-            'user_id': user_id,
-            'stateIndex': state_index,
-            'mood': mood,
-            'energy': calculate_energy(health_context),
-            'message': message,
-            'internalReasoning': reasoning,
-            'timestamp': int(datetime.now().timestamp() * 1000),
-            'last_updated': datetime.now().isoformat()
-        }
-        
-        update_pet_state(new_state)
-
-        return {
-            'statusCode': 200,
-            'body': json.dumps({
-                'user_id': user_id,
-                'new_state': new_state,
-                'success': True
-            }, default=str)
-        }
+            print(f"State Stable ({new_state_enum}). No visual update needed.")
+            return {
+                'statusCode': 200,
+                'body': json.dumps({'status': 'STABLE'})
+            }
 
     except Exception as e:
-        print(f"Error in agentic loop: {str(e)}")
+        print(f"Error in Orchestrator: {str(e)}")
         return {
             'statusCode': 500,
             'body': json.dumps({'error': str(e)})
         }
 
 
-def gather_context(user_id, analysis):
-    """
-    Gather health context and user profile
-    """
-    # Health Context
-    context = {
-        'sleep_score': analysis.get('sleep_score', 70),
-        'recovery_score': analysis.get('recovery_score', 70),
-        'stress_level': analysis.get('stress_level', 30),
-        'avg_hr': analysis.get('avg_heart_rate', 70)
-    }
-    
-    # User Profile
-    user_profile = {}
+def get_health_history(user_id, limit=20):
+    """Fetch recent health records"""
     try:
-        response = users_table.get_item(Key={'user_id': user_id})
-        user_profile = response.get('Item', {})
+        response = health_table.query(
+            KeyConditionExpression=Key('user_id').eq(user_id),
+            ScanIndexForward=False, # Newest first
+            Limit=limit
+        )
+        items = response.get('Items', [])
+        # Reverse to chronological order for LLM
+        return items[::-1]
     except Exception as e:
-        print(f"Failed to fetch user profile: {e}")
-        
-    return context, user_profile
+        print(f"DB Query Error: {e}")
+        return []
 
-def calculate_state_logic(context):
-    """
-    Map physiological data to 1-10 state.
-    Returns: (state_index, mood_string, reasoning)
-    """
-    sleep = context.get('sleep_score', 0)
-    recovery = context.get('recovery_score', 0)
-    stress = context.get('stress_level', 0)
-    
-    # Simple Algorithm
-    # Base score: Average of Sleep + Recovery
-    base = (sleep + recovery) / 2
-    
-    # Penalize for stress
-    if stress > 70:
-        base -= 20
-    
-    # Normalize to 1-10
-    score = max(1, min(10, int(base / 10)))
-    
-    # Mood Mapping
-    moods = {
-        1: "Exhausted", 2: "Sick", 3: "Tired", 4: "Concerned", 
-        5: "Okay", 6: "Recovering", 7: "Good", 8: "Energetic", 
-        9: "Happy", 10: "Ecstatic"
-    }
-    
-    reasoning = f"Sleep={sleep}, Recovery={recovery}, Stress={stress} -> Base={base}"
-    return score, moods.get(score, "Neutral"), reasoning
-
-def calculate_energy(context):
-    """Calculate 'Energy Budget' (Spoons) 0-100"""
-    return int((context.get('sleep_score', 50) + context.get('recovery_score', 50)) / 2)
-
-def generate_message(state_index, mood, context, user_profile):
-    """
-    Use Bedrock (Claude) to generate the German persona message
-    """
+def get_user_profile(user_id):
     try:
-        model_id = "anthropic.claude-3-sonnet-20240229-v1:0"
-        
-        user_name = user_profile.get('name', 'Nutzer')
-        pet_name = user_profile.get('pet_name', 'Ich')
-        
-        system_prompt = f"""You are {pet_name}, a Tamagotchi Health Companion for {user_name}. 
-        Your task is to embody your state based on the user's health data.
-        Always speak in the first person as {pet_name}.
-        Keep it short (max 1-2 sentences).
-        Be empathic but honest."""
-        
-        user_prompt = f"""
-        Current Status:
-        - Level: {state_index}/10
-        - Mood: {mood}
-        - Sleep: {context.get('sleep_score')}/100
-        - Recovery: {context.get('recovery_score')}/100
-        
-        Generate a message to {user_name} in English."""
+        resp = users_table.get_item(Key={'user_id': user_id})
+        return resp.get('Item', {})
+    except:
+        return {}
 
-        body = json.dumps({
-            "anthropic_version": "bedrock-2023-05-31",
-            "max_tokens": 100,
-            "system": system_prompt,
-            "messages": [
-                {"role": "user", "content": user_prompt}
-            ]
-        })
+def get_last_state(user_id):
+    try:
+        resp = user_state_table.get_item(Key={'user_id': user_id})
+        return resp.get('Item')
+    except:
+        return None
 
+def analyze_with_bedrock(history, user_profile):
+    """
+    Send data to Claude to determine state.
+    """
+    model_id = "anthropic.claude-sonnet-4-5-20250929-v1:0"
+    
+    # Format data for prompt
+    data_str = ""
+    for item in history:
+        # Simple format: Time: HR=X, Steps=Y, Stress=Z
+        ts = datetime.fromtimestamp(int(item['timestamp'])/1000).strftime('%H:%M:%S')
+        hr = item.get('heartRate', 'N/A')
+        steps = item.get('stepCount', '0')
+        stress = item.get('stressLevel', 'N/A')
+        data_str += f"[{ts}] HR={hr}, Steps={steps}, Stress={stress}\n"
+        
+    pet_name = user_profile.get('pet_name', 'Pet')
+    
+    system_prompt = f"""You are the brain of a Tamagotchi. Your job is to analyze the user's physiological data and determine their STATE.
+    
+    Possible States:
+    - REST: Low HR, Low movement.
+    - WORK: Moderate HR, Low movement, maybe high Stress.
+    - EXERCISE: High HR, High movement.
+    - STRESSED: High HR, Low movement (Critical distinction!).
+    - SLEEP: Very low HR, no movement, night time.
+    
+    Analyze the trend. Is HR rising? Is it stable?
+    
+    Output JSON ONLY:
+    {{
+        "state": "STATE_ENUM",
+        "mood": "Adjective for the pet (e.g. Tired, Energetic, Anxious)",
+        "reasoning": "Short explanation"
+    }}
+    """
+    
+    user_prompt = f"Data History (Last few minutes):\n{data_str}\n\nDetermine the current state."
+
+    body = json.dumps({
+        "anthropic_version": "bedrock-2023-05-31",
+        "max_tokens": 300,
+        "system": system_prompt,
+        "messages": [
+            {"role": "user", "content": user_prompt}
+        ]
+    })
+
+    try:
         response = bedrock_runtime.invoke_model(
             body=body, 
             modelId=model_id, 
             accept='application/json', 
             contentType='application/json'
         )
-        
         response_body = json.loads(response.get('body').read())
-        return response_body['content'][0]['text']
-
+        text = response_body['content'][0]['text']
+        
+        # Parse JSON from text (Claude usually puts it in markdown block or plain)
+        # Simple extraction
+        start = text.find('{')
+        end = text.rfind('}') + 1
+        if start != -1 and end != -1:
+            json_str = text[start:end]
+            return json.loads(json_str)
+        else:
+            print(f"Failed to parse JSON from Claude: {text}")
+            return {"state": "UNKNOWN", "mood": "Confused", "reasoning": "Parse Error"}
+            
     except Exception as e:
-        print(f"Bedrock error: {e}")
-        return f"Ich fühle mich {mood}. (AI Offline)"
+        print(f"Bedrock Error: {e}")
+        return {"state": "UNKNOWN", "mood": "Offline", "reasoning": str(e)}
 
-def update_pet_state(state_item):
-    """Update user_state table"""
-    # Convert float/int to Decimal is standard for Boto3 DDB, 
-    # but simple types usually work. If issues arise, explicit Decimal conversion needed.
-    user_state_table.put_item(Item=state_item)
+def update_state_db(user_id, analysis, time_gap):
+    """Update user state table with new analysis"""
+    item = {
+        'user_id': user_id,
+        'timestamp': int(datetime.now().timestamp() * 1000),
+        'stateEnum': analysis.get('state'),
+        'mood': analysis.get('mood'),
+        'reasoning': analysis.get('reasoning'),
+        'last_updated': datetime.now().isoformat()
+    }
+    user_state_table.put_item(Item=item)
+
+def invoke_avatar_generator(user_id):
+    """Trigger the visual update"""
+    project = os.environ.get('ENV', 'dev') # Simplified logic, usually passed in
+    # Function name construction:
+    # Terraform naming: ${var.project_name}-avatar-generator-${var.environment}
+    # I need the project name. I'll assume 'tamagotchi-health' or fetch from env if passed.
+    # Better: pass function name via Env Var in Terraform.
+    # For now, I'll use the pattern I know.
+    
+    # Check context.function_name to guess project prefix?
+    # Or just hardcode the pattern for now as it's Hackathon.
+    # "tamagotchi-health-avatar-generator-dev"
+    
+    function_name = "tamagotchi-health-avatar-generator-dev" 
+    
+    try:
+        lambda_client.invoke(
+            FunctionName=function_name,
+            InvocationType='Event',
+            Payload=json.dumps({'user_id': user_id})
+        )
+    except Exception as e:
+        print(f"Failed to invoke avatar generator: {e}")

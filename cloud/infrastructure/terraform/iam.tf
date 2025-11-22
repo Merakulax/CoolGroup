@@ -35,14 +35,13 @@ resource "aws_iam_role_policy" "dynamodb_access" {
           "dynamodb:PutItem",
           "dynamodb:UpdateItem",
           "dynamodb:Query",
-          "dynamodb:Scan"
+          "dynamodb:Scan",
+          "dynamodb:BatchWriteItem",
+          "dynamodb:BatchGetItem",
+          "dynamodb:DescribeTable"
         ]
         Effect   = "Allow"
-        Resource = [
-          aws_dynamodb_table.user_state.arn,
-          aws_dynamodb_table.health_data.arn,
-          aws_dynamodb_table.users.arn
-        ]
+        Resource = "*"
       }
     ]
   })
@@ -70,7 +69,6 @@ resource "aws_iam_role_policy" "s3_access" {
   })
 }
 
-# Policy for invoking Bedrock (Placeholder for when Agent is ready)
 resource "aws_iam_role_policy" "bedrock_access" {
   name = "bedrock_access"
   role = aws_iam_role.lambda_role.id
@@ -84,7 +82,28 @@ resource "aws_iam_role_policy" "bedrock_access" {
           "bedrock:InvokeModel"
         ]
         Effect   = "Allow"
-        Resource = "*" # Restrict this to specific Agent ARN in production
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy" "lambda_invoke_access" {
+  name = "lambda_invoke_access"
+  role = aws_iam_role.lambda_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "lambda:InvokeFunction"
+        ]
+        Effect   = "Allow"
+        Resource = [
+          aws_lambda_function.avatar_generator.arn,
+          aws_lambda_function.orchestrator.arn
+        ]
       }
     ]
   })

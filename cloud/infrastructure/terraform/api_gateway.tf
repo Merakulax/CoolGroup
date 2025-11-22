@@ -87,6 +87,14 @@ resource "aws_lambda_permission" "api_gw_user" {
   source_arn    = "${aws_apigatewayv2_api.http_api.execution_arn}/*/*/users*"
 }
 
+resource "aws_lambda_permission" "api_gw_user_avatar_state" {
+  statement_id  = "AllowExecutionFromAPIGatewayUserAvatarState"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.user_manager.function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_apigatewayv2_api.http_api.execution_arn}/*/*/avatar/current-state/*"
+}
+
 # Integration for Avatar Generator
 resource "aws_apigatewayv2_integration" "avatar_generator" {
   api_id           = aws_apigatewayv2_api.http_api.id
@@ -98,7 +106,7 @@ resource "aws_apigatewayv2_integration" "avatar_generator" {
 resource "aws_apigatewayv2_route" "get_avatar_state" {
   api_id    = aws_apigatewayv2_api.http_api.id
   route_key = "GET /avatar/current-state/{user_id}"
-  target    = "integrations/${aws_apigatewayv2_integration.avatar_generator.id}"
+  target    = "integrations/${aws_apigatewayv2_integration.user_manager.id}"
 }
 
 resource "aws_lambda_permission" "api_gw_avatar" {

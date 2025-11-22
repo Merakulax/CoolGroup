@@ -1,6 +1,7 @@
 """
 Sensor Ingestion Lambda
-Receives batched sensor data from phone bridge and stores in DynamoDB
+Receives batched sensor data from phone bridge and stores in DynamoDB.
+Triggers the Orchestrator asynchronously.
 """
 
 import json
@@ -25,31 +26,31 @@ def handler(event, context):
         user_id = body.get('user_id')
         sensor_batch = body.get('batch', [])
 
+        # Also support single data point push (not in a 'batch' list) for simple tests
+        if not sensor_batch and 'heartRate' in body:
+            sensor_batch = [body]
+
         if not user_id or not sensor_batch:
             return {
                 'statusCode': 400,
                 'body': json.dumps({'error': 'Missing user_id or batch'})
             }
 
-        print(f"Received batch of {len(sensor_batch)} samples for user {user_id}")
+        print(f"Received {len(sensor_batch)} samples for user {user_id}")
 
-        # Store Data (DynamoDB Only)
+        # 1. Fast Track: Store Data
         store_sensor_data(user_id, sensor_batch)
 
-        # Analyze batch for triggers
-        analysis = analyze_batch(sensor_batch)
-
-        # Trigger agentic loop if needed
-        if should_trigger_agent(analysis):
-            print(f"Triggering agentic loop: {analysis['reason']}")
-            invoke_orchestrator(user_id, analysis)
+        # 2. Trigger Orchestrator (Async)
+        # We trigger it every time data comes in to allow the "Brain" to decide if a state change occurred.
+        # The Orchestrator will handle the "debouncing" or history analysis.
+        invoke_orchestrator(user_id)
 
         return {
             'statusCode': 200,
             'body': json.dumps({
-                'message': 'Batch processed successfully',
-                'samples_count': len(sensor_batch),
-                'analysis': analysis
+                'message': 'Data processed',
+                'samples_count': len(sensor_batch)
             })
         }
 
@@ -65,62 +66,34 @@ def store_sensor_data(user_id, sensor_batch):
     with health_table.batch_writer() as batch:
         for sensor in sensor_batch:
             # Flatten and add user_id
+            # Ensure timestamp exists
+            ts = sensor.get('timestamp')
+            if not ts:
+                ts = int(datetime.now().timestamp() * 1000)
+            
             item = {
                 'user_id': user_id,
-                'timestamp': sensor.get('timestamp', int(datetime.now().timestamp() * 1000)),
+                'timestamp': ts,
                 **sensor
             }
-            # Ensure float precision doesn't break DDB (optional, boto3 handles Decimal conversion mostly)
             batch.put_item(Item=item)
 
-def analyze_batch(sensor_batch):
-    """Analyze sensor batch for anomalies or triggers"""
-    if not sensor_batch:
-        return {'anomalies': []}
-
-    # Extract metrics
-    heart_rates = [s.get('heartRate', 0) for s in sensor_batch if 'heartRate' in s]
-    avg_hr = sum(heart_rates) / len(heart_rates) if heart_rates else 0
-    max_hr = max(heart_rates) if heart_rates else 0
-    
-    # Check for physiological updates
-    has_sleep = any('sleepScore' in s for s in sensor_batch)
-    has_recovery = any('recoveryScore' in s for s in sensor_batch)
-    
-    anomalies = []
-    if max_hr > 180:
-        anomalies.append('heart_rate_critical')
-    if avg_hr > 140:
-        anomalies.append('elevated_heart_rate')
-    if has_sleep:
-        anomalies.append('sleep_update')
-    if has_recovery:
-        anomalies.append('recovery_update')
-
-    return {
-        'avg_heart_rate': avg_hr,
-        'max_heart_rate': max_hr,
-        'anomalies': anomalies,
-        'reason': anomalies[0] if anomalies else None
-    }
-
-
-def should_trigger_agent(analysis):
-    """Determine if agentic loop should be triggered"""
-    return len(analysis.get('anomalies', [])) > 0
-
-def invoke_orchestrator(user_id, analysis):
-    """Invoke agentic loop orchestrator Lambda"""
-    # Construct function name dynamically or use env var
-    project = os.environ.get('PROJECT_NAME', 'CoolGroup') # Fallback
+def invoke_orchestrator(user_id):
+    """Invoke agentic loop orchestrator Lambda asynchronously"""
+    # Construct function name dynamically based on env
+    project = os.environ.get('PROJECT_NAME', 'tamagotchi-health')
     env = os.environ.get('ENV', 'dev')
     function_name = f"{project}-orchestrator-{env}"
     
     try:
         lambda_client.invoke(
             FunctionName=function_name,
-            InvocationType='Event', # Async
-            Payload=json.dumps({'user_id': user_id, 'analysis': analysis})
+            InvocationType='Event', # Async - Fire and Forget
+            Payload=json.dumps({
+                'user_id': user_id,
+                'trigger': 'sensor_ingest',
+                'timestamp': int(datetime.now().timestamp() * 1000)
+            })
         )
     except Exception as e:
         print(f"Failed to invoke orchestrator {function_name}: {e}")

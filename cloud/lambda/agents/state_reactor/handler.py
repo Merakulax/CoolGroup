@@ -4,10 +4,16 @@ from core import database, llm, context, actions, predictions
 from core.utils import DecimalEncoder
 from core.llm import PET_STATE_TOOL_SCHEMA # Import the schema
 
-def run(user_id):
+def handler(event, lambda_context):
     """
+    Lambda handler for the State Reactor.
     Analyzes current sensor data and historical context to determine pet's state.
     """
+    user_id = event.get('user_id')
+    if not user_id:
+        print("Error: user_id missing in event")
+        return {'statusCode': 400, 'body': json.dumps({'error': 'Missing user_id'})}
+
     print(f"Starting State Reactor for user {user_id}")
 
     # 1. PERCEPTION: Gather Sensor Data

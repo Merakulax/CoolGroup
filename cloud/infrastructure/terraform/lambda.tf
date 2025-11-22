@@ -50,8 +50,8 @@ resource "aws_lambda_function" "orchestrator" {
       HEALTH_TABLE             = aws_dynamodb_table.health_data.name
       USERS_TABLE              = aws_dynamodb_table.users.name
       ENV                      = var.environment
-      MODEL_ID                 = "eu.anthropic.claude-sonnet-4-5-20250929-v1:0"
-      CONTEXT_RETRIEVER_LAMBDA_ARN = aws_lambda_function.context_retriever.arn
+      PROACTIVE_COACH_FUNCTION = aws_lambda_function.proactive_coach.function_name
+      STATE_REACTOR_FUNCTION   = aws_lambda_function.state_reactor.function_name
     }
   }
 }

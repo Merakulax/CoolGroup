@@ -3,10 +3,12 @@ from core import database, llm
 from core.utils import DecimalEncoder
 from core.llm import INTERVENTION_TOOL_SCHEMA
 
-def run():
+def handler(event, context):
     """
+    Lambda handler for the Proactive Coach.
     Iterates through active users and runs the Coach Model for each.
     """
+    print(f"Received event: {json.dumps(event)}")
     print("Starting Proactive Coach Loop")
 
     # Get all users

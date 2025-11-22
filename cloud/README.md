@@ -255,17 +255,45 @@ SAGEMAKER_ENDPOINT=hrv-model-endpoint
 AWS_REGION=eu-central-1
 ```
 
+## Brain Simulations & Demo Tools
+
+To facilitate development and showcase the AI reasoning capabilities without physical hardware, we have created a suite of simulation tools.
+
+### 1. Scenario Injector
+Simulates immediate physiological events to trigger the State Reactor.
+```bash
+python lambda/demo/scenario_injector.py --scenario stress
+```
+
+### 2. History Seeder
+Populates DynamoDB with long-term health trends (e.g., 14 days of burnout data) to test Predictive Models.
+```bash
+python lambda/demo/history_seeder.py --profile burnout --days 14
+```
+
+### 3. Profile Manager
+Dynamically switches User Personas to test the Agent's adaptability (e.g., Strict vs. Encouraging Coach).
+```bash
+python lambda/demo/profile_manager.py --style STRICT --tone direct
+```
+
+### 4. Environment Simulator
+Injects complex environmental context (Altitude, Weather, Speed) for advanced reasoning.
+```bash
+python lambda/demo/environment_simulator.py --scenario hike
+```
+
 ## Testing
 
+### Integration Tests
+We have a robust integration test suite that validates the end-to-end logic of the Brain, including:
+- **State Reactor Logic**: Verifying correct state transitions (e.g., Stress -> Calm).
+- **Persona Injection**: Ensuring the LLM receives the correct system prompt based on user profile.
+- **Complex Ingestion**: Verifying that environmental data is correctly parsed and stored.
+
+**Run the tests:**
 ```bash
-# Unit tests
-pytest tests/
-
-# Integration tests (requires AWS credentials)
-pytest tests/integration/ --aws
-
-# Load testing
-locust -f tests/load/api_load_test.py
+uv run --with pytest --with boto3 --with pytest-mock --with moto --with numpy pytest cloud/tests/integration/test_brain_simulations.py
 ```
 
 ## Monitoring

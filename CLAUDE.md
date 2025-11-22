@@ -16,12 +16,12 @@ The pet doesn't just display data - it **acts**: modifies calendars, adjusts wor
 ## Architecture: Distributed Edge-Cloud System
 
 ```
-Watch 5 (Edge)          Phone (Bridge)           AWS (Brain)
-├─ Sensor data @50Hz -> ├─ DSoftBus aggregation -> ├─ Bedrock Agent (LLM reasoning)
-├─ UI rendering         ├─ Auth gateway          ├─ SageMaker (Predictive models)
-└─ Haptic feedback      └─ Phone compute         └─ Lambda orchestration
-   ↑                                                 │
-   └─────────────── Pet State Update ────────────────┘
+Watch 5 (Edge)          Phone (HarmonyOS Bridge)     AWS (Brain)
+├─ .ets UI files   ->   ├─ .ts bridge logic      ->  ├─ Bedrock Agent (LLM reasoning)
+├─ Sensor @50Hz         ├─ DSoftBus API              ├─ SageMaker (Predictive models)
+└─ Haptic feedback      └─ Data aggregation          └─ Lambda orchestration
+   ↑                                                      │
+   └──────────────────── Pet State Update ────────────────┘
 ```
 
 ### Why This Architecture?
@@ -37,6 +37,12 @@ Watch 5 (Edge)          Phone (Bridge)           AWS (Brain)
 - **IDE**: DevEco Studio (Windows) - **Must use this, NOT Oniro IDE** (no wearable support)
 - **Sensors**: `@kit.SensorServiceKit` for local data (NOT Huawei Health Kit OAuth)
 - **Target API**: 18 (fallback to 12)
+
+### Phone Bridge (HarmonyOS/TypeScript)
+- **Language**: TypeScript (.ts files) - pure logic, no UI
+- **Framework**: DSoftBus API (`@kit.DistributedServiceKit`) for Super Device communication
+- **Role**: Data aggregation, auth gateway, bridge between watch and cloud
+- **NOT Android**: Do NOT use Kotlin (.kt) or Java - this is HarmonyOS native
 
 ### Cloud AI Stack (AWS)
 - **Bedrock Agents**: "Brain" - orchestrates Agentic Loop (Perception → Reasoning → Planning → Action)
@@ -55,6 +61,40 @@ Watch 5 (Edge)          Phone (Bridge)           AWS (Brain)
 - **Kernel Abstraction Layer (KAL)**: Allows kernel swaps without app rewrites
 - **Hardware Driver Foundation (HDF)**: Standardized sensor API (no vendor-specific code)
 - **No Wearable Emulator**: Must test on physical Watch 5
+
+### File Extension Requirements (CRITICAL)
+
+**ALWAYS use these extensions:**
+- ✅ `.ets` - ArkTS UI components (ArkUI declarative syntax with `@Component`, `@State`, etc.)
+- ✅ `.ts` - Pure TypeScript logic (classes, interfaces, business logic without UI)
+
+**NEVER use these extensions:**
+- ❌ `.arkts` - **INVALID** extension that breaks DevEco Studio syntax highlighting and build
+- ❌ `.kt` - Kotlin files are for Android, NOT HarmonyOS (this is NOT an Android project)
+- ❌ `.java` - Java is for Android, NOT HarmonyOS
+
+**Why this matters:**
+1. **DevEco Studio** only recognizes `.ets` and `.ts` for HarmonyOS projects
+2. Using wrong extensions causes:
+   - No syntax highlighting
+   - Project sync failures
+   - Build errors
+3. **DSoftBus** is a HarmonyOS API - phone bridge must use TypeScript (.ts), not Kotlin
+
+**File organization:**
+```
+watch/src/main/
+├─ pages/Index.ets          # Main watch face (UI component)
+├─ services/SensorService.ets   # May have UI callbacks
+└─ services/PetStateMachine.ets  # State machine logic
+
+phone/src/bridge/
+├─ WatchConnector.ts        # DSoftBus communication (pure logic)
+└─ DataAggregator.ts        # Sensor batching (pure logic)
+
+shared/models/
+└─ types.ts                 # Shared interfaces/types
+```
 
 ### ArkUI State Machine Pattern
 ```arkts

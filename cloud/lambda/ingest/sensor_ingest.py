@@ -17,6 +17,12 @@ lambda_client = boto3.client('lambda')
 # Resources
 health_table = dynamodb.Table(os.environ.get('HEALTH_TABLE', 'health_data'))
 
+class DecimalEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, Decimal):
+            return float(obj)
+        return super(DecimalEncoder, self).default(obj)
+
 def handler(event, context):
     """
     Lambda handler for sensor data ingestion
@@ -49,7 +55,7 @@ def handler(event, context):
         # 2. Trigger Orchestrator (Async)
         # We trigger it every time data comes in to allow the "Brain" to decide if a state change occurred.
         # The Orchestrator will handle the "debouncing" or history analysis.
-        invoke_orchestrator(user_id)
+        invoke_orchestrator(user_id, sensor_batch)
 
         return {
             'statusCode': 200,
@@ -83,12 +89,14 @@ def store_sensor_data(user_id, sensor_batch):
             }
             batch.put_item(Item=item)
 
-def invoke_orchestrator(user_id):
+def invoke_orchestrator(user_id, sensor_data):
     """Invoke agentic loop orchestrator Lambda asynchronously"""
-    # Construct function name dynamically based on env
-    project = os.environ.get('PROJECT_NAME', 'tamagotchi-health')
-    env = os.environ.get('ENV', 'dev')
-    function_name = f"{project}-orchestrator-{env}"
+    # Construct function name dynamically based on env or use explicit env var
+    function_name = os.environ.get('STATE_REACTOR_FUNCTION_NAME')
+    if not function_name:
+        project = os.environ.get('PROJECT_NAME', 'tamagotchi-health')
+        env = os.environ.get('ENV', 'dev')
+        function_name = f"{project}-orchestrator-{env}" # Fallback to old name
     
     try:
         lambda_client.invoke(
@@ -97,8 +105,9 @@ def invoke_orchestrator(user_id):
             Payload=json.dumps({
                 'user_id': user_id,
                 'trigger': 'sensor_ingest',
-                'timestamp': int(datetime.now().timestamp() * 1000)
-            })
+                'timestamp': int(datetime.now().timestamp() * 1000),
+                'sensor_data': sensor_data
+            }, cls=DecimalEncoder)
         )
     except Exception as e:
         print(f"Failed to invoke orchestrator {function_name}: {e}")

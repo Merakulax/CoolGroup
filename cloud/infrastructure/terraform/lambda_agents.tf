@@ -1,5 +1,3 @@
-
-
 # --- AGENT: Proactive Coach ---
 data "archive_file" "proactive_coach_zip" {
   type        = "zip"
@@ -29,7 +27,9 @@ resource "aws_lambda_function" "proactive_coach" {
   }
 }
 
-# --- AGENT: State Reactor ---
+# --- STATE REACTOR SYSTEM ---
+
+# Archive for the whole State Reactor package (includes Orchestrator + Experts + Supervisor)
 data "archive_file" "state_reactor_zip" {
   type        = "zip"
   source_dir  = "${path.module}/../../lambda/agents/state_reactor"
@@ -37,6 +37,7 @@ data "archive_file" "state_reactor_zip" {
   excludes    = ["__pycache__"]
 }
 
+# 1. State Reactor Orchestrator
 resource "aws_lambda_function" "state_reactor" {
   filename         = data.archive_file.state_reactor_zip.output_path
   function_name    = "${var.project_name}-state-reactor-${var.environment}"
@@ -52,9 +53,85 @@ resource "aws_lambda_function" "state_reactor" {
       USERS_TABLE            = aws_dynamodb_table.users.name
       HEALTH_TABLE           = aws_dynamodb_table.health_data.name
       DYNAMODB_TABLE         = aws_dynamodb_table.user_state.name
-      MODEL_ID               = "eu.anthropic.claude-sonnet-4-5-20250929-v1:0"
       CONTEXT_RETRIEVER_LAMBDA_ARN = aws_lambda_function.context_retriever.arn
       ENV                    = var.environment
+      # Child Functions
+      ACTIVITY_FUNCTION      = aws_lambda_function.expert_activity.function_name
+      VITALS_FUNCTION        = aws_lambda_function.expert_vitals.function_name
+      WELLBEING_FUNCTION     = aws_lambda_function.expert_wellbeing.function_name
+      SUPERVISOR_FUNCTION    = aws_lambda_function.expert_supervisor.function_name
+    }
+  }
+}
+
+# 2. Expert: Activity
+resource "aws_lambda_function" "expert_activity" {
+  filename         = data.archive_file.state_reactor_zip.output_path
+  function_name    = "${var.project_name}-expert-activity-${var.environment}"
+  role             = aws_iam_role.lambda_role.arn
+  handler          = "experts.activity.handler"
+  source_code_hash = data.archive_file.state_reactor_zip.output_base64sha256
+  runtime          = "python3.11"
+  timeout          = 30
+  memory_size      = 256
+
+  environment {
+    variables = {
+      MODEL_ID = "eu.anthropic.claude-sonnet-4-5-20250929-v1:0"
+    }
+  }
+}
+
+# 3. Expert: Vitals
+resource "aws_lambda_function" "expert_vitals" {
+  filename         = data.archive_file.state_reactor_zip.output_path
+  function_name    = "${var.project_name}-expert-vitals-${var.environment}"
+  role             = aws_iam_role.lambda_role.arn
+  handler          = "experts.vitals.handler"
+  source_code_hash = data.archive_file.state_reactor_zip.output_base64sha256
+  runtime          = "python3.11"
+  timeout          = 30
+  memory_size      = 256
+
+  environment {
+    variables = {
+      MODEL_ID = "eu.anthropic.claude-sonnet-4-5-20250929-v1:0"
+    }
+  }
+}
+
+# 4. Expert: Wellbeing
+resource "aws_lambda_function" "expert_wellbeing" {
+  filename         = data.archive_file.state_reactor_zip.output_path
+  function_name    = "${var.project_name}-expert-wellbeing-${var.environment}"
+  role             = aws_iam_role.lambda_role.arn
+  handler          = "experts.wellbeing.handler"
+  source_code_hash = data.archive_file.state_reactor_zip.output_base64sha256
+  runtime          = "python3.11"
+  timeout          = 30
+  memory_size      = 256
+
+  environment {
+    variables = {
+      MODEL_ID = "eu.anthropic.claude-sonnet-4-5-20250929-v1:0"
+    }
+  }
+}
+
+# 5. Supervisor
+resource "aws_lambda_function" "expert_supervisor" {
+  filename         = data.archive_file.state_reactor_zip.output_path
+  function_name    = "${var.project_name}-supervisor-${var.environment}"
+  role             = aws_iam_role.lambda_role.arn
+  handler          = "supervisor.handler"
+  source_code_hash = data.archive_file.state_reactor_zip.output_base64sha256
+  runtime          = "python3.11"
+  timeout          = 30
+  memory_size      = 256
+
+  environment {
+    variables = {
+      MODEL_ID = "eu.anthropic.claude-sonnet-4-5-20250929-v1:0"
     }
   }
 }

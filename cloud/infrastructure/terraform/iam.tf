@@ -103,7 +103,12 @@ resource "aws_iam_role_policy" "lambda_invoke_access" {
           aws_lambda_function.avatar_generator.arn,
           aws_lambda_function.orchestrator.arn,
           aws_lambda_function.state_reactor.arn,
-          aws_lambda_function.proactive_coach.arn
+          aws_lambda_function.proactive_coach.arn,
+          aws_lambda_function.expert_activity.arn,
+          aws_lambda_function.expert_vitals.arn,
+          aws_lambda_function.expert_wellbeing.arn,
+          aws_lambda_function.expert_supervisor.arn,
+          aws_lambda_function.context_retriever.arn  # Added context retriever
         ]
       }
     ]

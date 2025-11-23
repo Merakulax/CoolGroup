@@ -1,82 +1,81 @@
 import json
+import os
+import boto3
+import asyncio
 from datetime import datetime
-from core import database, llm, context, actions, predictions
+from core import database, context, actions, predictions
 from core.utils import DecimalEncoder
-from core.llm import PET_STATE_TOOL_SCHEMA # Import the schema
+
+lambda_client = boto3.client('lambda')
+
+# Env Vars for Child Lambdas
+ACTIVITY_FUNCTION = os.environ.get('ACTIVITY_FUNCTION')
+VITALS_FUNCTION = os.environ.get('VITALS_FUNCTION')
+WELLBEING_FUNCTION = os.environ.get('WELLBEING_FUNCTION')
+SUPERVISOR_FUNCTION = os.environ.get('SUPERVISOR_FUNCTION')
 
 def handler(event, lambda_context):
     """
-    Lambda handler for the State Reactor.
-    Analyzes current sensor data and historical context to determine pet's state.
+    Orchestrator for the State Reactor Sub-System.
+    Fans out to 3 Expert Lambdas, then calls Supervisor Lambda.
     """
     user_id = event.get('user_id')
     if not user_id:
-        print("Error: user_id missing in event")
         return {'statusCode': 400, 'body': json.dumps({'error': 'Missing user_id'})}
 
-    print(f"Starting State Reactor for user {user_id}")
+    print(f"State Reactor Orchestrator for {user_id}")
 
-    # 1. PERCEPTION: Gather Sensor Data
-    last_reading = database.get_last_health_reading(user_id)
+    # 1. PERCEPTION & CONTEXT GATHERING
+    # Check if sensor_data was passed in event (fast path)
+    sensor_batch = event.get('sensor_data')
+    last_reading = None
+    if sensor_batch and isinstance(sensor_batch, list) and len(sensor_batch) > 0:
+        # Assuming the last item in batch is the latest
+        last_reading = sensor_batch[-1]
+    
     if not last_reading:
-         print("No recent sensor data found.")
+        last_reading = database.get_last_health_reading(user_id)
+        
+    if not last_reading:
          return {'statusCode': 200, 'message': 'No data'}
 
-    # Invoke Context Retriever Lambda to get historical context
-    context_data = context.get_historical_context(user_id)
-    history_context = "No historical context available." # Default
-    if context_data and context_data.get('context_data'):
-        history_context = context_data['context_data']
-
-    # Get recent history for predictive analysis
-    recent_history = database.get_recent_history(user_id, limit=7) # last 7 entries
+    context_data = context.get_historical_context(user_id) or {}
+    history_context = context_data.get('context_data', "No historical context.")
+    
+    recent_history = database.get_recent_history(user_id, limit=7)
     predictive_context = predictions.get_predictive_context(user_id, recent_history)
 
-    # 2. REASONING: Invoke Bedrock Model for State Analysis
-    system_prompt = f"""You are the Lead Health Coach for a Tamagotchi-like health companion.
-Your goal is to analyze the user's health data and determine the Pet's state.
-
-Here is relevant historical context for the user:
-{history_context}
-
-Here is a predictive analysis based on recent trends:
-{json.dumps(predictive_context, cls=DecimalEncoder)}
-
-Guidance on State Classification:
-- TIRED: If Heart Rate is low (<60) AND 'sleep_status' is 'ASLEEP' or accelerometer is stationary for long periods.
-- STRESS: If Heart Rate is elevated (>100) BUT movement is minimal/stationary.
-- EXERCISE: If Heart Rate is elevated (>110) AND movement is high/active.
-- HAPPY: Balanced metrics, moderate activity.
-
-Guidance on Activity Detection:
-- Infer what the user is likely doing. Select one of the following: ['Sleeping', 'Coding', 'Running', 'Commuting', 'Resting', 'Meditating', 'Working', 'Walking', 'Cycling'].
-- Use accelerometer patterns and heart rate to distinguish between sedentary stress (Working/Coding) vs active stress (Running/Cycling).
-- IF 'bodyTemperature' > 37.5 OR 'symptoms' present: Activity is likely 'Resting' (Sick).
-- IF 'speed' > 10 km/h (approx 2.7 m/s) AND 'step_count' is low: Activity is likely 'Commuting'.
-- IF 'heartRate' is low (<60) AND 'stress_score' is low (<20) AND stationary:
-    - IF 'sleep_status' is 'ASLEEP': Activity is 'Sleeping'.
-    - ELSE: Activity is likely 'Meditating' or 'Resting'.
-
-Based on the current, historical, and predictive data, call the 'pet_state_analyzer' tool to output the pet's state and detected activity.
-"""
-
-    user_message = f"""
-    Current Sensor Data:
-    {json.dumps(last_reading, cls=DecimalEncoder)}
+    # 2. FAN-OUT TO EXPERTS
+    # We use a helper to invoke them in parallel if possible, or sequential.
+    # Since Lambda `handler` is synchronous usually, we can use a simple thread pool or just sequential for now to keep it simple and robust, 
+    # OR use the asyncio loop if the runtime supports it (Python 3.11 does).
     
-    Analyze the user's state based on this data and the historical context provided. Output your response by calling the 'pet_state_analyzer' tool.
-    """
+    try:
+        experts_result = asyncio.run(invoke_experts_parallel(last_reading, history_context))
+    except Exception as e:
+        print(f"Expert Fan-Out Failed: {e}")
+        return {'statusCode': 500, 'error': str(e)}
 
-    # Invoke structured model
-    analysis = llm.invoke_model_structured(system_prompt, user_message, PET_STATE_TOOL_SCHEMA, temperature=0.5)
+    # 3. SUPERVISOR SYNTHESIS
+    supervisor_payload = {
+        'experts_result': experts_result,
+        'predictive_context': predictive_context
+    }
     
-    if not analysis:
-        print("Failed to get structured model response from State Reactor.")
-        return {'statusCode': 500, 'error': 'Invalid Model Response from State Reactor'}
-            
+    try:
+        supervisor_resp = invoke_lambda(SUPERVISOR_FUNCTION, supervisor_payload)
+    except Exception as e:
+        print(f"Supervisor Failed: {e}")
+        return {'statusCode': 500, 'error': str(e)}
+        
+    if 'error' in supervisor_resp:
+        return {'statusCode': 500, 'error': f"Supervisor Error: {supervisor_resp['error']}"}
+
+    analysis = supervisor_resp # The supervisor returns the structured analysis directly
+
+    # 4. STATE UPDATE (Legacy Logic)
     new_state_enum = analysis.get('state', 'UNKNOWN')
     
-    # 4. STATE DIFFING
     last_state_item = database.get_last_state(user_id)
     last_state_enum = last_state_item.get('stateEnum', 'NONE') if last_state_item else 'NONE'
     
@@ -85,13 +84,12 @@ Based on the current, historical, and predictive data, call the 'pet_state_analy
     last_update_ts = last_state_item.get('timestamp', 0) if last_state_item else 0
     time_since_update = (int(datetime.now().timestamp() * 1000) - last_update_ts) / 1000
     
-    # Force refresh rules
     if time_since_update > 3600: should_trigger = True
     if new_state_enum in ['STRESS', 'SICKNESS', 'EXERCISE'] and new_state_enum != last_state_enum:
         should_trigger = True
 
     if should_trigger:
-        print(f"State Change Detected: {last_state_enum} -> {new_state_enum}")
+        print(f"State Change: {last_state_enum} -> {new_state_enum}")
         database.update_state_db(user_id, analysis, time_since_update)
         actions.invoke_avatar_generator(user_id)
         
@@ -101,7 +99,9 @@ Based on the current, historical, and predictive data, call the 'pet_state_analy
                 'status': 'UPDATED',
                 'old_state': last_state_enum,
                 'new_state': new_state_enum,
-                'reasoning': analysis.get('reasoning')
+                'reasoning': analysis.get('reasoning'),
+                'activity': analysis.get('activity'),
+                'experts': experts_result
             }, cls=DecimalEncoder)
         }
     else:
@@ -109,3 +109,48 @@ Based on the current, historical, and predictive data, call the 'pet_state_analy
             'statusCode': 200,
             'body': json.dumps({'status': 'STABLE', 'state': new_state_enum}, cls=DecimalEncoder)
         }
+
+async def invoke_experts_parallel(sensor_data, history):
+    # Convert data to JSON-ready dicts
+    # (sensor_data is likely a DynamoDB item with Decimals, need handling before sending to other Lambdas if they expect JSON)
+    # Ideally we send the raw dict and let boto3 serialize it, but boto3 default serializer fails on Decimal.
+    # So we convert to JSON string and parse it back or just cast Decimals.
+    # Actually, we can just pass the data and let the helper handle it.
+    
+    # Payload construction
+    # Activity & Vitals only need sensor data
+    payload_activity = {'sensor_data': json.loads(json.dumps(sensor_data, cls=DecimalEncoder))}
+    payload_vitals = {'sensor_data': json.loads(json.dumps(sensor_data, cls=DecimalEncoder))}
+    
+    # Wellbeing needs history
+    payload_wellbeing = {
+        'sensor_data': json.loads(json.dumps(sensor_data, cls=DecimalEncoder)),
+        'history': history
+    }
+
+    loop = asyncio.get_running_loop()
+    
+    # Run invokes in parallel threads
+    f1 = loop.run_in_executor(None, invoke_lambda, ACTIVITY_FUNCTION, payload_activity)
+    f2 = loop.run_in_executor(None, invoke_lambda, VITALS_FUNCTION, payload_vitals)
+    f3 = loop.run_in_executor(None, invoke_lambda, WELLBEING_FUNCTION, payload_wellbeing)
+    
+    r1, r2, r3 = await asyncio.gather(f1, f2, f3)
+    
+    return {
+        "activity": r1,
+        "vitals": r2,
+        "wellbeing": r3
+    }
+
+def invoke_lambda(func_name, payload):
+    if not func_name:
+        print(f"Error: Function name missing for payload keys: {payload.keys()}")
+        return {"error": "Configuration Error: Missing Function Name"}
+        
+    response = lambda_client.invoke(
+        FunctionName=func_name,
+        InvocationType='RequestResponse',
+        Payload=json.dumps(payload)
+    )
+    return json.loads(response['Payload'].read())

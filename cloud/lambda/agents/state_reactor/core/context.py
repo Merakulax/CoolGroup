@@ -18,7 +18,7 @@ def get_historical_context(user_id):
             InvocationType='RequestResponse',
             Payload=json.dumps(payload)
         )
-        result = json.loads(response['Payload'].read().decode('utf-8'), cls=DecimalEncoder)
+        result = json.loads(response['Payload'].read().decode('utf-8'))
         return result
     except Exception as e:
         print(f"Error invoking context retriever: {e}")

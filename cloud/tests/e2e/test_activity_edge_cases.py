@@ -97,7 +97,7 @@ def verify_activity(table, user_id, keywords):
             item = item_resp.get('Item')
             
             if item:
-                last_activity = item.get('detected_activity', 'Unknown')
+                last_activity = item.get('activity', 'Unknown')
                 logger.info(f"  [Attempt {i+1}] Detected: {last_activity}")
                 
                 if any(k in last_activity.lower() for k in keywords):

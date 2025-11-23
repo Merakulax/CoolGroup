@@ -29,6 +29,7 @@ def test_activity_detection(api_url, http_session, db_resource, dynamodb_table):
     # 3. Verify Activity Label
     logger.info("Waiting for Activity Detection...")
     max_retries = 30
+    activity = "None"
     
     for i in range(max_retries):
         time.sleep(2)
@@ -37,7 +38,7 @@ def test_activity_detection(api_url, http_session, db_resource, dynamodb_table):
             item = item_resp.get('Item')
             
             if item:
-                activity = item.get('detected_activity', 'Unknown')
+                activity = item.get('activity', 'Unknown')
                 logger.info(f"  [Attempt {i+1}] Activity: {activity}")
                 
                 # We expect something like "Work", "Coding", "Stress", "Sedentary"

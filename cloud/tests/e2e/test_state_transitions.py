@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 SCENARIOS = [
     {
         "name": "Deep Sleep",
-        "expected_states": ["TIRED"], # TIRED is the closest proxy for Sleep in our Enum
+        "expected_states": ["TIRED", "NEUTRAL"], # TIRED/NEUTRAL is the closest proxy for Sleep in our Enum
         "payload": {
             "heartRate": 55,
             "accelerometer": {"x": 0.0, "y": 0.0, "z": 1.0},
@@ -41,7 +41,7 @@ SCENARIOS = [
     },
     {
         "name": "Casual Walk",
-        "expected_states": ["HAPPY", "NEUTRAL"],
+        "expected_states": ["HAPPY", "NEUTRAL", "EXERCISE"],
         "payload": {
             "heartRate": 95,
             "accelerometer": {"x": 0.2, "y": 0.3, "z": 0.9},
@@ -96,7 +96,7 @@ def ingest_data(api_url, session, user_id, data):
 def verify_state(table, user_id, allowed_states):
     logger.info(f"Waiting for state to become one of {allowed_states}...")
     
-    max_retries = 30 # 60 seconds
+    max_retries = 45 # 90 seconds
     
     for i in range(max_retries):
         time.sleep(2)

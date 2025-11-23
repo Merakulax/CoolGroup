@@ -18,10 +18,11 @@ resource "aws_lambda_function" "sensor_ingest" {
 
   environment {
     variables = {
-      DYNAMODB_TABLE = aws_dynamodb_table.user_state.name
-      HEALTH_TABLE   = aws_dynamodb_table.health_data.name
-      ENV            = var.environment
-      PROJECT_NAME   = var.project_name
+      DYNAMODB_TABLE           = aws_dynamodb_table.user_state.name
+      HEALTH_TABLE             = aws_dynamodb_table.health_data.name
+      ENV                      = var.environment
+      PROJECT_NAME             = var.project_name
+      STATE_REACTOR_FUNCTION_NAME = aws_lambda_function.state_reactor.function_name
     }
   }
 }

@@ -63,7 +63,8 @@ def get_last_health_reading(user_id):
         response = health_table.query(
             KeyConditionExpression=Key('user_id').eq(user_id),
             ScanIndexForward=False,
-            Limit=1
+            Limit=1,
+            ConsistentRead=True
         )
         items = response.get('Items', [])
         if items:
@@ -120,7 +121,7 @@ def update_state_db(user_id, analysis, time_gap):
         'stateEnum': analysis.get('state'),
         'mood': analysis.get('mood', 'Neutral'),
         'reasoning': analysis.get('reasoning', 'No reasoning provided'),
-        'detected_activity': analysis.get('detected_activity', 'Unknown'),
+        'activity': analysis.get('activity', 'Unknown'),
         'last_updated': datetime.now().isoformat()
     }
     try:

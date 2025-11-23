@@ -10,7 +10,15 @@
     },
     {
       "name": "EntryAbility_label",
-      "value": "label"
+      "value": "$string:app_name"
+    },
+    {
+      "name": "read_health_data_reason",
+      "value": "This application requires access to your health data to monitor your heart rate."
+    },
+    {
+      "name": "activity_motion_reason",
+      "value": "This application requires access to your activity data to display your daily step count."
     }
   ]
 }

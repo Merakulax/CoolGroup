@@ -6,8 +6,7 @@
         "API_TYPE": "stageMode"
       }
     ],
-    "BUILD_MODE": "debug",
-    "USE_NORMALIZED_OHMURL": true
+    "BUILD_MODE": "debug"
   },
   "HVIGOR": {
     "IS_INCREMENTAL": true,
@@ -16,17 +15,17 @@
     "IS_HVIGORFILE_TYPE_CHECK": false,
     "TASK_TIME": {
       "1043bfc77febe75fafec0c4309faccf1": {
-        "CreateModuleInfo": 320833,
-        "ConfigureCmake": 79917,
-        "PreCheckSyscap": 77792,
-        "ProcessIntegratedHsp": 577000,
-        "BuildNativeWithCmake": 95083,
-        "SyscapTransform": 752958,
-        "ProcessStartupConfig": 1171084,
-        "BuildNativeWithNinja": 561709,
-        "BuildJS": 471417,
-        "CollectDebugSymbol": 879625,
-        "assembleHap": 48667
+        "CreateModuleInfo": 346250,
+        "ConfigureCmake": 79541,
+        "PreCheckSyscap": 88500,
+        "ProcessIntegratedHsp": 426042,
+        "BuildNativeWithCmake": 1047458,
+        "SyscapTransform": 322500,
+        "ProcessStartupConfig": 842583,
+        "BuildNativeWithNinja": 260667,
+        "BuildJS": 472500,
+        "CollectDebugSymbol": 808250,
+        "assembleHap": 43500
       }
     },
     "CONFIG_PROPERTIES": {
@@ -34,7 +33,7 @@
       "skipNativeIncremental": false,
       "hvigor_keepDependency": true
     },
-    "TOTAL_TIME": 134811125,
-    "BUILD_ID": "202511230140071180"
+    "TOTAL_TIME": 121135750,
+    "BUILD_ID": "202511230420570340"
   }
 }

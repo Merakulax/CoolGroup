@@ -7,6 +7,7 @@ export interface PetState {
   energy: number;
   message?: string;
   image_url?: string;
+  video_url?: string;
   timestamp: number;
 }
 

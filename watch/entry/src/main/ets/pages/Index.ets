@@ -1,11 +1,14 @@
 import { sensor } from '@kit.SensorServiceKit';
 import { BusinessError } from '@kit.BasicServicesKit';
+import abilityAccessCtrl from '@ohos.abilityAccessCtrl';
+import type { Permissions } from '@ohos.abilityAccessCtrl';
 import { FaceView } from './FaceView';
 import { MessageView } from './MessageView';
+import { HealthStatsView } from '../views/HealthStatsView';
 import { networkService } from '../utils/NetworkService';
 import { syncService } from '../services/SyncService';
 import { mockDataGenerator, RealtimeData } from '../services/MockDataGenerator';
-import { PetState, SensorData, Vector3, UserProfile, User, Motion } from '../models/types';
+import { PetState, SensorData, Vector3, UserProfile, User} from '../models/types';
 
 @Entry
 @Component
@@ -14,7 +17,7 @@ struct Index {
   @State accelerometer: string = '';
   @State gyroscope: string = '';
   @State heartData: number = 0;
-  @State pedometer: number = 0;
+  @State totalSteps: number = 0;
 
   // Raw sensor data for backend
   @State accelData: Vector3 = { x: 0, y: 0, z: 0 };
@@ -23,15 +26,22 @@ struct Index {
   // App and User state
   @State userId: string | null = null;
   @State petMessage: string = 'Initializing...';
-  @State petImageUrl: string = '';
+  @State petVideoUrl: string = '';
 
   aboutToAppear(): void {
-    this.subscribeToSensors();
     this.initializeApp();
   }
 
   async initializeApp(): Promise<void> {
     try {
+      // 0. Request permissions before starting sensors
+      const permissionGranted = await this.requestPermissions();
+      if (permissionGranted) {
+        this.subscribeToSensors();
+      } else {
+        this.petMessage = 'Sensor permissions denied. Key features will not work.';
+      }
+
       this.petMessage = 'Creating user...';
       // 1. Create user with a hardcoded profile for this MVP
       const userProfile: UserProfile = { name: "Hacker", pet_name: "Gemini" };
@@ -45,15 +55,15 @@ struct Index {
           // UI Update Callback
           (newState: PetState) => {
             this.petMessage = newState.message || '';
-            this.petImageUrl = newState.image_url || '';
+            this.petVideoUrl = newState.video_url || '';
           },
-          // Sensor Data Getter - Uses the MockDataGenerator
+          // Sensor Data Getter
           (): SensorData => {
             const realtimeData: RealtimeData = {
               heartRate: this.heartData,
               accel: this.accelData,
               gyro: this.gyroData,
-              steps: this.pedometer
+              steps: this.totalSteps
             };
             return mockDataGenerator.generateFullPayload(realtimeData);
           },
@@ -73,14 +83,21 @@ struct Index {
   private subscribeToSensors(): void {
     const INTERVAL = 100_000_000; // 100 ms in nanoseconds
 
-    // Subscribe to sensors using the simple, correct pattern.
     try {
       sensor.on(sensor.SensorId.HEART_RATE, (data: sensor.HeartRateResponse) => {
-        console.info(`[Sensor] Heart Rate data received: ${JSON.stringify(data)}`);
         this.heartData = data.heartRate;
       }, { interval: INTERVAL });
     } catch (error) {
       console.error(`Heart Rate subscription failed: ${(error as BusinessError).message}`);
+    }
+
+    try {
+      sensor.on(sensor.SensorId.PEDOMETER, (data: sensor.PedometerResponse) => {
+        console.info(`Received Pedometer: ${data.steps}`);
+        this.totalSteps = data.steps;
+      }, { interval: INTERVAL });
+    } catch (error) {
+      console.error(`Pedometer subscription failed: ${(error as BusinessError).message}`);
     }
 
     try {
@@ -90,14 +107,6 @@ struct Index {
       }, { interval: INTERVAL });
     } catch (error) {
       console.error(`Accelerometer subscription failed: ${(error as BusinessError).message}`);
-    }
-
-    try {
-      sensor.on(sensor.SensorId.PEDOMETER, (data: sensor.PedometerResponse) => {
-        this.pedometer = data.steps;
-      });
-    } catch (error) {
-      console.error(`Pedometer subscription failed: ${(error as BusinessError).message}`);
     }
 
     try {
@@ -124,11 +133,36 @@ struct Index {
 
   build() {
     Swiper() {
-      FaceView({ imageUrl: this.petImageUrl })
+      FaceView({ videoUrl: this.petVideoUrl })
       MessageView({ message: this.petMessage })
+      HealthStatsView({ heartRate: $heartData, totalSteps: $totalSteps })
     }
     .indicator(true)
     .vertical(false)
     .loop(true)
+  }
+
+  async requestPermissions(): Promise<boolean> {
+    let atManager = abilityAccessCtrl.createAtManager();
+    try {
+      const context = getContext(this);
+      const permissions: Array<Permissions> = [
+        'ohos.permission.ACTIVITY_MOTION',
+        'ohos.permission.READ_HEALTH_DATA',
+        'ohos.permission.ACCELEROMETER',
+        'ohos.permission.GYROSCOPE'
+      ];
+      const result = await atManager.requestPermissionsFromUser(context, permissions);
+      if (result && result.authResults[0] === 0 && result.authResults[1] === 0) {
+        console.info('[Index] All required permissions granted.');
+        return true;
+      } else {
+        console.error('[Index] One or more permissions were denied.');
+        return false;
+      }
+    } catch (err) {
+      console.error(`[Index] Failed to request permissions: ${JSON.stringify(err)}`);
+      return false;
+    }
   }
 }

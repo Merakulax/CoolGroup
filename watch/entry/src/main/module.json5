@@ -5,7 +5,6 @@
     "description": "$string:module_desc",
     "mainElement": "EntryAbility",
     "deviceTypes": [
-      "phone",
       "wearable"
     ],
     "deliveryWithInstall": true,
@@ -70,6 +69,16 @@
       },
       {
         "name": "ohos.permission.ACCELEROMETER",
+        "reason": "$string:read_health_data_reason",
+        "usedScene": {
+          "abilities": [
+            "EntryAbility"
+          ],
+          "when": "inuse"
+        }
+      },
+      {
+        "name": "ohos.permission.ACTIVITY_MOTION",
         "reason": "$string:read_health_data_reason",
         "usedScene": {
           "abilities": [

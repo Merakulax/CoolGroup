@@ -41,9 +41,10 @@ def handler(event, context):
         # 1. Get Context
         user_profile = get_user_profile(user_id)
         health_data = get_latest_health(user_id)
+        analysis = event.get('analysis', {})
         
         # 2. Construct Prompt
-        prompt_text = construct_prompt(user_profile, health_data)
+        prompt_text = construct_prompt(user_profile, health_data, analysis)
         print(f"Prompt: {prompt_text}")
         
         # 3. Generate Image
@@ -61,10 +62,39 @@ def handler(event, context):
         credentials = google.oauth2.credentials.Credentials.from_authorized_user_info(CREDENTIALS_INFO)
         client = genai.Client(vertexai=True, project=PROJECT_ID, location=REGION, credentials=credentials)
 
-        contents = [prompt_text]
-        avatar_url = user_profile.get('avatar_url')
+        # Fetch Base Image from S3
+        # Use avatar_url as the character identifier (yoda, stich, monster)
+        base_selection = user_profile.get('avatar_url', 'stich').lower()
         
-        # Optional: Use Init Image if we wanted to do image-to-image (omitted for now)
+        s3_key = "base/stich.jpg" # Default
+        if 'yoda' in base_selection:
+            s3_key = "base/yoda.jpg"
+        elif 'monster' in base_selection:
+            s3_key = "base/monster.png"
+        
+        local_base_path = f"/tmp/{base_selection}_base.jpg"
+        
+        try:
+            s3.download_file(BUCKET, s3_key, local_base_path)
+            print(f"Downloaded base image from {s3_key}")
+        except Exception as e:
+            print(f"Failed to download base image {s3_key}: {e}. Using generic generation.")
+            local_base_path = None
+
+        contents = [prompt_text]
+        
+        if local_base_path:
+            # Load image for Gemini
+            try:
+                from PIL import Image
+                image = types.Part.from_image(Image.open(local_base_path))
+                contents.append(image)
+            except ImportError:
+                # Fallback if PIL not available (should be in layer, but just in case)
+                with open(local_base_path, "rb") as f:
+                    image_bytes = f.read()
+                image = types.Part(inline_data=types.Blob(data=image_bytes, mime_type="image/jpeg"))
+                contents.append(image)
 
         # Generate using generate_content with IMAGE modality
         model_id = "gemini-2.5-flash-image" 
@@ -72,7 +102,7 @@ def handler(event, context):
         try:
             response = client.models.generate_content(
                 model=model_id,
-                contents=prompt_text,
+                contents=contents,
                 config=GenerateContentConfig(
                     response_modalities=[Modality.TEXT, Modality.IMAGE],
                 ),
@@ -150,29 +180,41 @@ def update_user_state_image(user_id, url):
     except Exception as e:
         print(f"Failed to update UserState DB: {e}")
 
-def construct_prompt(user_profile, health_data):
+def construct_prompt(user_profile, health_data, analysis=None):
     name = user_profile.get('pet_name', 'Pet')
+    
+    # Analysis Data
+    state_enum = analysis.get('state', 'NEUTRAL') if analysis else 'NEUTRAL'
+    mood = analysis.get('mood', 'Neutral') if analysis else 'Neutral'
+    activity = analysis.get('activity', 'Unknown') if analysis else 'Unknown'
+    
     # Base visual style
-    base = f"A cute 3D render of a {name}, digital pet style, vibrant colors, 4k."
+    base = f"Transform this character into a cute 3D render, digital pet style, vibrant colors, 4k."
     
-    # Health modifiers
-    sleep = int(health_data.get('sleepScore', 70))
-    stress = int(health_data.get('stressLevel', 30))
-    hr = int(health_data.get('heartRate', 70))
+    modifiers = []
     
-    state = []
-    if sleep < 50:
-        state.append("very tired, sleepy eyes, yawning, wearing pajamas, blue dark lighting")
-    elif sleep > 80:
-        state.append("energetic, glowing aura, wide awake, bright lighting")
+    # 1. Activity & State Modifiers
+    if state_enum == 'EXERCISE' or activity in ['Running', 'Cycling', 'Workout']:
+        modifiers.append("sweating, sporty headband, running motion, dynamic pose, gym background")
+    elif state_enum == 'SLEEP' or activity == 'Sleeping' or state_enum == 'TIRED':
+        modifiers.append("sleeping, zzz particles, wearing pajamas, night sky background, cozy blanket")
+    elif state_enum == 'STRESS' or state_enum == 'ANXIOUS':
+        modifiers.append("nervous expression, shaking, chaotic background, dark clouds, wide eyes")
+    elif state_enum == 'HAPPY' or state_enum == 'NEUTRAL':
+        modifiers.append(f"happy, smiling, {mood} expression, bright sunny background")
+    elif state_enum == 'SICKNESS':
+        modifiers.append("sick, thermometer in mouth, bed rest, green tint")
         
-    if stress > 70:
-        state.append("nervous, sweating, shaking, chaotic background")
-    elif stress < 30:
-        state.append("calm, zen, peaceful background, floating")
-        
-    if hr > 120:
-        state.append("sweating, sporty headband, running motion")
-        
-    prompt = f"{base} {', '.join(state)}"
+    # 2. Health Data Nuances (Fallback or Detail)
+    sleep = int(health_data.get('sleepScore', 70) or 70) # Handle None
+    stress_score = int(health_data.get('stressLevel', 30) or 30)
+    hr = int(health_data.get('heartRate', 70) or 70)
+    
+    if sleep < 50 and state_enum != 'SLEEP':
+        modifiers.append("tired eyes, yawning")
+    
+    if hr > 130 and state_enum != 'EXERCISE':
+        modifiers.append("flushed face, surprised")
+
+    prompt = f"{base} {', '.join(modifiers)}"
     return prompt

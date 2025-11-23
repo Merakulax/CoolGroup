@@ -54,7 +54,7 @@ def create_user(event):
         'pet_name': body['pet_name'],
         'age': body.get('age'),
         'health_goals': body.get('health_goals', []),
-        'avatar_url': body.get('avatar_url')
+        'avatar_url': body.get('avatar_url', 'stich')
     }
     
     # Remove None values

@@ -127,7 +127,7 @@ def handler(event, lambda_context):
     if should_trigger:
         print(f"State Change: {last_state_enum} -> {new_state_enum}")
         database.update_state_db(user_id, analysis, time_since_update)
-        actions.invoke_avatar_generator(user_id)
+        actions.invoke_avatar_generator(user_id, analysis)
     
     # Always fetch the latest state from DB for the response
     final_state_item = database.get_last_state(user_id)

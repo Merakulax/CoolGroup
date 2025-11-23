@@ -15,6 +15,7 @@ resource "aws_lambda_function" "sensor_ingest" {
   runtime          = "python3.11"
   timeout          = 10
   memory_size      = 128
+  publish          = true
 
   environment {
     variables = {
@@ -25,6 +26,12 @@ resource "aws_lambda_function" "sensor_ingest" {
       STATE_REACTOR_FUNCTION_NAME = aws_lambda_function.state_reactor.function_name
     }
   }
+}
+
+resource "aws_lambda_provisioned_concurrency_config" "sensor_ingest_concurrency" {
+  function_name                     = aws_lambda_function.sensor_ingest.function_name
+  provisioned_concurrent_executions = 1
+  qualifier                         = aws_lambda_function.sensor_ingest.version
 }
 
 # Zip the orchestrator function code
@@ -44,6 +51,7 @@ resource "aws_lambda_function" "orchestrator" {
   runtime          = "python3.11"
   timeout          = 60 # Bedrock calls can be slow
   memory_size      = 256
+  publish          = true
 
   environment {
     variables = {
@@ -55,6 +63,12 @@ resource "aws_lambda_function" "orchestrator" {
       STATE_REACTOR_FUNCTION   = aws_lambda_function.state_reactor.function_name
     }
   }
+}
+
+resource "aws_lambda_provisioned_concurrency_config" "orchestrator_concurrency" {
+  function_name                     = aws_lambda_function.orchestrator.function_name
+  provisioned_concurrent_executions = 1
+  qualifier                         = aws_lambda_function.orchestrator.version
 }
 
 # Zip the demo trigger function code
@@ -74,6 +88,7 @@ resource "aws_lambda_function" "demo_trigger" {
   runtime          = "python3.11"
   timeout          = 10
   memory_size      = 128
+  publish          = true
 
   environment {
     variables = {
@@ -82,6 +97,12 @@ resource "aws_lambda_function" "demo_trigger" {
       PROJECT_NAME   = var.project_name
     }
   }
+}
+
+resource "aws_lambda_provisioned_concurrency_config" "demo_trigger_concurrency" {
+  function_name                     = aws_lambda_function.demo_trigger.function_name
+  provisioned_concurrent_executions = 1
+  qualifier                         = aws_lambda_function.demo_trigger.version
 }
 
 # Zip the user manager function code
@@ -101,6 +122,7 @@ resource "aws_lambda_function" "user_manager" {
   runtime          = "python3.11"
   timeout          = 10
   memory_size      = 128
+  publish          = true
 
   environment {
     variables = {
@@ -110,6 +132,12 @@ resource "aws_lambda_function" "user_manager" {
       ENV              = var.environment
     }
   }
+}
+
+resource "aws_lambda_provisioned_concurrency_config" "user_manager_concurrency" {
+  function_name                     = aws_lambda_function.user_manager.function_name
+  provisioned_concurrent_executions = 1
+  qualifier                         = aws_lambda_function.user_manager.version
 }
 
 # Zip the avatar generator function code
@@ -127,9 +155,10 @@ resource "aws_lambda_function" "avatar_generator" {
   handler          = "generator.handler"
   source_code_hash = data.archive_file.avatar_zip.output_base64sha256
   runtime          = "python3.11"
-  timeout          = 30
+  timeout          = 300
   memory_size      = 3008
   layers           = [aws_lambda_layer_version.gcp_deps_layer.arn]
+  publish          = true
 
   environment {
     variables = {
@@ -140,12 +169,19 @@ resource "aws_lambda_function" "avatar_generator" {
       GCP_REGION       = var.gcp_region
       GCP_API_KEY      = var.gcp_api_key
       AVATAR_BUCKET    = aws_s3_bucket.avatars.id
+      GCS_BUCKET_NAME  = google_storage_bucket.video_assets.name
       ENV              = var.environment
       GOOGLE_CLOUD_PROJECT = var.gcp_project_id
       GOOGLE_CLOUD_LOCATION = var.gcp_region
       GOOGLE_GENAI_USE_VERTEXAI = "True"
     }
   }
+}
+
+resource "aws_lambda_provisioned_concurrency_config" "avatar_generator_concurrency" {
+  function_name                     = aws_lambda_function.avatar_generator.function_name
+  provisioned_concurrent_executions = 1
+  qualifier                         = aws_lambda_function.avatar_generator.version
 }
 
 # Zip the echo function code
@@ -165,6 +201,13 @@ resource "aws_lambda_function" "echo" {
   runtime          = "python3.11"
   timeout          = 5
   memory_size      = 128
+  publish          = true
+}
+
+resource "aws_lambda_provisioned_concurrency_config" "echo_concurrency" {
+  function_name                     = aws_lambda_function.echo.function_name
+  provisioned_concurrent_executions = 1
+  qualifier                         = aws_lambda_function.echo.version
 }
 
 # Zip the retriever function code
@@ -184,6 +227,7 @@ resource "aws_lambda_function" "context_retriever" {
   runtime          = "python3.11"
   timeout          = 10
   memory_size      = 128
+  publish          = true
 
   environment {
     variables = {
@@ -191,4 +235,10 @@ resource "aws_lambda_function" "context_retriever" {
       ENV          = var.environment
     }
   }
+}
+
+resource "aws_lambda_provisioned_concurrency_config" "context_retriever_concurrency" {
+  function_name                     = aws_lambda_function.context_retriever.function_name
+  provisioned_concurrent_executions = 1
+  qualifier                         = aws_lambda_function.context_retriever.version
 }

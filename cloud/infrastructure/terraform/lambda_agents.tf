@@ -15,16 +15,23 @@ resource "aws_lambda_function" "proactive_coach" {
   runtime          = "python3.11"
   timeout          = 60
   memory_size      = 256
+  publish          = true
 
   environment {
     variables = {
       USERS_TABLE      = aws_dynamodb_table.users.name
       HEALTH_TABLE     = aws_dynamodb_table.health_data.name
       DYNAMODB_TABLE   = aws_dynamodb_table.user_state.name # User State
-      MODEL_ID         = "eu.anthropic.claude-sonnet-4-5-20250929-v1:0"
+      MODEL_ID         = "eu.anthropic.claude-haiku-4-5-20251001-v1:0"
       ENV              = var.environment
     }
   }
+}
+
+resource "aws_lambda_provisioned_concurrency_config" "proactive_coach_concurrency" {
+  function_name                     = aws_lambda_function.proactive_coach.function_name
+  provisioned_concurrent_executions = 1
+  qualifier                         = aws_lambda_function.proactive_coach.version
 }
 
 # --- STATE REACTOR SYSTEM ---
@@ -47,6 +54,7 @@ resource "aws_lambda_function" "state_reactor" {
   runtime          = "python3.11"
   timeout          = 60
   memory_size      = 256
+  publish          = true
 
   environment {
     variables = {
@@ -65,6 +73,12 @@ resource "aws_lambda_function" "state_reactor" {
   }
 }
 
+resource "aws_lambda_provisioned_concurrency_config" "state_reactor_concurrency" {
+  function_name                     = aws_lambda_function.state_reactor.function_name
+  provisioned_concurrent_executions = 1
+  qualifier                         = aws_lambda_function.state_reactor.version
+}
+
 # 2. Expert: Activity
 resource "aws_lambda_function" "expert_activity" {
   filename         = data.archive_file.state_reactor_zip.output_path
@@ -75,12 +89,19 @@ resource "aws_lambda_function" "expert_activity" {
   runtime          = "python3.11"
   timeout          = 30
   memory_size      = 256
+  publish          = true
 
   environment {
     variables = {
-      MODEL_ID = "eu.anthropic.claude-sonnet-4-5-20250929-v1:0"
+      MODEL_ID = "eu.anthropic.claude-haiku-4-5-20251001-v1:0"
     }
   }
+}
+
+resource "aws_lambda_provisioned_concurrency_config" "expert_activity_concurrency" {
+  function_name                     = aws_lambda_function.expert_activity.function_name
+  provisioned_concurrent_executions = 1
+  qualifier                         = aws_lambda_function.expert_activity.version
 }
 
 # 3. Expert: Vitals
@@ -93,12 +114,19 @@ resource "aws_lambda_function" "expert_vitals" {
   runtime          = "python3.11"
   timeout          = 30
   memory_size      = 256
+  publish          = true
 
   environment {
     variables = {
-      MODEL_ID = "eu.anthropic.claude-sonnet-4-5-20250929-v1:0"
+      MODEL_ID = "eu.anthropic.claude-haiku-4-5-20251001-v1:0"
     }
   }
+}
+
+resource "aws_lambda_provisioned_concurrency_config" "expert_vitals_concurrency" {
+  function_name                     = aws_lambda_function.expert_vitals.function_name
+  provisioned_concurrent_executions = 1
+  qualifier                         = aws_lambda_function.expert_vitals.version
 }
 
 # 4. Expert: Wellbeing
@@ -111,12 +139,19 @@ resource "aws_lambda_function" "expert_wellbeing" {
   runtime          = "python3.11"
   timeout          = 30
   memory_size      = 256
+  publish          = true
 
   environment {
     variables = {
-      MODEL_ID = "eu.anthropic.claude-sonnet-4-5-20250929-v1:0"
+      MODEL_ID = "eu.anthropic.claude-haiku-4-5-20251001-v1:0"
     }
   }
+}
+
+resource "aws_lambda_provisioned_concurrency_config" "expert_wellbeing_concurrency" {
+  function_name                     = aws_lambda_function.expert_wellbeing.function_name
+  provisioned_concurrent_executions = 1
+  qualifier                         = aws_lambda_function.expert_wellbeing.version
 }
 
 # 5. Supervisor
@@ -129,12 +164,19 @@ resource "aws_lambda_function" "expert_supervisor" {
   runtime          = "python3.11"
   timeout          = 30
   memory_size      = 256
+  publish          = true
 
   environment {
     variables = {
-      MODEL_ID = "eu.anthropic.claude-sonnet-4-5-20250929-v1:0"
+      MODEL_ID = "eu.anthropic.claude-haiku-4-5-20251001-v1:0"
     }
   }
+}
+
+resource "aws_lambda_provisioned_concurrency_config" "expert_supervisor_concurrency" {
+  function_name                     = aws_lambda_function.expert_supervisor.function_name
+  provisioned_concurrent_executions = 1
+  qualifier                         = aws_lambda_function.expert_supervisor.version
 }
 
 # 6. Characterizer
@@ -147,10 +189,17 @@ resource "aws_lambda_function" "characterizer" {
   runtime          = "python3.11"
   timeout          = 30
   memory_size      = 256
+  publish          = true
 
   environment {
     variables = {
-      MODEL_ID = "eu.anthropic.claude-sonnet-4-5-20250929-v1:0"
+      MODEL_ID = "eu.anthropic.claude-haiku-4-5-20251001-v1:0"
     }
   }
+}
+
+resource "aws_lambda_provisioned_concurrency_config" "characterizer_concurrency" {
+  function_name                     = aws_lambda_function.characterizer.function_name
+  provisioned_concurrent_executions = 1
+  qualifier                         = aws_lambda_function.characterizer.version
 }

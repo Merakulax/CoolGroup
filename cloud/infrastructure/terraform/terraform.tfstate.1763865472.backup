@@ -1,7 +1,7 @@
 {
   "version": 4,
   "terraform_version": "1.5.7",
-  "serial": 559,
+  "serial": 527,
   "lineage": "ec05f9f3-302c-9564-2543-bf7052e1cdde",
   "outputs": {
     "api_endpoint": {
@@ -27,16 +27,16 @@
             "excludes": [
               "__pycache__"
             ],
-            "id": "d9d38eef693b373f7d332c59927c3b163d498045",
-            "output_base64sha256": "mSd23NWFJiu5kDdY22TEJvW+97qEH9hHAzK0N294G9c=",
-            "output_base64sha512": "9ThsjkI/l4UYCfUm/AQiPTmARHHl/aci/Ph5C4pRDQuKzVGrNALWMTCqikoN4bRTjVEIgQUeMEUQlq8sGG4yEw==",
+            "id": "2e91a0d05cc03485ed4a90631295dd022829dd00",
+            "output_base64sha256": "2A/1zbox1OwWTqVILCMymhz0nltQNDowV1S9Q9wr69U=",
+            "output_base64sha512": "NUKkctskepn73+/Kwvb5gb7YE392ejQRsGVosAWTKgBhG/RGT5tpQ3aN6aGmKf/KxK3ekzlhb1SxKSR0Ebnn/g==",
             "output_file_mode": null,
-            "output_md5": "d0b8efb6cc24e2911355a76081aa78a8",
+            "output_md5": "6c2f53f32747568706707070702fecbb",
             "output_path": "./.build/avatar.zip",
-            "output_sha": "d9d38eef693b373f7d332c59927c3b163d498045",
-            "output_sha256": "992776dcd585262bb9903758db64c426f5bef7ba841fd8470332b4376f781bd7",
-            "output_sha512": "f5386c8e423f97851809f526fc04223d39804471e5fda722fcf8790b8a510d0b8acd51ab3402d63130aa8a4a0de1b4538d510881051e30451096af2c186e3213",
-            "output_size": 6359,
+            "output_sha": "2e91a0d05cc03485ed4a90631295dd022829dd00",
+            "output_sha256": "d80ff5cdba31d4ec164ea5482c23329a1cf49e5b50343a305754bd43dc2bebd5",
+            "output_sha512": "3542a472db247a99fbdfefcac2f6f981bed8137f767a3411b06568b005932a00611bf4464f9b6943768de9a1a629ffcac4adde9339616f54b129247411b9e7fe",
+            "output_size": 6108,
             "source": [],
             "source_content": null,
             "source_content_filename": null,
@@ -127,16 +127,16 @@
           "attributes": {
             "exclude_symlink_directories": null,
             "excludes": null,
-            "id": "6132ec7e023db2ae3f421c64ff5edca72805789b",
-            "output_base64sha256": "p4JdiS8i/BVVC7sKPhxosdH9AX4L5v6W1zrOAYnQrmo=",
-            "output_base64sha512": "4K/Aqk/YhEIdZXADuh+gxHmJvSzP3k1KelVEPM5fHbPDteSt5Gs0WH6upX+QsWS/3r2/UiCnRF0DSU0DFi/lvA==",
+            "id": "81e064c30753d204c4121e45b8f322d7deb1c32a",
+            "output_base64sha256": "w1eFJ4U/ILbyKlthXKM7a/GNp1DXBKvvzKLoZW7un4U=",
+            "output_base64sha512": "RBeg+6W1w34pwBdn6hG7Z5mfMs9K0BVYZ5rokxSR9SU1QNGKmANlN5z8XWbcmOnmhI4Foo9WOs7I8eq0ozrBdg==",
             "output_file_mode": null,
-            "output_md5": "d1475381738c770bbe878efc0664be09",
+            "output_md5": "b5042dab8a941767be80c912680bff6b",
             "output_path": "./.build/gcp_deps_layer.zip",
-            "output_sha": "6132ec7e023db2ae3f421c64ff5edca72805789b",
-            "output_sha256": "a7825d892f22fc15550bbb0a3e1c68b1d1fd017e0be6fe96d73ace0189d0ae6a",
-            "output_sha512": "e0afc0aa4fd884421d657003ba1fa0c47989bd2ccfde4d4a7a55443cce5f1db3c3b5e4ade46b34587eaea57f90b164bfdebdbf5220a7445d03494d03162fe5bc",
-            "output_size": 19769100,
+            "output_sha": "81e064c30753d204c4121e45b8f322d7deb1c32a",
+            "output_sha256": "c3578527853f20b6f22a5b615ca33b6bf18da750d704abefcca2e8656eee9f85",
+            "output_sha512": "4417a0fba5b5c37e29c01767ea11bb67999f32cf4ad01558679ae8931491f5253540d18a980365379cfc5d66dc98e9e6848e05a28f563acec8f1eab4a33ac176",
+            "output_size": 24497684,
             "source": [],
             "source_content": null,
             "source_content_filename": null,
@@ -1477,7 +1477,7 @@
               "x86_64"
             ],
             "arn": "arn:aws:lambda:eu-central-1:791736277877:function:tamagotchi-health-avatar-generator-dev",
-            "code_sha256": "mSd23NWFJiu5kDdY22TEJvW+97qEH9hHAzK0N294G9c=",
+            "code_sha256": "2A/1zbox1OwWTqVILCMymhz0nltQNDowV1S9Q9wr69U=",
             "code_signing_config_arn": "",
             "dead_letter_config": [],
             "description": "",
@@ -1513,9 +1513,9 @@
             "image_uri": "",
             "invoke_arn": "arn:aws:apigateway:eu-central-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-central-1:791736277877:function:tamagotchi-health-avatar-generator-dev/invocations",
             "kms_key_arn": "",
-            "last_modified": "2025-11-23T03:19:47.000+0000",
+            "last_modified": "2025-11-23T02:36:17.000+0000",
             "layers": [
-              "arn:aws:lambda:eu-central-1:791736277877:layer:tamagotchi-health-gcp-deps-layer-dev:6"
+              "arn:aws:lambda:eu-central-1:791736277877:layer:tamagotchi-health-gcp-deps-layer-dev-v2:1"
             ],
             "logging_config": [
               {
@@ -1543,8 +1543,8 @@
             "signing_profile_version_arn": "",
             "skip_destroy": false,
             "snap_start": [],
-            "source_code_hash": "mSd23NWFJiu5kDdY22TEJvW+97qEH9hHAzK0N294G9c=",
-            "source_code_size": 6359,
+            "source_code_hash": "2A/1zbox1OwWTqVILCMymhz0nltQNDowV1S9Q9wr69U=",
+            "source_code_size": 6108,
             "source_kms_key_arn": "",
             "tags": {},
             "tags_all": {
@@ -1572,6 +1572,7 @@
             "aws_lambda_layer_version.gcp_deps_layer",
             "aws_s3_bucket.avatars",
             "data.archive_file.avatar_zip",
+            "data.archive_file.gcp_deps_layer_zip",
             "google_storage_bucket.video_assets"
           ]
         }
@@ -2874,18 +2875,18 @@
         {
           "schema_version": 0,
           "attributes": {
-            "arn": "arn:aws:lambda:eu-central-1:791736277877:layer:tamagotchi-health-gcp-deps-layer-dev:6",
-            "code_sha256": "p4JdiS8i/BVVC7sKPhxosdH9AX4L5v6W1zrOAYnQrmo=",
+            "arn": "arn:aws:lambda:eu-central-1:791736277877:layer:tamagotchi-health-gcp-deps-layer-dev-v2:1",
+            "code_sha256": "w1eFJ4U/ILbyKlthXKM7a/GNp1DXBKvvzKLoZW7un4U=",
             "compatible_architectures": [],
             "compatible_runtimes": [
               "python3.11"
             ],
-            "created_date": "2025-11-23T02:57:20.183+0000",
+            "created_date": "2025-11-23T02:36:17.510+0000",
             "description": "",
             "filename": "./.build/gcp_deps_layer.zip",
-            "id": "arn:aws:lambda:eu-central-1:791736277877:layer:tamagotchi-health-gcp-deps-layer-dev:6",
-            "layer_arn": "arn:aws:lambda:eu-central-1:791736277877:layer:tamagotchi-health-gcp-deps-layer-dev",
-            "layer_name": "tamagotchi-health-gcp-deps-layer-dev",
+            "id": "arn:aws:lambda:eu-central-1:791736277877:layer:tamagotchi-health-gcp-deps-layer-dev-v2:1",
+            "layer_arn": "arn:aws:lambda:eu-central-1:791736277877:layer:tamagotchi-health-gcp-deps-layer-dev-v2",
+            "layer_name": "tamagotchi-health-gcp-deps-layer-dev-v2",
             "license_info": "",
             "region": "eu-central-1",
             "s3_bucket": null,
@@ -2894,9 +2895,9 @@
             "signing_job_arn": "",
             "signing_profile_version_arn": "",
             "skip_destroy": false,
-            "source_code_hash": "p4JdiS8i/BVVC7sKPhxosdH9AX4L5v6W1zrOAYnQrmo=",
-            "source_code_size": 19769100,
-            "version": "6"
+            "source_code_hash": "w1eFJ4U/ILbyKlthXKM7a/GNp1DXBKvvzKLoZW7un4U=",
+            "source_code_size": 24497684,
+            "version": "1"
           },
           "sensitive_attributes": [],
           "private": "bnVsbA==",

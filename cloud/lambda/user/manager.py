@@ -103,12 +103,10 @@ def get_avatar_state(event):
     
     # Construct clean response for Watch
     response_data = {
-        "user_id": item.get('user_id'),
-        "state": item.get('stateEnum', 'UNKNOWN'),
-        "mood": item.get('mood', 'Neutral'),
         "image_url": item.get('image_url'),
+        "video_url": item.get('video_url'),
         "timestamp": int(item.get('timestamp', 0)),
-        "message": item.get('message') or item.get('reasoning', '')
+        "message": item.get('message')
     }
     
     return {

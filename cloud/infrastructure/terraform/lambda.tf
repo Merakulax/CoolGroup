@@ -28,12 +28,6 @@ resource "aws_lambda_function" "sensor_ingest" {
   }
 }
 
-resource "aws_lambda_provisioned_concurrency_config" "sensor_ingest_concurrency" {
-  function_name                     = aws_lambda_function.sensor_ingest.function_name
-  provisioned_concurrent_executions = 1
-  qualifier                         = aws_lambda_function.sensor_ingest.version
-}
-
 # Zip the orchestrator function code
 data "archive_file" "orchestrator_zip" {
   type        = "zip"
@@ -65,12 +59,6 @@ resource "aws_lambda_function" "orchestrator" {
   }
 }
 
-resource "aws_lambda_provisioned_concurrency_config" "orchestrator_concurrency" {
-  function_name                     = aws_lambda_function.orchestrator.function_name
-  provisioned_concurrent_executions = 1
-  qualifier                         = aws_lambda_function.orchestrator.version
-}
-
 # Zip the demo trigger function code
 data "archive_file" "demo_zip" {
   type        = "zip"
@@ -97,12 +85,6 @@ resource "aws_lambda_function" "demo_trigger" {
       PROJECT_NAME   = var.project_name
     }
   }
-}
-
-resource "aws_lambda_provisioned_concurrency_config" "demo_trigger_concurrency" {
-  function_name                     = aws_lambda_function.demo_trigger.function_name
-  provisioned_concurrent_executions = 1
-  qualifier                         = aws_lambda_function.demo_trigger.version
 }
 
 # Zip the user manager function code
@@ -132,12 +114,6 @@ resource "aws_lambda_function" "user_manager" {
       ENV              = var.environment
     }
   }
-}
-
-resource "aws_lambda_provisioned_concurrency_config" "user_manager_concurrency" {
-  function_name                     = aws_lambda_function.user_manager.function_name
-  provisioned_concurrent_executions = 1
-  qualifier                         = aws_lambda_function.user_manager.version
 }
 
 # Zip the avatar generator function code
@@ -179,12 +155,6 @@ resource "aws_lambda_function" "avatar_generator" {
   }
 }
 
-resource "aws_lambda_provisioned_concurrency_config" "avatar_generator_concurrency" {
-  function_name                     = aws_lambda_function.avatar_generator.function_name
-  provisioned_concurrent_executions = 1
-  qualifier                         = aws_lambda_function.avatar_generator.version
-}
-
 # Zip the echo function code
 data "archive_file" "echo_zip" {
   type        = "zip"
@@ -203,12 +173,6 @@ resource "aws_lambda_function" "echo" {
   timeout          = 5
   memory_size      = 128
   publish          = true
-}
-
-resource "aws_lambda_provisioned_concurrency_config" "echo_concurrency" {
-  function_name                     = aws_lambda_function.echo.function_name
-  provisioned_concurrent_executions = 1
-  qualifier                         = aws_lambda_function.echo.version
 }
 
 # Zip the retriever function code
@@ -238,8 +202,3 @@ resource "aws_lambda_function" "context_retriever" {
   }
 }
 
-resource "aws_lambda_provisioned_concurrency_config" "context_retriever_concurrency" {
-  function_name                     = aws_lambda_function.context_retriever.function_name
-  provisioned_concurrent_executions = 1
-  qualifier                         = aws_lambda_function.context_retriever.version
-}

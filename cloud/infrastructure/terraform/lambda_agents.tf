@@ -28,12 +28,6 @@ resource "aws_lambda_function" "proactive_coach" {
   }
 }
 
-resource "aws_lambda_provisioned_concurrency_config" "proactive_coach_concurrency" {
-  function_name                     = aws_lambda_function.proactive_coach.function_name
-  provisioned_concurrent_executions = 1
-  qualifier                         = aws_lambda_function.proactive_coach.version
-}
-
 # --- STATE REACTOR SYSTEM ---
 
 # Archive for the whole State Reactor package (includes Orchestrator + Experts + Supervisor)
@@ -69,14 +63,9 @@ resource "aws_lambda_function" "state_reactor" {
       WELLBEING_FUNCTION     = aws_lambda_function.expert_wellbeing.function_name
       SUPERVISOR_FUNCTION    = aws_lambda_function.expert_supervisor.function_name
       CHARACTERIZER_FUNCTION = aws_lambda_function.characterizer.function_name
+      AVATAR_GENERATOR_FUNCTION_NAME = aws_lambda_function.avatar_generator.function_name
     }
   }
-}
-
-resource "aws_lambda_provisioned_concurrency_config" "state_reactor_concurrency" {
-  function_name                     = aws_lambda_function.state_reactor.function_name
-  provisioned_concurrent_executions = 1
-  qualifier                         = aws_lambda_function.state_reactor.version
 }
 
 # 2. Expert: Activity
@@ -98,12 +87,6 @@ resource "aws_lambda_function" "expert_activity" {
   }
 }
 
-resource "aws_lambda_provisioned_concurrency_config" "expert_activity_concurrency" {
-  function_name                     = aws_lambda_function.expert_activity.function_name
-  provisioned_concurrent_executions = 1
-  qualifier                         = aws_lambda_function.expert_activity.version
-}
-
 # 3. Expert: Vitals
 resource "aws_lambda_function" "expert_vitals" {
   filename         = data.archive_file.state_reactor_zip.output_path
@@ -121,12 +104,6 @@ resource "aws_lambda_function" "expert_vitals" {
       MODEL_ID = "eu.anthropic.claude-haiku-4-5-20251001-v1:0"
     }
   }
-}
-
-resource "aws_lambda_provisioned_concurrency_config" "expert_vitals_concurrency" {
-  function_name                     = aws_lambda_function.expert_vitals.function_name
-  provisioned_concurrent_executions = 1
-  qualifier                         = aws_lambda_function.expert_vitals.version
 }
 
 # 4. Expert: Wellbeing
@@ -148,12 +125,6 @@ resource "aws_lambda_function" "expert_wellbeing" {
   }
 }
 
-resource "aws_lambda_provisioned_concurrency_config" "expert_wellbeing_concurrency" {
-  function_name                     = aws_lambda_function.expert_wellbeing.function_name
-  provisioned_concurrent_executions = 1
-  qualifier                         = aws_lambda_function.expert_wellbeing.version
-}
-
 # 5. Supervisor
 resource "aws_lambda_function" "expert_supervisor" {
   filename         = data.archive_file.state_reactor_zip.output_path
@@ -173,12 +144,6 @@ resource "aws_lambda_function" "expert_supervisor" {
   }
 }
 
-resource "aws_lambda_provisioned_concurrency_config" "expert_supervisor_concurrency" {
-  function_name                     = aws_lambda_function.expert_supervisor.function_name
-  provisioned_concurrent_executions = 1
-  qualifier                         = aws_lambda_function.expert_supervisor.version
-}
-
 # 6. Characterizer
 resource "aws_lambda_function" "characterizer" {
   filename         = data.archive_file.state_reactor_zip.output_path
@@ -196,10 +161,4 @@ resource "aws_lambda_function" "characterizer" {
       MODEL_ID = "eu.anthropic.claude-haiku-4-5-20251001-v1:0"
     }
   }
-}
-
-resource "aws_lambda_provisioned_concurrency_config" "characterizer_concurrency" {
-  function_name                     = aws_lambda_function.characterizer.function_name
-  provisioned_concurrent_executions = 1
-  qualifier                         = aws_lambda_function.characterizer.version
 }

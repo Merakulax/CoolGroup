@@ -6,9 +6,7 @@ from .utils import DecimalEncoder
 lambda_client = boto3.client('lambda')
 
 def invoke_avatar_generator(user_id, analysis=None):
-    project = os.environ.get('PROJECT_NAME', 'tamagotchi-health')
-    env = os.environ.get('ENV', 'dev')
-    function_name = f"{project}-avatar-generator-{env}"
+    function_name = os.environ.get('AVATAR_GENERATOR_FUNCTION_NAME', 'tamagotchi-health-avatar-generator-dev')
     
     payload = {'user_id': user_id}
     if analysis:

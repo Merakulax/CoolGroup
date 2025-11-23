@@ -97,20 +97,6 @@ resource "aws_apigatewayv2_integration" "avatar_generator" {
   payload_format_version = "2.0"
 }
 
-resource "aws_apigatewayv2_route" "get_avatar_state" {
-  api_id    = aws_apigatewayv2_api.http_api.id
-  route_key = "GET /api/v1/user/{user_id}/state"
-  target    = "integrations/${aws_apigatewayv2_integration.user_manager.id}"
-}
-
-resource "aws_lambda_permission" "api_gw_user_avatar_state" {
-  statement_id  = "AllowExecutionFromAPIGatewayUserAvatarState"
-  action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.user_manager.function_name
-  principal     = "apigateway.amazonaws.com"
-  source_arn    = "${aws_apigatewayv2_api.http_api.execution_arn}/*/*/api/v1/user/*/state"
-}
-
 resource "aws_lambda_permission" "api_gw_avatar" {
   statement_id  = "AllowExecutionFromAPIGatewayAvatar"
   action        = "lambda:InvokeFunction"

@@ -8,20 +8,25 @@ Implement a caching mechanism for the `avatar_generator` Lambda to prevent redun
 ### Database (DynamoDB)
 Create a new DynamoDB table to store the mapping between state hashes and generated asset URLs.
 *   **Table Name**: `tamagotchi-avatar-cache-{env}`
-*   **Partition Key**: `cache_hash` (String) - SHA256 hash of the generation prompt + base avatar ID.
+*   **Partition Key**: `cache_hash` (String) - SHA256 hash of the relevant state parameters (NOT the prompt).
 *   **Attributes**:
     *   `image_url` (String): S3 URL of the generated image.
     *   `video_url` (String): Cloud Storage/S3 URL of the generated video.
-    *   `prompt` (String): The text prompt used (for debugging/collisions).
+    *   `state_params` (Map/String): The JSON string of state parameters used for the hash (for debugging).
     *   `created_at` (Number): Timestamp.
 
 ### Lambda (`avatar_generator`)
 Modify the generator logic to:
-1.  Construct the prompt based on user state (`mood`, `activity`, etc.).
-2.  Compute a deterministic hash: `SHA256(prompt + base_avatar_selection)`.
+1.  Extract relevant state parameters that drive the visual output:
+    *   `base_avatar` (e.g., 'stich', 'yoda')
+    *   `state_enum` (e.g., 'EXERCISE', 'SLEEP')
+    *   `mood` (e.g., 'Happy', 'Neutral')
+    *   `activity` (e.g., 'Running', 'Sleeping')
+    *   *Note: Do NOT include volatile fields like precise Heart Rate or Timestamp unless they trigger a distinct visual bucket.*
+2.  Compute a deterministic hash: `SHA256(json.dumps({base_avatar, state_enum, mood, activity}, sort_keys=True))`.
 3.  Query the `avatar_cache` table.
 4.  **Cache Hit**: Return stored `image_url` and `video_url` immediately. Update `user_state` table.
-5.  **Cache Miss**: Proceed with Gemini/Veo generation. Store new URLs in `avatar_cache`.
+5.  **Cache Miss**: Proceed with prompt construction and Gemini/Veo generation. Store new URLs in `avatar_cache`.
 
 ## 3. Implementation Steps
 
@@ -33,10 +38,11 @@ Modify the generator logic to:
 
 ### Step 2: Application Logic (Python)
 *   **File**: `cloud/lambda/avatar/generator.py`
-    *   Import `hashlib`.
+    *   Import `hashlib` and `json`.
     *   Initialize the new DynamoDB table resource.
+    *   Implement `generate_cache_key(params)` helper.
     *   Implement `get_cached_avatar(hash)` and `cache_avatar(hash, data)` helper functions.
-    *   Integrate caching flow into the `handler` function.
+    *   Integrate caching flow into the `handler` function **before** prompt construction.
     *   Ensure `update_user_state` is still called on cache hits so the frontend receives the update event.
 
 ### Step 3: Validation

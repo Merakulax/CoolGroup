@@ -24,7 +24,7 @@ def handler(event, context):
         elif route_key == 'GET /api/v1/users/{user_id}/avatar/upload-url':
             return get_upload_url(event)
         elif route_key == 'GET /api/v1/user/{user_id}/state':
-            return get_avatar_state(event)
+            return get_user_state(event)
         else:
             return {
                 "statusCode": 404,
@@ -85,9 +85,9 @@ def get_user(event):
         "body": json.dumps(item, default=str)
     }
 
-def get_avatar_state(event):
+def get_user_state(event):
     """
-    Lightweight endpoint for polling state.
+    Retrieves the current state of the user, including avatar-related information.
     """
     path_params = event.get('pathParameters', {})
     user_id = path_params.get('user_id')

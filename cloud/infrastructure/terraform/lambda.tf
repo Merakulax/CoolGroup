@@ -165,6 +165,7 @@ resource "aws_lambda_function" "avatar_generator" {
       USERS_TABLE      = aws_dynamodb_table.users.name
       HEALTH_TABLE     = aws_dynamodb_table.health_data.name
       USER_STATE_TABLE = aws_dynamodb_table.user_state.name
+      AVATAR_CACHE_TABLE = aws_dynamodb_table.avatar_cache.name
       GCP_PROJECT_ID   = var.gcp_project_id
       GCP_REGION       = var.gcp_region
       GCP_API_KEY      = var.gcp_api_key

@@ -50,3 +50,18 @@ resource "aws_dynamodb_table" "users" {
     Name = "${var.project_name}-users"
   }
 }
+
+resource "aws_dynamodb_table" "avatar_cache" {
+  name           = "${var.project_name}-avatar-cache-${var.environment}"
+  billing_mode   = "PAY_PER_REQUEST"
+  hash_key       = "cache_hash"
+
+  attribute {
+    name = "cache_hash"
+    type = "S"
+  }
+
+  tags = {
+    Name = "${var.project_name}-avatar-cache"
+  }
+}

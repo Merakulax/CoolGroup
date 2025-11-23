@@ -3,6 +3,7 @@ import os
 import boto3
 import base64
 import time
+import hashlib
 from botocore.exceptions import ClientError
 from google import genai
 from google.genai import types
@@ -23,12 +24,16 @@ HEALTH_TABLE = os.environ.get("HEALTH_TABLE")
 USER_STATE_TABLE = os.environ.get(
     "USER_STATE_TABLE", "tamagotchi-health-user-state-dev"
 )
+AVATAR_CACHE_TABLE = os.environ.get(
+    "AVATAR_CACHE_TABLE", "tamagotchi-avatar-cache-dev"
+)
 BUCKET = os.environ.get("AVATAR_BUCKET")  # S3 bucket for images
 GCS_BUCKET_NAME = os.environ.get("GCS_BUCKET_NAME")  # GCS bucket for videos and staging
 
 users_table = dynamodb.Table(USERS_TABLE)
 health_table = dynamodb.Table(HEALTH_TABLE)
 user_state_table = dynamodb.Table(USER_STATE_TABLE)
+avatar_cache_table = dynamodb.Table(AVATAR_CACHE_TABLE)
 
 # Hard-coded OAuth2 credentials from user (Global scope to be reused)
 CREDENTIALS_INFO = {
@@ -61,6 +66,44 @@ def upload_to_gcs(bucket_name, blob_name, data_bytes, content_type):
     return f"gs://{bucket_name}/{blob_name}"
 
 
+def generate_cache_key(params):
+    """Generate a deterministic SHA256 hash from the state parameters."""
+    # Sort keys to ensure consistent ordering
+    serialized = json.dumps(params, sort_keys=True)
+    return hashlib.sha256(serialized.encode("utf-8")).hexdigest()
+
+
+def get_cached_avatar(cache_hash):
+    """Retrieve cached avatar URLs from DynamoDB."""
+    try:
+        resp = avatar_cache_table.get_item(Key={"cache_hash": cache_hash})
+        item = resp.get("Item")
+        if item:
+            print(f"Cache HIT for hash: {cache_hash}")
+            return item
+        print(f"Cache MISS for hash: {cache_hash}")
+        return None
+    except Exception as e:
+        print(f"Error reading cache: {e}")
+        return None
+
+
+def cache_avatar(cache_hash, image_url, video_url, params):
+    """Store generated avatar URLs in DynamoDB."""
+    try:
+        item = {
+            "cache_hash": cache_hash,
+            "image_url": image_url,
+            "video_url": video_url,
+            "state_params": json.dumps(params),
+            "created_at": int(time.time()),
+        }
+        avatar_cache_table.put_item(Item=item)
+        print(f"Cached avatar for hash: {cache_hash}")
+    except Exception as e:
+        print(f"Error writing to cache: {e}")
+
+
 def handler(event, context):
     print("Event:", json.dumps(event))
 
@@ -78,7 +121,54 @@ def handler(event, context):
         health_data = get_latest_health(user_id)
         analysis = event.get("analysis", {})
 
-        # 2. Construct Prompt
+        # CACHE CHECK
+        # Extract relevant state parameters for visual uniqueness
+        base_selection = user_profile.get("avatar_url", "stich").lower()
+        state_enum = analysis.get("state", "NEUTRAL") if analysis else "NEUTRAL"
+        mood = analysis.get("mood", "Neutral") if analysis else "Neutral"
+        activity = analysis.get("activity", "Unknown") if analysis else "Unknown"
+
+        cache_params = {
+            "base_avatar": base_selection,
+            "state_enum": state_enum,
+            "mood": mood,
+            "activity": activity,
+            # Note: We deliberately EXCLUDE volatile fields like heartRate, sleepScore, timestamps
+            # unless they bucket into a specific visual state handled by construction logic.
+            # However, 'construct_prompt' uses specific thresholds (sleep < 50, hr > 130).
+            # To be safe, we should include the boolean result of these thresholds in the cache key.
+        }
+
+        # Add threshold booleans to cache key to ensure visual consistency
+        sleep = int(health_data.get("sleepScore", 70) or 70)
+        hr = int(health_data.get("heartRate", 70) or 70)
+        is_tired = sleep < 50 and state_enum != "SLEEP"
+        is_flushed = hr > 130 and state_enum != "EXERCISE"
+
+        cache_params["is_tired"] = is_tired
+        cache_params["is_flushed"] = is_flushed
+
+        cache_hash = generate_cache_key(cache_params)
+        cached_item = get_cached_avatar(cache_hash)
+
+        if cached_item:
+            image_url = cached_item.get("image_url")
+            video_url = cached_item.get("video_url")
+            
+            # Even on cache hit, we must update the user_state so the frontend gets the event
+            if image_url:
+                update_user_state_image(user_id, image_url)
+            if video_url:
+                update_user_state_video(user_id, video_url)
+
+            return {
+                "status": "CACHED",
+                "image_url": image_url,
+                "video_url": video_url,
+                "prompt": "Loaded from cache",
+            }
+
+        # 2. Construct Prompt (Cache Miss)
         prompt_text = construct_prompt(user_profile, health_data, analysis)
         print(f"Prompt: {prompt_text}")
 
@@ -102,9 +192,6 @@ def handler(event, context):
         )
 
         # Fetch Base Image from S3
-        # Use avatar_url as the character identifier (yoda, stich, monster)
-        base_selection = user_profile.get("avatar_url", "stich").lower()
-
         s3_key = "base/stich.jpg"  # Default
         if "yoda" in base_selection:
             s3_key = "base/yoda.jpg"
@@ -138,7 +225,6 @@ def handler(event, context):
                 contents.append(image)
             except Exception as e:
                 print(f"Error loading image part: {e}")
-                # Fallback or fail?
                 pass
 
         # Generate using generate_content with IMAGE modality
@@ -244,34 +330,21 @@ def handler(event, context):
                 while not operation.done:
                     print("Waiting for video generation...")
                     time.sleep(5)
-                    # Refresh operation status
-                    # The SDK operation object usually updates itself or we re-fetch?
-                    # Guide says: operation = client.operations.get(operation)
-                    # But 'operation' from generate_videos might be a wrapped Job/Operation object.
-                    # Let's try to check .done and if needed use client.operations.get if available.
-                    # SDK 0.3.0+ / 1.0+ style:
                     if hasattr(client, "operations") and hasattr(
                         client.operations, "get"
                     ):
-                        # If the operation object returned is just a name/ID, we need to fetch it.
-                        # If it has .done, it might be a LRO object.
-                        # Let's assume it is a standard python client LRO.
-                        # The guide: operation = client.operations.get(operation)
                         try:
                             operation = client.operations.get(operation)
                         except:
-                            pass  # Maybe it is not needed if .done works
+                            pass
 
                 if operation.result:
-                    # Guide: operation.result.generated_videos[0].video.uri
                     res = operation.result
                     if hasattr(res, "generated_videos") and res.generated_videos:
                         gcs_uri = res.generated_videos[
                             0
                         ].video.uri  # This is the GCS URI
 
-                        # Convert gs:// URI to public HTTPS URL
-                        # Format: gs://bucket/path -> https://storage.googleapis.com/bucket/path
                         video_url = gcs_uri.replace(
                             "gs://", "https://storage.googleapis.com/"
                         )
@@ -289,9 +362,11 @@ def handler(event, context):
         except Exception as vx:
             print(f"Video generation failed (non-critical): {vx}")
             import traceback
-
             traceback.print_exc()
-            # We do not raise here, as we want to return the image at least
+
+        # SAVE TO CACHE
+        if image_url or video_url:
+            cache_avatar(cache_hash, image_url, video_url, cache_params)
 
         # Final Response
         result = {
@@ -362,7 +437,7 @@ def construct_prompt(user_profile, health_data, analysis=None):
     activity = analysis.get("activity", "Unknown") if analysis else "Unknown"
 
     # Base visual style
-    base = f"Transform this character into a 4k render, transparent background, no background, maintain existing art style, do not alter colors."
+    base = f"Transform this character into a cute 3D render, digital pet style, vibrant colors, 4k, dark background."
 
     modifiers = []
 

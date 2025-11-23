@@ -195,13 +195,13 @@ def construct_prompt(user_profile, health_data, analysis=None):
     
     # 1. Activity & State Modifiers
     if state_enum == 'EXERCISE' or activity in ['Running', 'Cycling', 'Workout']:
-        modifiers.append("sweating, sporty headband, running motion, dynamic pose, gym background")
+        modifiers.append("sweating, sporty headband, running motion, dynamic pose")
     elif state_enum == 'SLEEP' or activity == 'Sleeping' or state_enum == 'TIRED':
-        modifiers.append("sleeping, zzz particles, wearing pajamas, night sky background, cozy blanket")
+        modifiers.append("sleeping, zzz particles, wearing pajamas, cozy blanket")
     elif state_enum == 'STRESS' or state_enum == 'ANXIOUS':
-        modifiers.append("nervous expression, shaking, chaotic background, dark clouds, wide eyes")
+        modifiers.append("nervous expression, shaking, dark clouds, wide eyes")
     elif state_enum == 'HAPPY' or state_enum == 'NEUTRAL':
-        modifiers.append(f"happy, smiling, {mood} expression, bright sunny background")
+        modifiers.append(f"happy, smiling, {mood} expression")
     elif state_enum == 'SICKNESS':
         modifiers.append("sick, thermometer in mouth, bed rest, green tint")
         

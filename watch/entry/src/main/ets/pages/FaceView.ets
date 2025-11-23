@@ -2,7 +2,7 @@
 @Component
 export struct FaceView {
   @Link imageUrl: string;
-  @State private currentTime: string = "9:18";
+  @State private currentTime: string = "4:20";
   private timer: number = -1;
 
   aboutToAppear() {

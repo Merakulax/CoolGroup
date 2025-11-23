@@ -7,15 +7,11 @@ export interface PetState {
   energy: number;
   message?: string;
   image_url?: string;
-  // For the purpose of this feature, we only need the message.
-  // Other fields from the contract can be added here as needed.
   timestamp: number;
 }
 
-
-// --- Sensor Data ---
+// --- Sensor Data Payload (Complete) ---
 // Based on shared/contracts/sensor_data.json
-// A simplified version for what the watch client might send.
 
 export interface Vector3 {
   x: number;
@@ -23,22 +19,76 @@ export interface Vector3 {
   z: number;
 }
 
+export interface Vector4 extends Vector3 {
+  w: number;
+}
+
 export interface Vitals {
   heartRate?: number;
+  restingHeartRate?: number;
   hrvRMSSD?: number;
   spo2?: number;
+  skinTemperature?: number;
+  bodyTemperature?: number;
+}
+
+export interface Activity {
+  stepCount?: number;
+  calories?: number;
+  distance?: number;
+  speed?: number;
+  isIntensity?: boolean;
+}
+
+export interface RunningForm {
+  groundImpactAcceleration?: number;
+  verticalOscillation?: number;
+  groundContactTime?: number;
+}
+
+export interface Location {
+  latitude?: number;
+  longitude?: number;
+  accuracy?: number;
+}
+
+export interface Environment {
+  ambientLight?: number;
+  barometer?: number;
+  altitude?: number;
+  location?: Location;
 }
 
 export interface Motion {
   accelerometer?: Vector3;
   gyroscope?: Vector3;
+  magnetometer?: Vector3;
+  gravity?: Vector3;
+  linearAcceleration?: Vector3;
+  rotationVector?: Vector4;
+}
+
+export interface Status {
+  wearDetection?: 'WORN' | 'NOT_WORN' | 'UNKNOWN';
+  batteryLevel?: number;
+}
+
+export interface Wellbeing {
+  stressScore?: number;
+  emotionStatus?: number; // 1: Unpleasant, 2: Neutral, 3: Pleasant
+  sleepScore?: number;
 }
 
 export interface SensorData {
   timestamp: number;
   deviceId?: string;
   vitals?: Vitals;
+  activity?: Activity;
+  runningForm?: RunningForm;
+  environment?: Environment;
   motion?: Motion;
+  status?: Status;
+  wellbeing?: Wellbeing;
 }
 
 // --- User Profile ---

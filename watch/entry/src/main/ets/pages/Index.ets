@@ -2,8 +2,9 @@ import { sensor } from '@kit.SensorServiceKit';
 import { BusinessError } from '@kit.BasicServicesKit';
 import { FaceView } from './FaceView';
 import { MessageView } from './MessageView';
-import { syncService } from '../services/SyncService';
 import { networkService } from '../utils/NetworkService';
+import { syncService } from '../services/SyncService';
+import { mockDataGenerator, RealtimeData } from '../services/MockDataGenerator';
 import { PetState, SensorData, Vector3, UserProfile, User, Motion } from '../models/types';
 
 @Entry
@@ -46,12 +47,16 @@ struct Index {
             this.petMessage = newState.message || '';
             this.petImageUrl = newState.image_url || '';
           },
-          // Sensor Data Getter - Simplified to always send data
-          (): SensorData => ({
-            timestamp: Date.now(),
-            vitals: { heartRate: this.heartData },
-            motion: { accelerometer: this.accelData, gyroscope: this.gyroData }
-          }),
+          // Sensor Data Getter - Uses the MockDataGenerator
+          (): SensorData => {
+            const realtimeData: RealtimeData = {
+              heartRate: this.heartData,
+              accel: this.accelData,
+              gyro: this.gyroData,
+              steps: this.pedometer
+            };
+            return mockDataGenerator.generateFullPayload(realtimeData);
+          },
           // Real User ID
           this.userId
         );

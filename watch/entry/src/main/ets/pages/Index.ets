@@ -17,7 +17,6 @@ struct Index {
   @State accelerometer: string = '';
   @State gyroscope: string = '';
   @State heartData: number = 0;
-  @State totalSteps: number = 0;
 
   // Raw sensor data for backend
   @State accelData: Vector3 = { x: 0, y: 0, z: 0 };
@@ -35,8 +34,9 @@ struct Index {
   async initializeApp(): Promise<void> {
     try {
       // 0. Request permissions before starting sensors
-      const permissionGranted = await this.requestPermissions();
+      const permissionGranted : boolean = await this.requestPermissions();
       if (permissionGranted) {
+        console.info('[DEBUG] Permissions granted, subscribing to sensors.');
         this.subscribeToSensors();
       } else {
         this.petMessage = 'Sensor permissions denied. Key features will not work.';
@@ -61,9 +61,9 @@ struct Index {
           (): SensorData => {
             const realtimeData: RealtimeData = {
               heartRate: this.heartData,
+              steps: 1256,
               accel: this.accelData,
-              gyro: this.gyroData,
-              steps: this.totalSteps
+              gyro: this.gyroData
             };
             return mockDataGenerator.generateFullPayload(realtimeData);
           },
@@ -89,15 +89,6 @@ struct Index {
       }, { interval: INTERVAL });
     } catch (error) {
       console.error(`Heart Rate subscription failed: ${(error as BusinessError).message}`);
-    }
-
-    try {
-      sensor.on(sensor.SensorId.PEDOMETER, (data: sensor.PedometerResponse) => {
-        console.info(`Received Pedometer: ${data.steps}`);
-        this.totalSteps = data.steps;
-      }, { interval: INTERVAL });
-    } catch (error) {
-      console.error(`Pedometer subscription failed: ${(error as BusinessError).message}`);
     }
 
     try {
@@ -128,14 +119,14 @@ struct Index {
     sensor.off(sensor.SensorId.ACCELEROMETER);
     sensor.off(sensor.SensorId.GYROSCOPE);
     sensor.off(sensor.SensorId.HEART_RATE);
-    sensor.off(sensor.SensorId.PEDOMETER);
+
   }
 
   build() {
     Swiper() {
       FaceView({ videoUrl: this.petVideoUrl })
       MessageView({ message: this.petMessage })
-      HealthStatsView({ heartRate: $heartData, totalSteps: $totalSteps })
+      HealthStatsView({ heartRate: $heartData })
     }
     .indicator(true)
     .vertical(false)
@@ -147,21 +138,20 @@ struct Index {
     try {
       const context = getContext(this);
       const permissions: Array<Permissions> = [
-        'ohos.permission.ACTIVITY_MOTION',
-        'ohos.permission.READ_HEALTH_DATA',
-        'ohos.permission.ACCELEROMETER',
-        'ohos.permission.GYROSCOPE'
+        'ohos.permission.READ_HEALTH_DATA'
       ];
+      console.info('[DEBUG] Requesting permissions...');
       const result = await atManager.requestPermissionsFromUser(context, permissions);
-      if (result && result.authResults[0] === 0 && result.authResults[1] === 0) {
-        console.info('[Index] All required permissions granted.');
+      console.info(`[DEBUG] Permission request result: ${JSON.stringify(result)}`);
+      if (result && result.authResults[0] === 0) {
+        console.info('[DEBUG] All required permissions granted.');
         return true;
       } else {
-        console.error('[Index] One or more permissions were denied.');
+        console.error('[DEBUG] One or more permissions were denied.');
         return false;
       }
     } catch (err) {
-      console.error(`[Index] Failed to request permissions: ${JSON.stringify(err)}`);
+      console.error(`[DEBUG] Failed to request permissions: ${JSON.stringify(err)}`);
       return false;
     }
   }

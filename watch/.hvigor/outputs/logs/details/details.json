@@ -3,10 +3,14 @@
     "MODULES": [
       {
         "MODULE_NAME": "1043bfc77febe75fafec0c4309faccf1",
-        "API_TYPE": "stageMode"
+        "API_TYPE": "stageMode",
+        "INCREMENTAL_TASKS": {
+          "COMPILE_ARKTS": true
+        }
       }
     ],
-    "BUILD_MODE": "debug"
+    "BUILD_MODE": "debug",
+    "USE_NORMALIZED_OHMURL": true
   },
   "HVIGOR": {
     "IS_INCREMENTAL": true,
@@ -15,17 +19,20 @@
     "IS_HVIGORFILE_TYPE_CHECK": false,
     "TASK_TIME": {
       "1043bfc77febe75fafec0c4309faccf1": {
-        "CreateModuleInfo": 346250,
-        "ConfigureCmake": 79541,
-        "PreCheckSyscap": 88500,
-        "ProcessIntegratedHsp": 426042,
-        "BuildNativeWithCmake": 1047458,
-        "SyscapTransform": 322500,
-        "ProcessStartupConfig": 842583,
-        "BuildNativeWithNinja": 260667,
-        "BuildJS": 472500,
-        "CollectDebugSymbol": 808250,
-        "assembleHap": 43500
+        "CreateModuleInfo": 325208,
+        "ConfigureCmake": 84167,
+        "PreCheckSyscap": 82333,
+        "ProcessIntegratedHsp": 436709,
+        "BuildNativeWithCmake": 86250,
+        "SyscapTransform": 745208,
+        "ProcessStartupConfig": 1189208,
+        "BuildNativeWithNinja": 403750,
+        "BuildJS": 1841209,
+        "CompileArkTS": 331433375,
+        "PackageHap": 13633208,
+        "SignHap": 55848750,
+        "CollectDebugSymbol": 859292,
+        "assembleHap": 53333
       }
     },
     "CONFIG_PROPERTIES": {
@@ -33,7 +40,7 @@
       "skipNativeIncremental": false,
       "hvigor_keepDependency": true
     },
-    "TOTAL_TIME": 121135750,
-    "BUILD_ID": "202511230420570340"
+    "TOTAL_TIME": 517245041,
+    "BUILD_ID": "202511230457110330"
   }
 }

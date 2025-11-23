@@ -27,7 +27,7 @@ Predictive Trends: {json.dumps(predictive_context, cls=DecimalEncoder)}
 - Prioritize WELLBEING for mood (e.g., if Wellbeing is 'Exhausted', state is TIRED/STRESS).
 - Conflict Resolution: Activity 'Sedentary' + Wellbeing 'Stressed' -> STRESS (Work). Activity 'Sedentary' + Wellbeing 'Calm' -> NEUTRAL/HAPPY.
 
-IMPORTANT: Provide the 'reasoning' as a SINGLE, concise sentence.
+IMPORTANT: Provide the 'reasoning' as a detailed technical explanation of why this state was chosen.
 
 Based on these reports, call the 'pet_state_supervisor_decision' tool to finalize the state.
 """

@@ -108,6 +108,7 @@ resource "aws_iam_role_policy" "lambda_invoke_access" {
           aws_lambda_function.expert_vitals.arn,
           aws_lambda_function.expert_wellbeing.arn,
           aws_lambda_function.expert_supervisor.arn,
+          aws_lambda_function.characterizer.arn,
           aws_lambda_function.context_retriever.arn  # Added context retriever
         ]
       }

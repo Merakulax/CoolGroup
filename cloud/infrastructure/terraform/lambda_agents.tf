@@ -60,6 +60,7 @@ resource "aws_lambda_function" "state_reactor" {
       VITALS_FUNCTION        = aws_lambda_function.expert_vitals.function_name
       WELLBEING_FUNCTION     = aws_lambda_function.expert_wellbeing.function_name
       SUPERVISOR_FUNCTION    = aws_lambda_function.expert_supervisor.function_name
+      CHARACTERIZER_FUNCTION = aws_lambda_function.characterizer.function_name
     }
   }
 }
@@ -124,6 +125,24 @@ resource "aws_lambda_function" "expert_supervisor" {
   function_name    = "${var.project_name}-supervisor-${var.environment}"
   role             = aws_iam_role.lambda_role.arn
   handler          = "supervisor.handler"
+  source_code_hash = data.archive_file.state_reactor_zip.output_base64sha256
+  runtime          = "python3.11"
+  timeout          = 30
+  memory_size      = 256
+
+  environment {
+    variables = {
+      MODEL_ID = "eu.anthropic.claude-sonnet-4-5-20250929-v1:0"
+    }
+  }
+}
+
+# 6. Characterizer
+resource "aws_lambda_function" "characterizer" {
+  filename         = data.archive_file.state_reactor_zip.output_path
+  function_name    = "${var.project_name}-characterizer-${var.environment}"
+  role             = aws_iam_role.lambda_role.arn
+  handler          = "characterizer.handler"
   source_code_hash = data.archive_file.state_reactor_zip.output_base64sha256
   runtime          = "python3.11"
   timeout          = 30

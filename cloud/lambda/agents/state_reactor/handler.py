@@ -56,6 +56,9 @@ def handler(event, lambda_context):
         print(f"Expert Fan-Out Failed: {e}")
         return {'statusCode': 500, 'error': str(e)}
 
+    SUPERVISOR_FUNCTION = os.environ.get('SUPERVISOR_FUNCTION')
+    CHARACTERIZER_FUNCTION = os.environ.get('CHARACTERIZER_FUNCTION')
+
     # 3. SUPERVISOR SYNTHESIS
     supervisor_payload = {
         'experts_result': experts_result,
@@ -72,8 +75,41 @@ def handler(event, lambda_context):
         return {'statusCode': 500, 'error': f"Supervisor Error: {supervisor_resp['error']}"}
 
     analysis = supervisor_resp # The supervisor returns the structured analysis directly
+    
+    # 4. CHARACTERIZER (New Step)
+    # Fetch Profile
+    user_profile = database.get_user_profile(user_id)
+    
+    char_payload = {
+        'analysis': analysis,
+        'user_profile': user_profile
+    }
+    
+    final_message = None
+    try:
+        if CHARACTERIZER_FUNCTION:
+            char_resp = invoke_lambda(CHARACTERIZER_FUNCTION, char_payload)
+            if 'message' in char_resp:
+                final_message = char_resp['message']
+                print(f"Characterized Message: {final_message}")
+            else:
+                print(f"Characterizer returned no message: {char_resp}")
+                analysis['char_error_resp'] = char_resp
+        else:
+             print("CHARACTERIZER_FUNCTION env var not set.")
+             analysis['char_error_env'] = "Env var not set"
+             
+    except Exception as e:
+        print(f"Characterizer Failed (Non-blocking): {e}")
+        analysis['char_error'] = str(e)
 
-    # 4. STATE UPDATE (Legacy Logic)
+    # Fallback if no character message
+    if not final_message:
+        final_message = analysis.get('reasoning', 'State updated.')
+
+    analysis['message'] = final_message
+
+    # 5. STATE UPDATE (Legacy Logic)
     new_state_enum = analysis.get('state', 'UNKNOWN')
     
     last_state_item = database.get_last_state(user_id)
@@ -92,23 +128,22 @@ def handler(event, lambda_context):
         print(f"State Change: {last_state_enum} -> {new_state_enum}")
         database.update_state_db(user_id, analysis, time_since_update)
         actions.invoke_avatar_generator(user_id)
-        
-        return {
-            'statusCode': 200,
-            'body': json.dumps({
-                'status': 'UPDATED',
-                'old_state': last_state_enum,
-                'new_state': new_state_enum,
-                'reasoning': analysis.get('reasoning'),
-                'activity': analysis.get('activity'),
-                'experts': experts_result
-            }, cls=DecimalEncoder)
-        }
-    else:
-        return {
-            'statusCode': 200,
-            'body': json.dumps({'status': 'STABLE', 'state': new_state_enum}, cls=DecimalEncoder)
-        }
+    
+    # Always fetch the latest state from DB for the response
+    final_state_item = database.get_last_state(user_id)
+
+    # Handle case where final_state_item might still be None (e.g., first run, or DB error)
+    if not final_state_item:
+        final_state_item = {'message': analysis.get('message', 'State updated.'), 'last_updated': datetime.now().isoformat(), 'image_url': ''}
+
+    return {
+        'statusCode': 200,
+        'body': json.dumps({
+            'message': final_state_item.get('message', analysis.get('message', 'State updated.')),
+            'image_url': final_state_item.get('image_url', ''),
+            'last_updated': final_state_item.get('last_updated', datetime.now().isoformat())
+        }, cls=DecimalEncoder)
+    }
 
 async def invoke_experts_parallel(sensor_data, history):
     # Convert data to JSON-ready dicts

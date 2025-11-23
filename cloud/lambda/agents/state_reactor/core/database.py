@@ -58,6 +58,45 @@ def get_all_users():
         print(f"DB Scan Error: {e}")
         return []
 
+def get_user_profile(user_id):
+    try:
+        # Real fetch
+        resp = users_table.get_item(Key={'user_id': user_id})
+        user = resp.get('Item')
+        
+        # Mock profiles for dev (if user has no profile data or strict dev mode)
+        mock_profiles = {
+            "user123": {
+                "motivation_style": "ENCOURAGING",
+                "goals": ["SLEEP_OPTIMIZATION", "STRESS_MANAGEMENT"],
+                "preferred_tone": "supportive"
+            },
+             "debug_user_panic_003": {
+                "motivation_style": "URGENT_CARE",
+                "goals": ["STRESS_REDUCTION"],
+                "preferred_tone": "calm_but_firm"
+            }
+        }
+        
+        if not user:
+            user = {"user_id": user_id}
+            
+        # Enrich if key matches mock
+        if user_id in mock_profiles:
+            user.update(mock_profiles[user_id])
+        else:
+             # Default fallback for unknown users to ensure characterizer works
+             user.update({
+                "motivation_style": "FRIENDLY",
+                "goals": ["GENERAL_HEALTH"],
+                "pet_name": "Tamagotchi"
+             })
+             
+        return user
+    except Exception as e:
+        print(f"Get Profile Error: {e}")
+        return {"user_id": user_id, "pet_name": "Tamagotchi", "goals": []}
+
 def get_last_health_reading(user_id):
     try:
         response = health_table.query(
@@ -121,6 +160,7 @@ def update_state_db(user_id, analysis, time_gap):
         'stateEnum': analysis.get('state'),
         'mood': analysis.get('mood', 'Neutral'),
         'reasoning': analysis.get('reasoning', 'No reasoning provided'),
+        'message': analysis.get('message', ''), # Add User-facing message
         'activity': analysis.get('activity', 'Unknown'),
         'last_updated': datetime.now().isoformat()
     }
